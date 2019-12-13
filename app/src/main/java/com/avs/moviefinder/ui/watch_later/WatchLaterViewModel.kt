@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class WatchLaterViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is Watch later Fragment"
     }
     val text: LiveData<String> = _text
 }
