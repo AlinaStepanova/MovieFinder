@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.home
+package com.avs.moviefinder.ui.find
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.avs.moviefinder.R
 
-class HomeFragment : Fragment() {
+class FindFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var findViewModel: FindViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        findViewModel =
+            ViewModelProviders.of(this).get(FindViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_find, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
+        findViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root

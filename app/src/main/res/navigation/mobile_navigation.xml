@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_find"
-        android:name="com.avs.moviefinder.ui.home.HomeFragment"
+        android:name="com.avs.moviefinder.ui.find.FindFragment"
         android:label="@string/title_find_movie"
         tools:layout="@layout/fragment_find" />
 
     <fragment
         android:id="@+id/navigation_watch_later"
-        android:name="com.avs.moviefinder.ui.dashboard.DashboardFragment"
+        android:name="com.avs.moviefinder.ui.watch_later.WatchLaterFragment"
         android:label="@string/title_watch_later"
         tools:layout="@layout/fragment_watch_later" />
 
     <fragment
         android:id="@+id/navigation_watched"
-        android:name="com.avs.moviefinder.ui.notifications.NotificationsFragment"
+        android:name="com.avs.moviefinder.ui.watched.WatchedFragment"
         android:label="@string/title_watched"
         tools:layout="@layout/fragment_watched" />
 </navigation>

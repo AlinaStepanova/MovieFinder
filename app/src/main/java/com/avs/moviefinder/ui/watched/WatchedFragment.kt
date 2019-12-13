@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.notifications
+package com.avs.moviefinder.ui.watched
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.avs.moviefinder.R
 
-class NotificationsFragment : Fragment() {
+class WatchedFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var watchedViewModel: WatchedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
+        watchedViewModel =
+            ViewModelProviders.of(this).get(WatchedViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_watched, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(this, Observer {
+        watchedViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
