@@ -7,5 +7,13 @@
     <dimen name="margin_12dp">12dp</dimen>
     <dimen name="margin_24dp">24dp</dimen>
     <dimen name="margin_32dp">32dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+
+
     <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_26sp">26sp</dimen>
+
+    <dimen name="image_find_movie_max_height">230dp</dimen>
 </resources>
