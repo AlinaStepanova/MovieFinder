@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_watch_later"
+    app:startDestination="@+id/navigation_watch_later">
+
+    <fragment
+        android:id="@+id/navigation_watch_later"
+        android:name="com.avs.moviefinder.ui.watch_later.WatchLaterFragment"
+        android:label="@string/title_watch_later"
+        tools:layout="@layout/fragment_watch_later" />
+
+</navigation>

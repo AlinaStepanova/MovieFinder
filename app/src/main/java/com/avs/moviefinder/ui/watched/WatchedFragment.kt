@@ -23,7 +23,7 @@ class WatchedFragment : Fragment() {
             ViewModelProviders.of(this).get(WatchedViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_watched, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
-        watchedViewModel.text.observe(this, Observer {
+        watchedViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

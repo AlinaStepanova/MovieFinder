@@ -23,7 +23,7 @@ class WatchLaterFragment : Fragment() {
             ViewModelProviders.of(this).get(WatchLaterViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_watch_later, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
-        watchLaterViewModel.text.observe(this, Observer {
+        watchLaterViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
