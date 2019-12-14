@@ -3,4 +3,5 @@
     <string name="title_find_movie">Find a movie</string>
     <string name="title_watch_later">Watch later</string>
     <string name="title_watched">Watched</string>
+    <string name="button_find_text">FIND</string>
 </resources>
