@@ -16,4 +16,5 @@
     <dimen name="text_size_26sp">26sp</dimen>
 
     <dimen name="image_find_movie_max_height">230dp</dimen>
+    <dimen name="height_movie_item_description">160dp</dimen>
 </resources>
