@@ -2,6 +2,7 @@ package com.avs.moviefinder.ui.find
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +34,14 @@ class FindFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_find, container, false)
         val root: View = binding.root
+        binding.findViewModel = findViewModel
+        binding.lifecycleOwner = this
         val adapter = FindAdapter()
         binding.rvFindRecyclerView.adapter = adapter
 
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
+                Log.d("jjj", it.toString())
                 adapter.submitList(it)
             }
         })

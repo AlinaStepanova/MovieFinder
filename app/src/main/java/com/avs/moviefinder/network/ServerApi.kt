@@ -23,8 +23,9 @@ class ServerApi @Inject constructor(
             .subscribe({ checkResponse(it) }, { handleError(it) })
     }
 
-    private fun checkResponse(response: MovieFilter) {
-        Log.d(this.javaClass.simpleName, response.toString())
+    private fun checkResponse(movies: MovieFilter) {
+        Log.d(this.javaClass.simpleName, movies.toString())
+        rxBus.send(movies)
     }
 
     private fun handleError(error: Throwable?) {

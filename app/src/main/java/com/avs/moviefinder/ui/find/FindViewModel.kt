@@ -31,7 +31,6 @@ class FindViewModel @Inject constructor(
         if (event is MovieFilter) {
             _movies.value = event.movies
         }
-        Log.d("jjj", event.toString())
     }
 
     override fun onCleared() {
