@@ -2,6 +2,6 @@
 <resources>
     <dimen name="image_find_movie_max_height">340dp</dimen>
     <dimen name="height_movie_item_description">170dp</dimen>
-    <dimen name="text_size_movie_title">24sp</dimen>
+    <dimen name="text_size_movie_title">22sp</dimen>
     <dimen name="text_size_movie_details">18sp</dimen>
 </resources>

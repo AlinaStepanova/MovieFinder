@@ -17,6 +17,6 @@
 
     <dimen name="image_find_movie_max_height">200dp</dimen>
     <dimen name="height_movie_item_description">150dp</dimen>
-    <dimen name="text_size_movie_title">26sp</dimen>
+    <dimen name="text_size_movie_title">24sp</dimen>
     <dimen name="text_size_movie_details">18sp</dimen>
 </resources>

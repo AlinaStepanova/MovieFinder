@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_16dp"
@@ -39,19 +40,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvMovieGenre"
+            android:id="@+id/tvMovieDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginTop="@dimen/margin_4dp"
             android:layout_marginEnd="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_4dp"
+            android:layout_marginBottom="4dp"
             android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="Genre"
+            android:gravity="fill"
+            android:maxLines="3"
+            android:text="Description"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/text_size_movie_details"
+            app:layout_constraintBottom_toTopOf="@+id/tvMovieYear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle" />
@@ -61,18 +63,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_4dp"
             android:layout_marginEnd="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_4dp"
+            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Year"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/text_size_movie_details"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMovieGenre" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,9 +82,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_16dp"
-        android:tint="@color/greyDark"
         android:layout_marginBottom="@dimen/margin_16dp"
         android:src="@drawable/ic_done"
+        android:tint="@color/greyDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -95,8 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_16dp"
-        android:tint="@color/greyDark"
         android:src="@drawable/ic_watch_later"
+        android:tint="@color/greyDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon">
 

@@ -23,9 +23,11 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
     class ViewHolder private constructor (itemView: View) : RecyclerView.ViewHolder(itemView){
         private val title : TextView = itemView.findViewById(R.id.tvMovieTitle)
         private val year : TextView = itemView.findViewById(R.id.tvMovieYear)
+        private val description : TextView = itemView.findViewById(R.id.tvMovieDescription)
         fun bind(item: Movie) {
             title.text = item.title
-            year.text = item.year.toString()
+            year.text = item.year
+            description.text = item.overview
         }
 
         companion object {
