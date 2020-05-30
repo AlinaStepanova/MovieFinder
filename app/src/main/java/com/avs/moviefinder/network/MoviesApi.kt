@@ -1,7 +1,8 @@
 package com.avs.moviefinder.network
 
+import com.avs.moviefinder.network.dto.MovieFilter
+import com.avs.moviefinder.utils.API_KEY
 import io.reactivex.Single
-import retrofit2.Response
 import retrofit2.http.GET
 
 /**
@@ -9,6 +10,6 @@ import retrofit2.http.GET
  */
 interface MoviesApi {
 
-    @GET("popular?api_key=3ae41cba5ffccb37830367a69287433d&language=en-US")
-        fun getPopularMovies(): Single<Response<Any>>
+    @GET("popular?api_key=$API_KEY&language=en-US")
+    fun getPopularMovies(): Single<MovieFilter>
 }
