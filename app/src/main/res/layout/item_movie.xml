@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_16dp"
-    android:elevation="1dp"
+    android:elevation="2dp"
     android:background="@drawable/rounded_item_shape">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivPoster"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_find_movie_max_height"
-        android:background="@drawable/rounded_top_shape"
-        android:backgroundTint="@color/greyMedium"
+        android:background="@color/white"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_movie_item_description"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/ivPoster">
 
         <TextView
             android:id="@+id/tvMovieTitle"
@@ -83,6 +82,9 @@
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_done"
         android:tint="@color/mainGrey"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -96,6 +98,9 @@
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_watch_later"
         android:tint="@color/mainGrey"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon">
     </ImageView>
@@ -108,6 +113,9 @@
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_share"
         android:tint="@color/mainGrey"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon">
     </ImageView>
