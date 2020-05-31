@@ -19,4 +19,5 @@
     <dimen name="height_movie_item_description">150dp</dimen>
     <dimen name="text_size_movie_title">24sp</dimen>
     <dimen name="text_size_movie_details">18sp</dimen>
+    <dimen name="image_control_size">24dp</dimen>
 </resources>

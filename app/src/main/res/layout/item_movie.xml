@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_find_movie_max_height"
         android:background="@drawable/rounded_top_shape"
-        android:backgroundTint="@color/grey"
+        android:backgroundTint="@color/greyMedium"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,12 +45,12 @@
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginTop="@dimen/margin_4dp"
             android:layout_marginEnd="@dimen/margin_8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="@dimen/margin_4dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="3"
             android:textAlignment="gravity"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/mainGrey"
             android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toTopOf="@+id/tvMovieYear"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,12 +63,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:maxEms="16"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/mainGrey"
             android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -77,12 +77,12 @@
 
     <ImageView
         android:id="@+id/ivWatchedIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="@dimen/image_control_size"
+        android:layout_height="@dimen/image_control_size"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_done"
-        android:tint="@color/greyDark"
+        android:tint="@color/mainGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -90,16 +90,26 @@
 
     <ImageView
         android:id="@+id/ivWatchLaterIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="@dimen/image_control_size"
+        android:layout_height="@dimen/image_control_size"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_watch_later"
-        android:tint="@color/greyDark"
+        android:tint="@color/mainGrey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon">
-
     </ImageView>
 
+    <ImageView
+        android:id="@+id/ivShareIcon"
+        android:layout_width="@dimen/image_control_size"
+        android:layout_height="@dimen/image_control_size"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
+        android:src="@drawable/ic_share"
+        android:tint="@color/mainGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon">
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
