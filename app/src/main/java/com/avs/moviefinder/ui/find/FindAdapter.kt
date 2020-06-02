@@ -1,9 +1,5 @@
 package com.avs.moviefinder.ui.find
 
-import android.graphics.BitmapFactory
-import android.icu.lang.UCharacter.IndicPositionalCategory.LEFT
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +12,9 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.utils.POSTER_URL
 import com.avs.moviefinder.utils.POSTER_WIDTH
+import com.avs.moviefinder.utils.formatDate
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropTransformation
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
-import java.net.URL
 
 
 class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
@@ -39,7 +34,7 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
         private val poster: ImageView = itemView.findViewById(R.id.ivPoster)
         fun bind(item: Movie) {
             title.text = item.title
-            year.text = item.year
+            year.text = formatDate(item.year)
             description.text = item.overview
             Picasso.get()
                 .load(POSTER_URL + item.posterPath)
