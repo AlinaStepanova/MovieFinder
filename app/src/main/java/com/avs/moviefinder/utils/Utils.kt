@@ -7,7 +7,7 @@ import java.util.*
 
 fun formatDate(dateToFormat: String) : String {
     val inputFormat: DateFormat = SimpleDateFormat("yyyy-mm-dd", Locale.US)
-    val outputFormat: DateFormat = SimpleDateFormat("dd MMM yyyy", Locale.US)
+    val outputFormat: DateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
     val date: Date?
     var formattedDate = dateToFormat
     try {

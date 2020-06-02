@@ -18,4 +18,13 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="MovieItemControlStyle">
+        <item name="android:layout_width">@dimen/image_control_size</item>
+        <item name="android:layout_height">@dimen/image_control_size</item>
+        <item name="android:tint">@color/mainGrey</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
 </resources>

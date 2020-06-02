@@ -42,7 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_4dp"
             android:layout_marginEnd="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_4dp"
             android:ellipsize="end"
@@ -57,67 +56,61 @@
             app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
             app:layout_constraintVertical_weight="7" />
 
+        <ImageView
+            android:id="@+id/ivCalendar"
+            android:layout_width="@dimen/margin_16dp"
+            android:layout_height="@dimen/margin_16dp"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:src="@drawable/ic_calendar"
+            android:tint="@color/mainGrey"
+            app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+
         <TextView
             android:id="@+id/tvMovieYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/margin_4dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="1"
             android:maxEms="16"
+            android:maxLines="1"
             android:textColor="@color/mainGrey"
             android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/ivCalendar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/ivWatchedIcon"
-        android:layout_width="@dimen/image_control_size"
-        android:layout_height="@dimen/image_control_size"
         android:layout_marginEnd="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_done"
-        android:tint="@color/mainGrey"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/MovieItemControlStyle">
 
     </ImageView>
 
     <ImageView
         android:id="@+id/ivWatchLaterIcon"
-        android:layout_width="@dimen/image_control_size"
-        android:layout_height="@dimen/image_control_size"
-        android:layout_marginEnd="@dimen/margin_16dp"
+        style="@style/MovieItemControlStyle"
+        android:layout_marginEnd="18dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_watch_later"
-        android:tint="@color/mainGrey"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon">
-    </ImageView>
+        app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon"></ImageView>
 
     <ImageView
         android:id="@+id/ivShareIcon"
-        android:layout_width="@dimen/image_control_size"
-        android:layout_height="@dimen/image_control_size"
-        android:layout_marginEnd="@dimen/margin_16dp"
+        style="@style/MovieItemControlStyle"
+        android:layout_marginEnd="18dp"
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_share"
-        android:tint="@color/mainGrey"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon">
-    </ImageView>
+        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon"></ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
