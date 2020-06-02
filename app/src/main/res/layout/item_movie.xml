@@ -31,7 +31,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_movie_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -41,9 +41,11 @@ class FindFragment : Fragment() {
 
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
-                Log.d("jjj", it.toString())
                 adapter.submitList(it)
             }
+        })
+        findViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
+            binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
         return root
     }
