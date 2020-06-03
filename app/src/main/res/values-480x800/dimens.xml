@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="image_find_movie_max_height">180dp</dimen>
-    <dimen name="height_movie_item_description">120dp</dimen>
+    <dimen name="image_find_movie_max_height">150dp</dimen>
     <dimen name="text_size_movie_title">16sp</dimen>
-    <dimen name="text_size_movie_details">14sp</dimen>
+    <dimen name="text_size_movie_details">12sp</dimen>
     <dimen name="image_control_size">18dp</dimen>
 </resources>

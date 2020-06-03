@@ -19,7 +19,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_movie_item_description"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivPoster">
 
@@ -28,9 +28,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_movie_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,15 +43,16 @@
         <TextView
             android:id="@+id/tvMovieDescription"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_4dp"
             android:layout_marginEnd="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_4dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="3"
+            android:maxLines="4"
             android:textAlignment="gravity"
-            android:textColor="@color/mainGrey"
+            android:textColor="@color/greyDark"
             android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toTopOf="@+id/tvMovieYear"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +64,7 @@
             android:id="@+id/ivCalendar"
             android:layout_width="@dimen/margin_16dp"
             android:layout_height="@dimen/margin_16dp"
-            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginStart="12dp"
             android:src="@drawable/ic_calendar"
             android:tint="@color/mainGrey"
             app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
@@ -77,7 +81,7 @@
             android:gravity="center_vertical"
             android:maxEms="16"
             android:maxLines="1"
-            android:textColor="@color/mainGrey"
+            android:textColor="@color/greyDark"
             android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivCalendar" />
@@ -102,7 +106,7 @@
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_watch_later"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon"></ImageView>
+        app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon" />
 
     <ImageView
         android:id="@+id/ivShareIcon"
@@ -111,6 +115,6 @@
         android:layout_marginBottom="@dimen/margin_12dp"
         android:src="@drawable/ic_share"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon"></ImageView>
+        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
