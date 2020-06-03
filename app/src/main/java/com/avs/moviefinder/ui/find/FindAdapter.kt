@@ -40,6 +40,7 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
                 .load(POSTER_URL + item.posterPath)
                 .transform(CropTransformation(0, 0, POSTER_WIDTH, POSTER_WIDTH))
                 .placeholder(R.drawable.ic_local_movies_grey)
+                .error(R.drawable.ic_cloud_off)
                 .into(poster)
         }
 
