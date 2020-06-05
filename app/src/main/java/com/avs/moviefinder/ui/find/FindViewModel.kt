@@ -22,6 +22,9 @@ class FindViewModel @Inject constructor(
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
+    private var _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
 
@@ -34,8 +37,16 @@ class FindViewModel @Inject constructor(
     private fun handleServerResponse(event: Any?) {
         if (event is MovieFilter) {
             _isProgressVisible.value = false
+            _isLoading.value = false
             _movies.value = event.movies
+
         }
+    }
+
+    fun onRefresh() {
+        _movies.value = ArrayList()
+        apiDisposable?.dispose()
+        apiDisposable = serverApi.getPopularMovies()
     }
 
     override fun onCleared() {

@@ -32,6 +32,7 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
         private val year: TextView = itemView.findViewById(R.id.tvMovieYear)
         private val description: TextView = itemView.findViewById(R.id.tvMovieDescription)
         private val poster: ImageView = itemView.findViewById(R.id.ivPoster)
+        // todo create bind adapters
         fun bind(item: Movie) {
             title.text = item.title
             year.text = formatDate(item.year)
