@@ -30,6 +30,9 @@ class ServerApi @Inject constructor(
 
     private fun handleError(error: Throwable?) {
         if (BuildConfig.DEBUG) {
+            if (error != null) {
+                rxBus.send(error)
+            }
             Log.d(this.javaClass.simpleName, error.toString())
         }
     }

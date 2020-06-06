@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.find
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +45,10 @@ class FindFragment : Fragment() {
         })
         findViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
+        findViewModel.isError.observe(viewLifecycleOwner, Observer {
+            if (it) (activity as MainActivity).showSnackBar(resources.getString(R.string.network_error_occurred))
+            binding.ivError.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
         return root
     }

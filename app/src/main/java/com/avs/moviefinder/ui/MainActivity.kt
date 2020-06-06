@@ -2,13 +2,15 @@ package com.avs.moviefinder.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.R
 import com.avs.moviefinder.di.MainComponent
-import com.avs.moviefinder.setupWithNavController
+import com.avs.moviefinder.utils.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,5 +62,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
+    }
+
+    fun showSnackBar(message: String) {
+        val hostFragment = findViewById<FragmentContainerView>(R.id.nav_host_fragment)
+        val snackBar = Snackbar.make(hostFragment, message,
+            Snackbar.LENGTH_LONG)
+        snackBar.show()
     }
 }

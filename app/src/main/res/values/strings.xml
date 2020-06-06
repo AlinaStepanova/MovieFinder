@@ -4,4 +4,5 @@
     <string name="title_watch_later">Watch later</string>
     <string name="title_watched">Watched</string>
     <string name="button_find_text">FIND</string>
+    <string name="network_error_occurred">A network error occurred</string>
 </resources>
