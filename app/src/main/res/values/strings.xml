@@ -6,4 +6,5 @@
     <string name="button_find_text">FIND</string>
     <string name="network_error_occurred">A network error occurred</string>
     <string name="search_title">Search</string>
+    <string name="search_hint">Find the movie by title</string>
 </resources>

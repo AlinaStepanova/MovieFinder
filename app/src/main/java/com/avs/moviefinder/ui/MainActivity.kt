@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureSearchMenu(menuItem: MenuItem) {
         SearchView(this).apply {
+            queryHint = resources.getString(R.string.search_hint)
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
