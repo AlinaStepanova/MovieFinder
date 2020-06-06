@@ -37,7 +37,7 @@ class FindFragment : Fragment() {
         binding.lifecycleOwner = this
         val adapter = FindAdapter()
         binding.rvFindRecyclerView.adapter = adapter
-
+        binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)

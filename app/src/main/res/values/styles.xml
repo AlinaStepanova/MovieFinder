@@ -7,11 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/CustomActionBar</item>
+        <!--<item name="colorControlNormal">@color/colorPrimary</item>-->
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
     </style>
 
     <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="titleTextStyle">@style/MyTitleTextStyle</item>
         <item name="background">@color/white</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
     <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
