@@ -1,20 +1,20 @@
-package com.avs.moviefinder.ui
+package com.avs.moviefinder.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.FragmentContainerView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.R
+import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.MainComponent
 import com.avs.moviefinder.utils.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,16 +22,23 @@ class MainActivity : AppCompatActivity() {
 
     private var currentNavController: LiveData<NavController>? = null
 
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         mainComponent = (application as MovieFinderApplication).appComponent
             .mainComponent().create()
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.mainViewModel = mainViewModel
+        binding.lifecycleOwner = this
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setLogo(R.drawable.ic_local_movies)
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
@@ -53,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return false
                 }
+
                 override fun onQueryTextChange(newText: String): Boolean {
                     isSubmitButtonEnabled = newText.length > 2
                     return false
@@ -73,7 +81,7 @@ class MainActivity : AppCompatActivity() {
      * Called on first creation and when restoring state.
      */
     private fun setupBottomNavigationBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        val bottomNavigationView = binding.navView
 
         val navGraphIds = listOf(
             R.navigation.navigation_find,
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showSnackBar(message: String) {
-        val hostFragment = findViewById<FragmentContainerView>(R.id.nav_host_fragment)
+        val hostFragment = binding.navHostFragment
         val snackBar = Snackbar.make(
             hostFragment, message,
             Snackbar.LENGTH_LONG

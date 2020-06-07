@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindBinding
-import com.avs.moviefinder.ui.MainActivity
+import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
 class FindFragment : Fragment() {

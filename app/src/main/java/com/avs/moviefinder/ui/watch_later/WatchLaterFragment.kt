@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
-import com.avs.moviefinder.ui.MainActivity
+import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
 class WatchLaterFragment : Fragment() {
