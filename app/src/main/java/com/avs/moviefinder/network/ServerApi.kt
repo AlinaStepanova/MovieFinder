@@ -23,6 +23,14 @@ class ServerApi @Inject constructor(
             .subscribe({ checkResponse(it) }, { handleError(it) })
     }
 
+    fun getMovieByTitle(title: String): Disposable {
+        return moviesApi
+            .getMovieByName(title)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ checkResponse(it) }, { handleError(it) })
+    }
+
     private fun checkResponse(movies: MovieFilter) {
         Log.d(this.javaClass.simpleName, movies.toString())
         rxBus.send(movies)

@@ -58,10 +58,12 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
+                    mainViewModel.onQuerySubmitted(query)
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
+                    mainViewModel.onQueryTextChange(newText)
                     isSubmitButtonEnabled = newText.length > 2
                     return false
                 }
