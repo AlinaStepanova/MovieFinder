@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="movie"
             type="com.avs.moviefinder.network.dto.Movie" />
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_16dp"
-        android:elevation="2dp"
-        android:background="@drawable/rounded_item_shape">
+        android:background="@drawable/rounded_item_shape"
+        android:elevation="2dp">
 
         <ImageView
             android:id="@+id/ivPoster"
@@ -23,7 +24,8 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:posterImage="@{movie}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -92,18 +94,19 @@
                 android:textColor="@color/greyDark"
                 android:textSize="@dimen/text_size_movie_details"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ivCalendar" />
+                app:layout_constraintStart_toEndOf="@+id/ivCalendar"
+                app:releaseDateFormatted="@{movie}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/ivWatchedIcon"
+            style="@style/MovieItemControlStyle"
             android:layout_marginEnd="@dimen/margin_16dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:src="@drawable/ic_done"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/MovieItemControlStyle">
+            app:layout_constraintEnd_toEndOf="parent">
 
         </ImageView>
 

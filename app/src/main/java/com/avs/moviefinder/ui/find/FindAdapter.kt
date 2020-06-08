@@ -5,14 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
-import com.avs.moviefinder.utils.POSTER_URL
-import com.avs.moviefinder.utils.POSTER_WIDTH
-import com.avs.moviefinder.utils.formatDate
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropTransformation
 
 
 class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
@@ -25,18 +19,13 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        // todo create bind adapters
+    class ViewHolder private constructor(private val binding: ItemMovieBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Movie) {
             binding.tvMovieTitle.text = item.title
-            binding.tvMovieYear.text = formatDate(item.year)
             binding.tvMovieDescription.text = item.overview
-            Picasso.get()
-                .load(POSTER_URL + item.posterPath)
-                .transform(CropTransformation(0, 0, POSTER_WIDTH, POSTER_WIDTH))
-                .placeholder(R.drawable.ic_local_movies_grey)
-                .error(R.drawable.ic_cloud_off)
-                .into(binding.ivPoster)
+            binding.movie = item
+            binding.executePendingBindings()
         }
 
         companion object {
