@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureSearchMenu(menuItem: MenuItem) {
         SearchView(this).apply {
+            maxWidth = Int.MAX_VALUE
             queryHint = resources.getString(R.string.search_hint)
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
                     return false
                 }
                 override fun onQueryTextChange(newText: String): Boolean {
-                    isSubmitButtonEnabled = newText.length > 2
                     return false
                 }
             })

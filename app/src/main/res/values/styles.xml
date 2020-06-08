@@ -7,14 +7,22 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/CustomActionBar</item>
-        <!--<item name="colorControlNormal">@color/colorPrimary</item>-->
+        <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="searchViewStyle">@style/CustomSearchView</item>
+    </style>
+
+    <style name="CustomSearchView" parent="Widget.AppCompat.Light.SearchView">
+        <item name="searchHintIcon">@null</item>
+        <item name="queryBackground">@android:color/transparent</item>
     </style>
 
     <style name="CustomActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="titleTextStyle">@style/MyTitleTextStyle</item>
         <item name="background">@color/white</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="contentInsetRight">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
     </style>
 
     <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
