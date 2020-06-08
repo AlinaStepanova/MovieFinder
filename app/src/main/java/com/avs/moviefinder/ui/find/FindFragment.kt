@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindBinding
+import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
@@ -46,10 +47,29 @@ class FindFragment : Fragment() {
         findViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        findViewModel.isError.observe(viewLifecycleOwner, Observer {
-            if (it) (activity as MainActivity).showSnackBar(resources.getString(R.string.network_error_occurred))
-            binding.ivError.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        findViewModel.errorType.observe(viewLifecycleOwner, Observer {
+            handleErrorEvent(it)
         })
         return root
+    }
+
+    private fun handleErrorEvent(it: ErrorType?) {
+        when (it) {
+            null -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
+            }
+            ErrorType.NETWORK -> {
+                binding.ivError.visibility = View.VISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
+                (activity as MainActivity).showSnackBar(resources.getString(R.string.network_error_occurred))
+            }
+            ErrorType.NO_RESULTS -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.VISIBLE
+                (activity as MainActivity).showSnackBar(resources.getString(R.string.no_results_found))
+            }
+            else -> {}
+        }
     }
 }
