@@ -1,20 +1,12 @@
 package com.avs.moviefinder.ui.find
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.avs.moviefinder.R
+import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
-import com.avs.moviefinder.utils.POSTER_URL
-import com.avs.moviefinder.utils.POSTER_WIDTH
-import com.avs.moviefinder.utils.formatDate
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropTransformation
 
 
 class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
@@ -27,31 +19,20 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val title: TextView = itemView.findViewById(R.id.tvMovieTitle)
-        private val year: TextView = itemView.findViewById(R.id.tvMovieYear)
-        private val description: TextView = itemView.findViewById(R.id.tvMovieDescription)
-        private val poster: ImageView = itemView.findViewById(R.id.ivPoster)
-        // todo create bind adapters
+    class ViewHolder private constructor(private val binding: ItemMovieBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Movie) {
-            title.text = item.title
-            year.text = formatDate(item.year)
-            description.text = item.overview
-            Picasso.get()
-                .load(POSTER_URL + item.posterPath)
-                .transform(CropTransformation(0, 0, POSTER_WIDTH, POSTER_WIDTH))
-                .placeholder(R.drawable.ic_local_movies_grey)
-                .error(R.drawable.ic_cloud_off)
-                .into(poster)
+            binding.tvMovieTitle.text = item.title
+            binding.tvMovieDescription.text = item.overview
+            binding.movie = item
+            binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.item_movie, parent, false)
-
-                return ViewHolder(view)
+                val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
             }
         }
     }

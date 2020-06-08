@@ -1,120 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_16dp"
-    android:elevation="2dp"
-    android:background="@drawable/rounded_item_shape">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/ivPoster"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/image_find_movie_max_height"
-        android:background="@color/white"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+
+        <variable
+            name="movie"
+            type="com.avs.moviefinder.network.dto.Movie" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPoster">
-
-        <TextView
-            android:id="@+id/tvMovieTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_8dp"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:layout_marginEnd="@dimen/margin_8dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_movie_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvMovieDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_4dp"
-            android:layout_marginEnd="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_12dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="4"
-            android:textAlignment="gravity"
-            android:textColor="@color/greyDark"
-            android:textSize="@dimen/text_size_movie_details"
-            app:layout_constraintBottom_toTopOf="@+id/tvMovieYear"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
-            app:layout_constraintVertical_weight="7" />
+        android:layout_margin="@dimen/margin_16dp"
+        android:background="@drawable/rounded_item_shape"
+        android:elevation="2dp">
 
         <ImageView
-            android:id="@+id/ivCalendar"
-            android:layout_width="@dimen/margin_16dp"
-            android:layout_height="@dimen/margin_16dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_calendar"
-            android:tint="@color/mainGrey"
-            app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_find_movie_max_height"
+            android:background="@color/white"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:posterImage="@{movie}" />
 
-        <TextView
-            android:id="@+id/tvMovieYear"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_4dp"
-            android:layout_marginBottom="@dimen/margin_12dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxEms="16"
-            android:maxLines="1"
-            android:textColor="@color/greyDark"
-            android:textSize="@dimen/text_size_movie_details"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivCalendar" />
+            app:layout_constraintTop_toBottomOf="@+id/ivPoster">
+
+            <TextView
+                android:id="@+id/tvMovieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_movie_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvMovieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="4"
+                android:textAlignment="gravity"
+                android:textColor="@color/greyDark"
+                android:textSize="@dimen/text_size_movie_details"
+                app:layout_constraintBottom_toTopOf="@+id/tvMovieYear"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
+                app:layout_constraintVertical_weight="7" />
+
+            <ImageView
+                android:id="@+id/ivCalendar"
+                android:layout_width="@dimen/margin_16dp"
+                android:layout_height="@dimen/margin_16dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_calendar"
+                android:tint="@color/mainGrey"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+
+            <TextView
+                android:id="@+id/tvMovieYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_4dp"
+                android:layout_marginBottom="@dimen/margin_12dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxEms="16"
+                android:maxLines="1"
+                android:textColor="@color/greyDark"
+                android:textSize="@dimen/text_size_movie_details"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivCalendar"
+                app:releaseDateFormatted="@{movie}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ivWatchedIcon"
+            style="@style/MovieItemControlStyle"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
+            android:src="@drawable/ic_done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/ivWatchLaterIcon"
+            style="@style/MovieItemControlStyle"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
+            android:src="@drawable/ic_watch_later"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon" />
+
+        <ImageView
+            android:id="@+id/ivShareIcon"
+            style="@style/MovieItemControlStyle"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
+            android:src="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/ivWatchedIcon"
-        android:layout_marginEnd="@dimen/margin_16dp"
-        android:layout_marginBottom="@dimen/margin_12dp"
-        android:src="@drawable/ic_done"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/MovieItemControlStyle">
-
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/ivWatchLaterIcon"
-        style="@style/MovieItemControlStyle"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="@dimen/margin_12dp"
-        android:src="@drawable/ic_watch_later"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon" />
-
-    <ImageView
-        android:id="@+id/ivShareIcon"
-        style="@style/MovieItemControlStyle"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="@dimen/margin_12dp"
-        android:src="@drawable/ic_share"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

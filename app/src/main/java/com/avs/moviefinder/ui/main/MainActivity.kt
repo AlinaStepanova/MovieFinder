@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureSearchMenu(menuItem: MenuItem) {
         SearchView(this).apply {
+            maxWidth = Int.MAX_VALUE
             queryHint = resources.getString(R.string.search_hint)
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onQueryTextChange(newText: String): Boolean {
                     mainViewModel.onQueryTextChange(newText)
-                    isSubmitButtonEnabled = newText.length > 2
+                    //isSubmitButtonEnabled = newText.length > 2
                     return false
                 }
             })
