@@ -57,6 +57,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/swipeRefreshLayout" />
 
+        <TextView
+            android:id="@+id/tvErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results_text"
+            android:visibility="invisible"
+            android:textSize="@dimen/text_size_movie_details"
+            android:textColor="@color/mainGrey"
+            android:layout_marginTop="@dimen/dimen_72dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/swipeRefreshLayout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

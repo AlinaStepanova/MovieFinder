@@ -1,9 +1,9 @@
 package com.avs.moviefinder.ui.find
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.MovieFilter
@@ -25,15 +25,15 @@ class FindViewModel @Inject constructor(
     private var _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    private var _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean>
-        get() = _isError
+    private var _errorType = MutableLiveData<ErrorType?>()
+    val errorType: LiveData<ErrorType?>
+        get() = _errorType
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
 
     init {
         _isProgressVisible.value = true
-        _isError.value = false
+        _errorType.value = null
         apiDisposable = serverApi.getPopularMovies()
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
@@ -42,12 +42,13 @@ class FindViewModel @Inject constructor(
         if (event is MovieFilter) {
             _isProgressVisible.value = false
             _isLoading.value = false
-            _isError.value = false
+            if (event.movies.isEmpty()) _errorType.value =
+                ErrorType.NO_RESULTS else _errorType.value = null
             _movies.value = event.movies
         } else if (event is Throwable) {
             _isProgressVisible.value = false
             _isLoading.value = false
-            _isError.value = true
+            _errorType.value = ErrorType.NETWORK
         }
     }
 
