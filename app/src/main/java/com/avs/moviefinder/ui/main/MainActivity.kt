@@ -12,9 +12,11 @@ import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.MainComponent
+import com.avs.moviefinder.ui.find_detail.FindDetailFragment
 import com.avs.moviefinder.utils.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +48,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        menu.findItem(R.id.search)?.let {
+        val item = menu.findItem(R.id.search)
+        item?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                popFindDetailsFragment()
+                return true
+            }
+
+        })
+        item?.let {
             configureSearchMenu(it)
         }
         return true
@@ -59,13 +73,13 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
+                    openFindDetailFragment()
                     mainViewModel.onQuerySubmitted(query)
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
                     mainViewModel.onQueryTextChange(newText)
-                    //isSubmitButtonEnabled = newText.length > 2
                     return false
                 }
             })
@@ -73,6 +87,22 @@ class MainActivity : AppCompatActivity() {
             menuItem.actionView = it
         }
 
+    }
+
+    private fun openFindDetailFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.nav_host_fragment, FindDetailFragment())
+            .addToBackStack(FindDetailFragment::class.simpleName)
+            .commit()
+    }
+
+    private fun popFindDetailsFragment() {
+        val position = supportFragmentManager.backStackEntryCount - 1
+        if (supportFragmentManager.getBackStackEntryAt(position).name
+            == FindDetailFragment::class.simpleName) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

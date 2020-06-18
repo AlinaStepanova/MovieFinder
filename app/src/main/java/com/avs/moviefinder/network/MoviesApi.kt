@@ -11,7 +11,7 @@ import retrofit2.http.Query
  */
 interface MoviesApi {
 
-    @GET("3/movie/popular?api_key=$API_KEY&language=en-US")
+    @GET("3/movie/popular?api_key=$API_KEY&language=en-US&include_adult=false")
     fun getPopularMovies(): Single<MovieFilter>
 
     @GET("3/search/movie?api_key=$API_KEY&page=1&include_adult=false&language=en-US")
