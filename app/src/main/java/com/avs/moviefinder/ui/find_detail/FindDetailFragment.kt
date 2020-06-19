@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
+import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.ui.find.FindAdapter
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
@@ -33,6 +36,41 @@ class FindDetailFragment : Fragment() {
             inflater, R.layout.fragment_find_detail, container, false
         )
         val root: View = binding.root
+        binding.findDetailViewModel = findDetailViewModel
+        binding.lifecycleOwner = this
+        val adapter = FindAdapter()
+        binding.rvFindRecyclerView.adapter = adapter
+        findDetailViewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+        findDetailViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
+            binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
+        findDetailViewModel.errorType.observe(viewLifecycleOwner, Observer {
+            handleErrorEvent(it)
+        })
         return root
+    }
+
+    private fun handleErrorEvent(it: ErrorType?) {
+        when (it) {
+            null -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
+            }
+            ErrorType.NETWORK -> {
+                binding.ivError.visibility = View.VISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
+                (activity as MainActivity).showSnackBar(resources.getString(R.string.network_error_occurred))
+            }
+            ErrorType.NO_RESULTS -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.VISIBLE
+                (activity as MainActivity).showSnackBar(resources.getString(R.string.no_results_found))
+            }
+            else -> {}
+        }
     }
 }

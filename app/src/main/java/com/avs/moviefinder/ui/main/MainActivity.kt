@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun popFindDetailsFragment() {
         val position = supportFragmentManager.backStackEntryCount - 1
-        if (supportFragmentManager.getBackStackEntryAt(position).name
+        if (position != -1 && supportFragmentManager.getBackStackEntryAt(position).name
             == FindDetailFragment::class.simpleName) {
             supportFragmentManager.popBackStack()
         }

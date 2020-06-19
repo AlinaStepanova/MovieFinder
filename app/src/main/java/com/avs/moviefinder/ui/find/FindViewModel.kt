@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.network.ErrorType
-import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.ServerApi
-import com.avs.moviefinder.network.dto.MovieFilter
+import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.network.dto.MoviesFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class FindViewModel @Inject constructor(
     }
 
     private fun handleServerResponse(event: Any?) {
-        if (event is MovieFilter) {
+        if (event is MoviesFilter) {
             _isProgressVisible.value = false
             _isLoading.value = false
             if (event.movies.isEmpty()) _errorType.value =
