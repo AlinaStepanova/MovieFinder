@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindBinding
 import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
-class FindFragment : Fragment() {
+class FindFragment : BaseFragment() {
 
     @Inject
     lateinit var findViewModel: FindViewModel
@@ -62,12 +62,12 @@ class FindFragment : Fragment() {
             ErrorType.NETWORK -> {
                 binding.ivError.visibility = View.VISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE
-                (activity as MainActivity).showSnackBar(resources.getString(R.string.network_error_occurred))
+                showSnackBar(resources.getString(R.string.network_error_occurred))
             }
             ErrorType.NO_RESULTS -> {
                 binding.ivError.visibility = View.INVISIBLE
                 binding.tvErrorText.visibility = View.VISIBLE
-                (activity as MainActivity).showSnackBar(resources.getString(R.string.no_results_found))
+                showSnackBar(resources.getString(R.string.no_results_found))
             }
             else -> {}
         }

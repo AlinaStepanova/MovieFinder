@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
+import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
-class WatchedFragment : Fragment() {
+class WatchedFragment : BaseFragment() {
 
     @Inject
     lateinit var watchedViewModel: WatchedViewModel

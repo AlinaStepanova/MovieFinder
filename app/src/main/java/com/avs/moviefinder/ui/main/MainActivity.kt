@@ -14,7 +14,6 @@ import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.MainComponent
 import com.avs.moviefinder.ui.find_detail.FindDetailFragment
 import com.avs.moviefinder.utils.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var mainViewModel: MainViewModel
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mainComponent = (application as MovieFinderApplication).appComponent
@@ -134,14 +133,5 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
-    }
-
-    fun showSnackBar(message: String) {
-        val hostFragment = binding.navHostFragment
-        val snackBar = Snackbar.make(
-            hostFragment, message,
-            Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
     }
 }

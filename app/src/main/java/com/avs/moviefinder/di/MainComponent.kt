@@ -1,5 +1,6 @@
 package com.avs.moviefinder.di
 
+import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.find.FindFragment
 import com.avs.moviefinder.ui.find_detail.FindDetailFragment
