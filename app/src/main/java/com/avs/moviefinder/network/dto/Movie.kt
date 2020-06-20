@@ -9,5 +9,7 @@ data class Movie(
     @SerializedName("poster_path")
     val posterPath: String = "",
     @SerializedName("release_date")
-    val year: String = "1920"
+    val year: String = "",
+    @SerializedName("vote_average")
+    val rating: String = ""
 )

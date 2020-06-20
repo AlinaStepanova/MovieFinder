@@ -15,12 +15,19 @@ fun TextView.setReleaseDateFormatted(item: Movie?) {
     }
 }
 
+@BindingAdapter("ratingFormatted")
+fun TextView.setRatingFormatted(item: Movie?) {
+    item?.let {
+        text = formatRating(item.rating)
+    }
+}
+
 @BindingAdapter("posterImage")
 fun ImageView.setPosterImage(item: Movie) {
     Picasso.get()
         .load(POSTER_URL + item.posterPath)
         .transform(CropTransformation(0, 0, POSTER_WIDTH, POSTER_WIDTH))
         .placeholder(R.drawable.ic_local_movies_grey)
-        .error(R.drawable.ic_cloud_off)
+        .error(R.drawable.ic_local_movies_grey)
         .into(this)
 }
