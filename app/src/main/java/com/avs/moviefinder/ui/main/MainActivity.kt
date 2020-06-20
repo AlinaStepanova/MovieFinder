@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setSupportActionBar(binding.toolbar)
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = this
         supportActionBar?.setDisplayShowHomeEnabled(true)
