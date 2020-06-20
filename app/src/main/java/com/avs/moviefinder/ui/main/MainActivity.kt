@@ -1,6 +1,7 @@
 package com.avs.moviefinder.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -89,11 +90,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openFindDetailFragment() {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.nav_host_fragment, FindDetailFragment())
-            .addToBackStack(FindDetailFragment::class.simpleName)
-            .commit()
+        val position = supportFragmentManager.backStackEntryCount - 1
+        if (position == -1) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment, FindDetailFragment())
+                .addToBackStack(FindDetailFragment::class.simpleName)
+                .commit()
+        }
     }
 
     private fun popFindDetailsFragment() {
