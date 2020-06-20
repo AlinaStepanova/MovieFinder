@@ -22,9 +22,9 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways">
 
             </androidx.appcompat.widget.Toolbar>
@@ -35,9 +35,9 @@
             android:id="@+id/nav_host_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:paddingBottom="@dimen/design_bottom_navigation_height"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="@color/white" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"

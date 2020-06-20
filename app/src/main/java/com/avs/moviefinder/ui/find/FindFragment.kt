@@ -32,7 +32,8 @@ class FindFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_find, container, false)
+            inflater, R.layout.fragment_find, container, false
+        )
         val root: View = binding.root
         binding.findViewModel = findViewModel
         binding.lifecycleOwner = this
@@ -69,7 +70,8 @@ class FindFragment : BaseFragment() {
                 binding.tvErrorText.visibility = View.VISIBLE
                 showSnackBar(resources.getString(R.string.no_results_found))
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 }

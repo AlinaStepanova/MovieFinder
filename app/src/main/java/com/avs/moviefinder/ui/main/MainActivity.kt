@@ -104,7 +104,8 @@ class MainActivity : AppCompatActivity() {
     private fun popFindDetailsFragment() {
         val position = supportFragmentManager.backStackEntryCount - 1
         if (position != -1 && supportFragmentManager.getBackStackEntryAt(position).name
-            == FindDetailFragment::class.simpleName) {
+            == FindDetailFragment::class.simpleName
+        ) {
             supportFragmentManager.popBackStack()
         }
     }

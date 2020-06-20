@@ -70,7 +70,8 @@ class FindDetailFragment : BaseFragment() {
                 binding.tvErrorText.visibility = View.VISIBLE
                 showSnackBar(resources.getString(R.string.no_results_found))
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 }
