@@ -17,7 +17,6 @@
 package com.avs.moviefinder.utils
 
 import android.content.Intent
-import android.util.Log
 import android.util.SparseArray
 import androidx.core.util.forEach
 import androidx.core.util.set
@@ -27,27 +26,28 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.avs.moviefinder.R
+import com.avs.moviefinder.ui.find_detail.FIND_DETAIL_FRAGMENT_TAG
 import com.avs.moviefinder.ui.find_detail.FindDetailFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun popFindDetailFragment(fragmentManager: FragmentManager) {
     // if the fragment is on the top of the screen
     val position = fragmentManager.backStackEntryCount - 1
-    if (position >= 0 && fragmentManager.getBackStackEntryAt(position).name
-        == FindDetailFragment::class.simpleName
-    ) {
+    if (position >= 0 && isSameTags(fragmentManager, position)) {
         fragmentManager.popBackStack()
     }
 }
 
+private fun isSameTags(fragmentManager: FragmentManager, position: Int) =
+    (fragmentManager.getBackStackEntryAt(position).name == FIND_DETAIL_FRAGMENT_TAG)
+
 fun openFindDetailFragment(fragmentManager: FragmentManager) {
     val position = fragmentManager.backStackEntryCount - 1
-    if ((position == 0 && fragmentManager.getBackStackEntryAt(position).name
-                != FindDetailFragment::class.simpleName || position == -1)) {
+    if ((position == 0 && !isSameTags(fragmentManager, position)) || position == -1) {
         fragmentManager
             .beginTransaction()
             .replace(R.id.nav_host_fragment, FindDetailFragment())
-            .addToBackStack(FindDetailFragment::class.simpleName)
+            .addToBackStack(FIND_DETAIL_FRAGMENT_TAG)
             .commit()
     }
 }

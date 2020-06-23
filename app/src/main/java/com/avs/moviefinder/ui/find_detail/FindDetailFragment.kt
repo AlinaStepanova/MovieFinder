@@ -15,6 +15,8 @@ import com.avs.moviefinder.ui.find.FindAdapter
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
+val FIND_DETAIL_FRAGMENT_TAG = FindDetailFragment::class.simpleName
+
 class FindDetailFragment : BaseFragment() {
 
     @Inject
