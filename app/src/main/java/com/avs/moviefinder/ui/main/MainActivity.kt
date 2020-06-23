@@ -14,6 +14,8 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.MainComponent
 import com.avs.moviefinder.ui.find_detail.FindDetailFragment
+import com.avs.moviefinder.utils.openFindDetailFragment
+import com.avs.moviefinder.utils.popFindDetailFragment
 import com.avs.moviefinder.utils.setupWithNavController
 import javax.inject.Inject
 
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                popFindDetailsFragment()
+                popFindDetailFragment(supportFragmentManager)
                 return true
             }
 
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    openFindDetailFragment()
+                    openFindDetailFragment(supportFragmentManager)
                     mainViewModel.onQuerySubmitted(query)
                     return false
                 }
@@ -88,26 +90,6 @@ class MainActivity : AppCompatActivity() {
             menuItem.actionView = it
         }
 
-    }
-
-    private fun openFindDetailFragment() {
-        val position = supportFragmentManager.backStackEntryCount - 1
-        if (position == -1) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, FindDetailFragment())
-                .addToBackStack(FindDetailFragment::class.simpleName)
-                .commit()
-        }
-    }
-
-    private fun popFindDetailsFragment() {
-        val position = supportFragmentManager.backStackEntryCount - 1
-        if (position != -1 && supportFragmentManager.getBackStackEntryAt(position).name
-            == FindDetailFragment::class.simpleName
-        ) {
-            supportFragmentManager.popBackStack()
-        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -134,6 +116,9 @@ class MainActivity : AppCompatActivity() {
             containerId = R.id.nav_host_fragment,
             intent = intent
         )
+        /*controller.observe(this, Observer { navController ->
+            popFindDetailsFragment()
+        })*/
         currentNavController = controller
     }
 
