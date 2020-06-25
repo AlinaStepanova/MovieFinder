@@ -9,4 +9,7 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Find the movie by title</string>
     <string name="no_results_text">No Results</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_rated_movies">Top Rated</string>
+    <string name="now_playing_movies">Now Playing</string>
 </resources>
