@@ -30,11 +30,9 @@ class FindViewModel @Inject constructor(
         get() = _errorType
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
+    private var selectedSpinnerItem = 0
 
     init {
-        _isProgressVisible.value = true
-        _errorType.value = null
-        apiDisposable = serverApi.getPopularMovies()
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
 
@@ -52,10 +50,37 @@ class FindViewModel @Inject constructor(
         }
     }
 
+    fun onSpinnerItemSelected(itemPosition: Int) {
+        selectedSpinnerItem = itemPosition
+        makeAPICall(itemPosition)
+    }
+
     fun onRefresh() {
+        makeAPICall(selectedSpinnerItem)
+    }
+
+    private fun makeAPICall(itemPosition: Int) {
+        when (itemPosition) {
+            0 -> {
+                disposeValues()
+                apiDisposable = serverApi.getPopularMovies()
+            }
+            1 -> {
+                disposeValues()
+                apiDisposable = serverApi.getTopRatedMovies()
+            }
+            2 -> {
+                disposeValues()
+                apiDisposable = serverApi.getNowPlayingMovies()
+            }
+        }
+    }
+
+    private fun disposeValues() {
+        _isProgressVisible.value = true
+        _errorType.value = null
         _movies.value = ArrayList()
         apiDisposable?.dispose()
-        apiDisposable = serverApi.getPopularMovies()
     }
 
     override fun onCleared() {

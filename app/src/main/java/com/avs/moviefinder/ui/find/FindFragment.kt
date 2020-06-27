@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -61,12 +63,22 @@ class FindFragment : BaseFragment() {
             resources.getString(R.string.top_rated_movies),
             resources.getString(R.string.now_playing_movies)
         )
+        setUpSpinner()
+        return root
+    }
+
+    private fun setUpSpinner() {
         val arrayAdapter: ArrayAdapter<String> =
             ArrayAdapter(fragmentContext, android.R.layout.simple_spinner_item, choices)
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = arrayAdapter
+        binding.spinner.onItemSelectedListener = (object : OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
 
-        return root
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+               findViewModel.onSpinnerItemSelected(position)
+            }
+        })
     }
 
     private fun handleErrorEvent(it: ErrorType?) {
