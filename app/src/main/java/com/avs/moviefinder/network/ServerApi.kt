@@ -23,6 +23,22 @@ class ServerApi @Inject constructor(
             .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
+    fun getTopRatedMovies(): Disposable {
+        return moviesApi
+            .getTopRatedMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ rxBus.send(it) }, { handleError(it) })
+    }
+
+    fun getNowPlayingMovies(): Disposable {
+        return moviesApi
+            .getNowPlayingMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ rxBus.send(it) }, { handleError(it) })
+    }
+
     fun getMovieByTitle(title: String): Disposable {
         return moviesApi
             .getMovieByName(title)

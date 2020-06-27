@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
@@ -20,10 +23,14 @@ class FindFragment : BaseFragment() {
     lateinit var findViewModel: FindViewModel
 
     private lateinit var binding: FragmentFindBinding
+    private lateinit var fragmentContext: Context
+
+    private lateinit var choices: Array<String>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity as MainActivity).mainComponent.inject(this)
+        this.fragmentContext = context
     }
 
     override fun onCreateView(
@@ -51,7 +58,27 @@ class FindFragment : BaseFragment() {
         findViewModel.errorType.observe(viewLifecycleOwner, Observer {
             handleErrorEvent(it)
         })
+        choices = arrayOf(
+            resources.getString(R.string.popular_movies),
+            resources.getString(R.string.top_rated_movies),
+            resources.getString(R.string.now_playing_movies)
+        )
+        setUpSpinner()
         return root
+    }
+
+    private fun setUpSpinner() {
+        val arrayAdapter: ArrayAdapter<String> =
+            ArrayAdapter(fragmentContext, android.R.layout.simple_spinner_item, choices)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinner.adapter = arrayAdapter
+        binding.spinner.onItemSelectedListener = (object : OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+               findViewModel.onSpinnerItemSelected(position)
+            }
+        })
     }
 
     private fun handleErrorEvent(it: ErrorType?) {
