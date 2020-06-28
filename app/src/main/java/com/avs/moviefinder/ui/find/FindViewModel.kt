@@ -69,16 +69,11 @@ class FindViewModel @Inject constructor(
                 disposeValues()
                 apiDisposable = serverApi.getTopRatedMovies()
             }
-            2 -> {
-                disposeValues()
-                apiDisposable = serverApi.getNowPlayingMovies()
-            }
         }
     }
 
     private fun disposeValues() {
         _isProgressVisible.value = true
-        _errorType.value = null
         _movies.value = ArrayList()
         apiDisposable?.dispose()
     }

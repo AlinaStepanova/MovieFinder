@@ -2,7 +2,6 @@ package com.avs.moviefinder.network
 
 import android.util.Log
 import com.avs.moviefinder.BuildConfig
-import com.avs.moviefinder.network.dto.MoviesFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -26,14 +25,6 @@ class ServerApi @Inject constructor(
     fun getTopRatedMovies(): Disposable {
         return moviesApi
             .getTopRatedMovies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
-    }
-
-    fun getNowPlayingMovies(): Disposable {
-        return moviesApi
-            .getNowPlayingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ rxBus.send(it) }, { handleError(it) })

@@ -40,6 +40,7 @@
             android:layout_height="@dimen/image_find_movie_max_height"
             android:src="@drawable/ic_cloud_off"
             android:visibility="invisible"
+            android:layout_marginBottom="@dimen/design_bottom_navigation_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"

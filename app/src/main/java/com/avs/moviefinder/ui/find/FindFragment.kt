@@ -60,8 +60,7 @@ class FindFragment : BaseFragment() {
         })
         choices = arrayOf(
             resources.getString(R.string.popular_movies),
-            resources.getString(R.string.top_rated_movies),
-            resources.getString(R.string.now_playing_movies)
+            resources.getString(R.string.top_rated_movies)
         )
         setUpSpinner()
         return root
@@ -86,16 +85,19 @@ class FindFragment : BaseFragment() {
             null -> {
                 binding.ivError.visibility = View.INVISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE
+                binding.spinner.visibility = View.VISIBLE
             }
             ErrorType.NETWORK -> {
                 binding.ivError.visibility = View.VISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE
                 showSnackBar(resources.getString(R.string.network_error_occurred))
+                binding.spinner.visibility = View.GONE
             }
             ErrorType.NO_RESULTS -> {
                 binding.ivError.visibility = View.INVISIBLE
                 binding.tvErrorText.visibility = View.VISIBLE
                 showSnackBar(resources.getString(R.string.no_results_found))
+                binding.spinner.visibility = View.GONE
             }
             else -> {
             }

@@ -5,4 +5,5 @@
     <dimen name="text_size_movie_details">14sp</dimen>
     <dimen name="image_control_size">18dp</dimen>
     <dimen name="item_layout_margin">10dp</dimen>
+    <dimen name="item_layout_margin_vertical">5dp</dimen>
 </resources>
