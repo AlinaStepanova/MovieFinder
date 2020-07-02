@@ -53,6 +53,6 @@ class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     }
 }
 
-class MovieListener(val movieClickListener: (sleepId: Int) -> Unit) {
+class MovieListener(val movieClickListener: (sleepId: Long) -> Unit) {
     fun onClick(movie: Movie) = movieClickListener(movie.id)
 }

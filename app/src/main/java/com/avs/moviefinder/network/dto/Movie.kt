@@ -3,9 +3,9 @@ package com.avs.moviefinder.network.dto
 import com.google.gson.annotations.SerializedName
 
 data class Movie(
-    val id: Int = 0,
+    val id: Long = 0,
     @SerializedName("imdb_id")
-    val imdbId: Int = 0,
+    val imdbId: Long = 0,
     val title: String = "",
     val overview: String = "",
     val revenue: Double = 0.0,
