@@ -7,6 +7,9 @@
         <variable
             name="movie"
             type="com.avs.moviefinder.network.dto.Movie" />
+        <variable
+            name="movieClickListener"
+            type="com.avs.moviefinder.ui.find.MovieListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +19,7 @@
         android:layout_marginEnd="@dimen/item_layout_margin"
         android:layout_marginTop="@dimen/item_layout_margin_vertical"
         android:layout_marginBottom="@dimen/item_layout_margin_vertical"
+        android:onClick="@{() -> movieClickListener.onClick(movie)}"
         android:background="@drawable/rounded_item_shape"
         android:elevation="2dp">
 

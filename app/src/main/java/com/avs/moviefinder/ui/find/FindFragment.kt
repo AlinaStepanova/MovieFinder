@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
@@ -44,7 +45,9 @@ class FindFragment : BaseFragment() {
         val root: View = binding.root
         binding.findViewModel = findViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter()
+        val adapter = FindAdapter(MovieListener { movieId ->
+            Toast.makeText(context, "$movieId", Toast.LENGTH_LONG).show()
+        })
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {

@@ -9,10 +9,11 @@ import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
 
 
-class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
+class FindAdapter(private val movieClickListener: MovieListener) :
+    ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(movieClickListener, item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,7 +22,11 @@ class FindAdapter : ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback
 
     class ViewHolder private constructor(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Movie) {
+        fun bind(
+            movieClickListener: MovieListener,
+            item: Movie
+        ) {
+            binding.movieClickListener = movieClickListener
             binding.tvMovieTitle.text = item.title
             binding.tvMovieDescription.text = item.overview
             binding.movie = item
@@ -46,4 +51,8 @@ class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem == newItem
     }
+}
+
+class MovieListener(val movieClickListener: (sleepId: Int) -> Unit) {
+    fun onClick(movie: Movie) = movieClickListener(movie.id)
 }
