@@ -42,9 +42,15 @@ class FindDetailFragment : BaseFragment() {
         val root: View = binding.root
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter(MovieListener { movieId ->
-            Toast.makeText(context, "$movieId", Toast.LENGTH_LONG).show()
-        })
+        val adapter = FindAdapter(MovieListener({ movieId ->
+            Toast.makeText(context, "on movie item clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on share icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on watched icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on watch later icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }))
         binding.rvFindRecyclerView.adapter = adapter
         findDetailViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {

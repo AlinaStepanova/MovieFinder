@@ -139,6 +139,7 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:src="@drawable/ic_done"
+            android:onClick="@{() -> movieClickListener.onWatchedClick(movie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -149,6 +150,7 @@
             style="@style/MovieItemControlStyle"
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="@dimen/margin_12dp"
+            android:onClick="@{() -> movieClickListener.onWatchLaterClick(movie)}"
             android:src="@drawable/ic_watch_later"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon" />
@@ -159,6 +161,7 @@
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:src="@drawable/ic_share"
+            android:onClick="@{() -> movieClickListener.onShareClick(movie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon" />
 

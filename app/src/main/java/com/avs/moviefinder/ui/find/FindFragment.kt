@@ -45,9 +45,15 @@ class FindFragment : BaseFragment() {
         val root: View = binding.root
         binding.findViewModel = findViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter(MovieListener { movieId ->
-            Toast.makeText(context, "$movieId", Toast.LENGTH_LONG).show()
-        })
+        val adapter = FindAdapter(MovieListener({ movieId ->
+            Toast.makeText(context, "on movie item clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on share icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on watched icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }, { movieId ->
+            Toast.makeText(context, "on watch later icon clicked $movieId", Toast.LENGTH_LONG).show()
+        }))
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
@@ -78,7 +84,7 @@ class FindFragment : BaseFragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-               findViewModel.onSpinnerItemSelected(position)
+                findViewModel.onSpinnerItemSelected(position)
             }
         })
     }

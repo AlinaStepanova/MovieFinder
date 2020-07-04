@@ -53,6 +53,14 @@ class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     }
 }
 
-class MovieListener(val movieClickListener: (sleepId: Long) -> Unit) {
+class MovieListener(
+    val movieClickListener: (sleepId: Long) -> Unit,
+    val shareListener: (sleepId: Long) -> Unit,
+    val watchedClick: (sleepId: Long) -> Unit,
+    val watchLaterClick: (sleepId: Long) -> Unit
+) {
     fun onClick(movie: Movie) = movieClickListener(movie.id)
+    fun onShareClick(movie: Movie) = shareListener(movie.id)
+    fun onWatchedClick(movie: Movie) = watchedClick(movie.id)
+    fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie.id)
 }
