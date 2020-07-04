@@ -59,6 +59,14 @@ class FindViewModel @Inject constructor(
         makeAPICall(selectedSpinnerItem)
     }
 
+    fun openMovieDetails(movieId: Long) {}
+
+    fun shareMovie(movieId: Long) {}
+
+    fun addToWatchLater(movieId: Long) {}
+
+    fun addToWatched(movieId: Long) {}
+
     private fun makeAPICall(itemPosition: Int) {
         when (itemPosition) {
             0 -> {

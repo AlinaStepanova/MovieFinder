@@ -46,6 +46,14 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
+    fun openMovieDetails(movieId: Long) {}
+
+    fun shareMovie(movieId: Long) {}
+
+    fun addToWatchLater(movieId: Long) {}
+
+    fun addToWatched(movieId: Long) {}
+
     override fun onCleared() {
         rxBusDisposable?.dispose()
         super.onCleared()

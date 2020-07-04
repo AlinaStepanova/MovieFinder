@@ -45,15 +45,13 @@ class FindFragment : BaseFragment() {
         val root: View = binding.root
         binding.findViewModel = findViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter(MovieListener({ movieId ->
-            Toast.makeText(context, "on movie item clicked $movieId", Toast.LENGTH_LONG).show()
-        }, { movieId ->
-            Toast.makeText(context, "on share icon clicked $movieId", Toast.LENGTH_LONG).show()
-        }, { movieId ->
-            Toast.makeText(context, "on watched icon clicked $movieId", Toast.LENGTH_LONG).show()
-        }, { movieId ->
-            Toast.makeText(context, "on watch later icon clicked $movieId", Toast.LENGTH_LONG).show()
-        }))
+        val adapter = FindAdapter(
+            MovieListener(
+                { movieId -> findViewModel.openMovieDetails(movieId) },
+                { movieId -> findViewModel.shareMovie(movieId) },
+                { movieId -> findViewModel.addToWatched(movieId) },
+                { movieId -> findViewModel.addToWatchLater(movieId) })
+        )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
