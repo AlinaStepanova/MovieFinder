@@ -59,7 +59,10 @@ class FindViewModel @Inject constructor(
         makeAPICall(selectedSpinnerItem)
     }
 
-    fun openMovieDetails(movieId: Long) {}
+    fun openMovieDetails(movieId: Long) {
+        apiDisposable?.dispose()
+        apiDisposable = serverApi.getMovieById(movieId)
+    }
 
     fun shareMovie(movieId: Long) {}
 
