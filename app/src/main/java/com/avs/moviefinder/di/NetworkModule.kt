@@ -1,6 +1,6 @@
 package com.avs.moviefinder.di
 
-import com.avs.moviefinder.utils.BASE_URL
+import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.network.MoviesApi
 import com.google.gson.GsonBuilder
@@ -21,7 +21,7 @@ class NetworkModule {
     @Singleton
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_API_URL)
             .client(okHttpClient)
             .addConverterFactory(
                 GsonConverterFactory.create(

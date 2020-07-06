@@ -7,6 +7,8 @@ import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.dto.MoviesFilter
+import com.avs.moviefinder.utils.BASE_API_URL
+import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -28,6 +30,9 @@ class FindViewModel @Inject constructor(
     private var _errorType = MutableLiveData<ErrorType?>()
     val errorType: LiveData<ErrorType?>
         get() = _errorType
+    private var _shareBody = MutableLiveData<String>()
+    val shareBody: LiveData<String>
+        get() = _shareBody
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
     private var selectedSpinnerItem = 0
@@ -64,7 +69,9 @@ class FindViewModel @Inject constructor(
         apiDisposable = serverApi.getMovieById(movieId)
     }
 
-    fun shareMovie(movieId: Long) {}
+    fun shareMovie(movieId: Long) {
+        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+    }
 
     fun addToWatchLater(movieId: Long) {}
 

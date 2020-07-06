@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.R
@@ -24,14 +23,12 @@ class FindFragment : BaseFragment() {
     lateinit var findViewModel: FindViewModel
 
     private lateinit var binding: FragmentFindBinding
-    private lateinit var fragmentContext: Context
 
     private lateinit var choices: Array<String>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity as MainActivity).mainComponent.inject(this)
-        this.fragmentContext = context
     }
 
     override fun onCreateView(
@@ -58,6 +55,9 @@ class FindFragment : BaseFragment() {
             it?.let {
                 adapter.submitList(it)
             }
+        })
+        findViewModel.shareBody.observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) shareMovie(it)
         })
         findViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE

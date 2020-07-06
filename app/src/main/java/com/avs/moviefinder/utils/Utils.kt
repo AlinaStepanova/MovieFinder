@@ -1,5 +1,8 @@
 package com.avs.moviefinder.utils
 
+import android.content.Context
+import android.content.Intent
+import com.avs.moviefinder.R
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
@@ -42,4 +45,14 @@ fun formatRating(number: String) : String {
         result = result.substring(0, result.length - 1)
     }
     return result
+}
+
+fun getShareIntent(context: Context, movieLink: String): Intent {
+    val sharingIntent = Intent(Intent.ACTION_SEND)
+    sharingIntent.type = SHARE_INTENT_TYPE
+    val shareBody: String = (context.resources.getString(R.string.share_body_text)
+            + "\n\n" + movieLink)
+    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, context.resources.getString(R.string.app_name))
+    sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+    return sharingIntent
 }
