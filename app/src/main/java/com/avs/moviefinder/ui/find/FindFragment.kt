@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -15,7 +18,9 @@ import com.avs.moviefinder.databinding.FragmentFindBinding
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.utils.RecyclerScroll
 import javax.inject.Inject
+
 
 class FindFragment : BaseFragment() {
 
@@ -50,6 +55,20 @@ class FindFragment : BaseFragment() {
                 { movieId -> findViewModel.addToWatchLater(movieId) })
         )
         binding.rvFindRecyclerView.adapter = adapter
+        binding.rvFindRecyclerView.addOnScrollListener(object : RecyclerScroll() {
+            override fun show() {
+                // todo update spinner visibility
+                //binding.spinner.visibility = View.VISIBLE
+                binding.spinner.animate().translationY(0F)
+                    .setInterpolator(AccelerateDecelerateInterpolator()).start()
+            }
+
+            override fun hide() {
+                binding.spinner.animate().translationY(-binding.spinner.height + 0F)
+                    .setInterpolator(AccelerateDecelerateInterpolator()).start()
+                //binding.spinner.visibility = View.GONE
+            }
+        })
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
