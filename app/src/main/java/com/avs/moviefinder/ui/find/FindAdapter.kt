@@ -10,14 +10,53 @@ import com.avs.moviefinder.network.dto.Movie
 
 
 class FindAdapter(private val movieClickListener: MovieListener) :
-    ListAdapter<Movie, FindAdapter.ViewHolder>(MovieDiffCallback()) {
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(movieClickListener, item)
+        if (holder.itemViewType == 0) {
+            (holder as ViewHolder).apply {
+                bind(movieClickListener, item)
+            }
+        } else {
+            (holder as MovieViewHolder).apply {
+                bind(movieClickListener, item)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == 0) {
+            ViewHolder.from(parent)
+        } else {
+            MovieViewHolder.from(parent)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    class MovieViewHolder private constructor(private val binding: ItemMovieBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(
+            movieClickListener: MovieListener,
+            item: Movie
+        ) {
+            binding.movieClickListener = movieClickListener
+            binding.tvMovieTitle.text = item.title
+            binding.tvMovieDescription.text = item.overview
+            binding.movie = item
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): MovieViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
+                return MovieViewHolder(binding)
+            }
+        }
     }
 
     class ViewHolder private constructor(private val binding: ItemMovieBinding) :
@@ -27,7 +66,7 @@ class FindAdapter(private val movieClickListener: MovieListener) :
             item: Movie
         ) {
             binding.movieClickListener = movieClickListener
-            binding.tvMovieTitle.text = item.title
+            binding.tvMovieTitle.text = "Test"
             binding.tvMovieDescription.text = item.overview
             binding.movie = item
             binding.executePendingBindings()

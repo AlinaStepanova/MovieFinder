@@ -55,7 +55,7 @@ class FindFragment : BaseFragment() {
                 { movieId -> findViewModel.addToWatchLater(movieId) })
         )
         binding.rvFindRecyclerView.adapter = adapter
-        binding.rvFindRecyclerView.addOnScrollListener(object : RecyclerScroll() {
+        /*binding.rvFindRecyclerView.addOnScrollListener(object : RecyclerScroll() {
             override fun show() {
                 // todo update spinner visibility
                 //binding.spinner.visibility = View.VISIBLE
@@ -68,7 +68,7 @@ class FindFragment : BaseFragment() {
                     .setInterpolator(AccelerateDecelerateInterpolator()).start()
                 //binding.spinner.visibility = View.GONE
             }
-        })
+        })*/
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         findViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
