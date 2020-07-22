@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.avs.moviefinder.databinding.ItemHeaderBinding
 import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
 
@@ -16,7 +17,7 @@ class FindAdapter(private val movieClickListener: MovieListener) :
         val item = getItem(position)
         if (holder.itemViewType == 0) {
             (holder as ViewHolder).apply {
-                bind(movieClickListener, item)
+                bind()
             }
         } else {
             (holder as MovieViewHolder).apply {
@@ -59,23 +60,16 @@ class FindAdapter(private val movieClickListener: MovieListener) :
         }
     }
 
-    class ViewHolder private constructor(private val binding: ItemMovieBinding) :
+    class ViewHolder private constructor(private val binding: ItemHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            movieClickListener: MovieListener,
-            item: Movie
-        ) {
-            binding.movieClickListener = movieClickListener
-            binding.tvMovieTitle.text = "Test"
-            binding.tvMovieDescription.text = item.overview
-            binding.movie = item
+        fun bind() {
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemHeaderBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }

@@ -47,6 +47,7 @@ class FindViewModel @Inject constructor(
             _isLoading.value = false
             if (event.movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
+            // update first element
             _movies.value = event.movies
         } else if (event is Throwable) {
             _isProgressVisible.value = false
