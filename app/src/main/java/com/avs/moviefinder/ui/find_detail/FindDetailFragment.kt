@@ -12,7 +12,6 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.find.FindAdapter
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
@@ -41,7 +40,7 @@ class FindDetailFragment : BaseFragment() {
         val root: View = binding.root
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter(
+        val adapter = FindDetailAdapter(
             MovieListener(
                 { movieId -> findDetailViewModel.openMovieDetails(movieId) },
                 { movieId -> findDetailViewModel.shareMovie(movieId) },
