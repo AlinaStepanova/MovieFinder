@@ -1,9 +1,8 @@
-package com.avs.moviefinder.ui
+package com.avs.moviefinder.ui.recycler_view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.avs.moviefinder.MovieListener
 import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
 

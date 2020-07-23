@@ -10,7 +10,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.avs.moviefinder.MovieListener
+import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindBinding
 import com.avs.moviefinder.network.ErrorType

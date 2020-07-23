@@ -1,4 +1,4 @@
-package com.avs.moviefinder
+package com.avs.moviefinder.ui.recycler_view
 
 import androidx.recyclerview.widget.DiffUtil
 import com.avs.moviefinder.network.dto.Movie

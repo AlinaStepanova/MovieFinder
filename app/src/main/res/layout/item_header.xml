@@ -10,7 +10,7 @@
             android:id="@+id/vPopular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/item_layout_margin"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_button_shape"

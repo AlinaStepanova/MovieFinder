@@ -9,7 +9,7 @@
             type="com.avs.moviefinder.network.dto.Movie" />
         <variable
             name="movieClickListener"
-            type="com.avs.moviefinder.MovieListener" />
+            type="com.avs.moviefinder.ui.recycler_view.MovieListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.avs.moviefinder.MovieListener
+import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.network.ErrorType
