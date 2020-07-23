@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.avs.moviefinder.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.find.FindAdapter
-import com.avs.moviefinder.ui.find.MovieListener
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 

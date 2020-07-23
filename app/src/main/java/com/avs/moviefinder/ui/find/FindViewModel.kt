@@ -11,15 +11,17 @@ import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class FindViewModel @Inject constructor(
     private val serverApi: ServerApi,
     rxBus: RxBus
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
+    private var _movies = MutableLiveData<LinkedList<Movie>>()
+    val movies: LiveData<LinkedList<Movie>>
         get() = _movies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
@@ -47,8 +49,9 @@ class FindViewModel @Inject constructor(
             _isLoading.value = false
             if (event.movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
-            // update first element
-            _movies.value = event.movies
+            val movies = event.movies
+            movies.addFirst(Movie())
+            _movies.value = movies
         } else if (event is Throwable) {
             _isProgressVisible.value = false
             _isLoading.value = false
@@ -93,7 +96,7 @@ class FindViewModel @Inject constructor(
 
     private fun disposeValues() {
         _isProgressVisible.value = true
-        _movies.value = ArrayList()
+        _movies.value = LinkedList()
         apiDisposable?.dispose()
     }
 

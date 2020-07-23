@@ -2,12 +2,13 @@ package com.avs.moviefinder.ui.find
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.avs.moviefinder.MovieDiffCallback
+import com.avs.moviefinder.MovieListener
 import com.avs.moviefinder.databinding.ItemHeaderBinding
-import com.avs.moviefinder.databinding.ItemMovieBinding
 import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.ui.MovieViewHolder
 
 
 class FindAdapter(private val movieClickListener: MovieListener) :
@@ -38,28 +39,6 @@ class FindAdapter(private val movieClickListener: MovieListener) :
         return position
     }
 
-    class MovieViewHolder private constructor(private val binding: ItemMovieBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            movieClickListener: MovieListener,
-            item: Movie
-        ) {
-            binding.movieClickListener = movieClickListener
-            binding.tvMovieTitle.text = item.title
-            binding.tvMovieDescription.text = item.overview
-            binding.movie = item
-            binding.executePendingBindings()
-        }
-
-        companion object {
-            fun from(parent: ViewGroup): MovieViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
-                return MovieViewHolder(binding)
-            }
-        }
-    }
-
     class ViewHolder private constructor(private val binding: ItemHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
@@ -74,26 +53,4 @@ class FindAdapter(private val movieClickListener: MovieListener) :
             }
         }
     }
-}
-
-class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
-    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-        return oldItem == newItem
-    }
-}
-
-class MovieListener(
-    val movieClickListener: (sleepId: Long) -> Unit,
-    val shareListener: (sleepId: Long) -> Unit,
-    val watchedClick: (sleepId: Long) -> Unit,
-    val watchLaterClick: (sleepId: Long) -> Unit
-) {
-    fun onClick(movie: Movie) = movieClickListener(movie.id)
-    fun onShareClick(movie: Movie) = shareListener(movie.id)
-    fun onWatchedClick(movie: Movie) = watchedClick(movie.id)
-    fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie.id)
 }
