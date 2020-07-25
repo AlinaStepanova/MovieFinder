@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.avs.moviefinder.ui.find.CategoryClickListener" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,6 +23,7 @@
             android:background="@drawable/rounded_button_shape"
             android:padding="@dimen/margin_8dp"
             android:text="@string/popular_movies"
+            android:onClick="@{() -> clickListener.popularClick()}"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +41,7 @@
             android:padding="@dimen/margin_8dp"
             android:text="@string/top_rated_movies"
             android:textAlignment="center"
+            android:onClick="@{() -> clickListener.topRatedClick()}"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vPopular"

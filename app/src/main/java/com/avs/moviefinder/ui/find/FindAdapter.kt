@@ -11,14 +11,17 @@ import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.recycler_view.MovieViewHolder
 
 
-class FindAdapter(private val movieClickListener: MovieListener) :
+class FindAdapter(
+    private val movieClickListener: MovieListener,
+    private val categoryClickListener: CategoryClickListener
+) :
     ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if (holder.itemViewType == 0) {
             (holder as ViewHolder).apply {
-                bind()
+                bind(categoryClickListener)
             }
         } else {
             (holder as MovieViewHolder).apply {
@@ -41,7 +44,8 @@ class FindAdapter(private val movieClickListener: MovieListener) :
 
     class ViewHolder private constructor(private val binding: ItemHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
+        fun bind(categoryClickListener: CategoryClickListener) {
+            binding.clickListener = categoryClickListener
             binding.executePendingBindings()
         }
 
@@ -53,4 +57,12 @@ class FindAdapter(private val movieClickListener: MovieListener) :
             }
         }
     }
+}
+
+class CategoryClickListener(
+    val popularClickListener: () -> Unit,
+    val topRatedClickListener: () -> Unit
+) {
+    fun popularClick() = popularClickListener()
+    fun topRatedClick() = topRatedClickListener()
 }

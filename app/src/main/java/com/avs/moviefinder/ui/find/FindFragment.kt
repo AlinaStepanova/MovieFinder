@@ -49,7 +49,11 @@ class FindFragment : BaseFragment() {
                 { movieId -> findViewModel.openMovieDetails(movieId) },
                 { movieId -> findViewModel.shareMovie(movieId) },
                 { movieId -> findViewModel.addToWatched(movieId) },
-                { movieId -> findViewModel.addToWatchLater(movieId) })
+                { movieId -> findViewModel.addToWatchLater(movieId) }),
+            CategoryClickListener(
+                { findViewModel.onPopularClick() },
+                { findViewModel.onTopRatedClick() }
+            )
         )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)

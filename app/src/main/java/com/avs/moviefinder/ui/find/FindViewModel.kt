@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.find
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -92,6 +93,14 @@ class FindViewModel @Inject constructor(
                 apiDisposable = serverApi.getTopRatedMovies()
             }
         }
+    }
+
+    fun onPopularClick() {
+        Log.d("jjj", "onPopularClick")
+    }
+
+    fun onTopRatedClick() {
+        Log.d("jjj", "onTopRatedClick")
     }
 
     private fun disposeValues() {
