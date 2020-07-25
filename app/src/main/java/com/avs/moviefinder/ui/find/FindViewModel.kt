@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.find
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,13 +7,11 @@ import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.dto.MoviesFilter
-import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class FindViewModel @Inject constructor(
     private val serverApi: ServerApi,
@@ -38,9 +35,13 @@ class FindViewModel @Inject constructor(
         get() = _shareBody
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
-    private var selectedSpinnerItem = 0
+    private var _selectedCategory = MutableLiveData<MoviesCategory>()
+    val selectedCategory: LiveData<MoviesCategory?>
+        get() = _selectedCategory
 
     init {
+        _selectedCategory.value = MoviesCategory.POPULAR
+        getPopularMovies()
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
 
@@ -60,13 +61,8 @@ class FindViewModel @Inject constructor(
         }
     }
 
-    fun onSpinnerItemSelected(itemPosition: Int) {
-        selectedSpinnerItem = itemPosition
-        makeAPICall(itemPosition)
-    }
-
     fun onRefresh() {
-        makeAPICall(selectedSpinnerItem)
+        makeAPICall()
     }
 
     fun openMovieDetails(movieId: Long) {
@@ -82,25 +78,39 @@ class FindViewModel @Inject constructor(
 
     fun addToWatched(movieId: Long) {}
 
-    private fun makeAPICall(itemPosition: Int) {
-        when (itemPosition) {
-            0 -> {
-                disposeValues()
-                apiDisposable = serverApi.getPopularMovies()
+    private fun makeAPICall() {
+        when (_selectedCategory.value) {
+            MoviesCategory.POPULAR -> {
+                getPopularMovies()
             }
-            1 -> {
-                disposeValues()
-                apiDisposable = serverApi.getTopRatedMovies()
+            MoviesCategory.TOP_RATED -> {
+                getTopRatedMovies()
             }
         }
     }
 
     fun onPopularClick() {
-        Log.d("jjj", "onPopularClick")
+        if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+            _selectedCategory.value = MoviesCategory.POPULAR
+            getPopularMovies()
+        }
     }
 
     fun onTopRatedClick() {
-        Log.d("jjj", "onTopRatedClick")
+        if (_selectedCategory.value == MoviesCategory.POPULAR) {
+            _selectedCategory.value = MoviesCategory.TOP_RATED
+            getTopRatedMovies()
+        }
+    }
+
+    private fun getPopularMovies() {
+        disposeValues()
+        apiDisposable = serverApi.getPopularMovies()
+    }
+
+    private fun getTopRatedMovies() {
+        disposeValues()
+        apiDisposable = serverApi.getTopRatedMovies()
     }
 
     private fun disposeValues() {

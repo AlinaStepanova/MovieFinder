@@ -17,11 +17,13 @@ class FindAdapter(
 ) :
     ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
 
+    private var selectedCategory = MoviesCategory.POPULAR
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if (holder.itemViewType == 0) {
             (holder as ViewHolder).apply {
-                bind(categoryClickListener)
+                bind(categoryClickListener, selectedCategory)
             }
         } else {
             (holder as MovieViewHolder).apply {
@@ -42,10 +44,18 @@ class FindAdapter(
         return position
     }
 
+    fun setSelectedCategory(selectedCategory: MoviesCategory) {
+        this.selectedCategory = selectedCategory
+    }
+
     class ViewHolder private constructor(private val binding: ItemHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(categoryClickListener: CategoryClickListener) {
+        fun bind(
+            categoryClickListener: CategoryClickListener,
+            selectedCategory: MoviesCategory
+        ) {
             binding.clickListener = categoryClickListener
+            binding.selectedCategory = selectedCategory
             binding.executePendingBindings()
         }
 
