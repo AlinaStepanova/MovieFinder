@@ -22,36 +22,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_layout_margin"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/rounded_button_shape_active"
+            android:onClick="@{() -> clickListener.popularClick()}"
             android:padding="@dimen/margin_8dp"
             android:text="@string/popular_movies"
-            android:onClick="@{() -> clickListener.popularClick()}"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popularCategory="@{selectedCategory}"/>
+            app:popularCategory="@{selectedCategory}" />
 
         <TextView
             android:id="@+id/vTopRated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_marginBottom="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/item_layout_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:background="@drawable/rounded_button_shape_active"
+            android:onClick="@{() -> clickListener.topRatedClick()}"
             android:padding="@dimen/margin_8dp"
             android:text="@string/top_rated_movies"
             android:textAlignment="center"
-            android:onClick="@{() -> clickListener.topRatedClick()}"
             android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vPopular"
             app:layout_constraintTop_toTopOf="parent"
-            app:topRatedCategory="@{selectedCategory}"/>
+            app:topRatedCategory="@{selectedCategory}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

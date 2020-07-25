@@ -3,6 +3,7 @@ package com.avs.moviefinder.utils
 import android.content.Context
 import android.content.Intent
 import com.avs.moviefinder.R
+import java.lang.NumberFormatException
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
@@ -24,7 +25,10 @@ fun formatDate(dateToFormat: String) : String {
 }
 
 fun round(value: String, decimalPlace: Int): Double {
-    var number = BigDecimal(value)
+    var number = BigDecimal("0")
+    try {
+        number = BigDecimal(value)
+    } catch (e: NumberFormatException) { }
     number = number.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP)
     return number.toDouble()
 }

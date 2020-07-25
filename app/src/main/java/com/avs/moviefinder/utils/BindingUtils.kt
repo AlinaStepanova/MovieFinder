@@ -38,37 +38,26 @@ fun ImageView.setPosterImage(item: Movie) {
 @BindingAdapter("popularCategory")
 fun TextView.setPopularCategoryAppearance(selectedCategory: MoviesCategory) {
     if (selectedCategory == MoviesCategory.POPULAR) {
-        background = ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextColor(resources.getColor(R.color.colorAccent, context.theme))
-        } else {
-            setTextColor(resources.getColor(R.color.colorAccent))
-        }
+        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
     } else {
-        background = ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextColor(resources.getColor(R.color.greyDark, context.theme))
-        } else {
-            setTextColor(resources.getColor(R.color.greyDark))
-        }
+        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
     }
 }
 
 @BindingAdapter("topRatedCategory")
 fun TextView.setTopRatedCategoryAppearance(selectedCategory: MoviesCategory) {
     if (selectedCategory == MoviesCategory.TOP_RATED) {
-        background = ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextColor(resources.getColor(R.color.colorAccent, context.theme))
-        } else {
-            setTextColor(resources.getColor(R.color.colorAccent))
-        }
+        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
     } else {
-        background = ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setTextColor(resources.getColor(R.color.greyDark, context.theme))
-        } else {
-            setTextColor(resources.getColor(R.color.greyDark))
-        }
+        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+    }
+}
+
+private fun TextView.setTextState(backgroundId: Int, textColorId: Int) {
+    background = ContextCompat.getDrawable(context, backgroundId)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        setTextColor(resources.getColor(textColorId, context.theme))
+    } else {
+        setTextColor(resources.getColor(textColorId))
     }
 }

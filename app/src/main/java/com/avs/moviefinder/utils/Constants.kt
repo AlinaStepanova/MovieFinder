@@ -10,7 +10,3 @@ const val SHARE_INTENT_TYPE = "text/plain"
 //https://api.themoviedb.org/3/movie/419704?api_key=3ae41cba5ffccb37830367a69287433d
 //search by title
 //https://www.themoviedb.org/search?query=godfather
-private const val mostPopularUrl =
-    "${BASE_API_URL}popular?api_key=$API_KEY&language=en-US"
-private const val topRatedURL =
-    "${BASE_API_URL}top_rated?api_key=$API_KEY&language=en-US"
