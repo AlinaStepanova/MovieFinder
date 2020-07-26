@@ -6,11 +6,11 @@
 
         <variable
             name="selectedCategory"
-            type="com.avs.moviefinder.ui.find.MoviesCategory" />
+            type="com.avs.moviefinder.ui.home.MoviesCategory" />
 
         <variable
             name="clickListener"
-            type="com.avs.moviefinder.ui.find.CategoryClickListener" />
+            type="com.avs.moviefinder.ui.home.CategoryClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

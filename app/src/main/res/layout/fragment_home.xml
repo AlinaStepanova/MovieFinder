@@ -6,7 +6,7 @@
 
         <variable
             name="findViewModel"
-            type="com.avs.moviefinder.ui.find.FindViewModel" />
+            type="com.avs.moviefinder.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

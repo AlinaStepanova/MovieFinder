@@ -1,6 +1,5 @@
-package com.avs.moviefinder.ui.find
+package com.avs.moviefinder.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +13,7 @@ import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
 
-class FindViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val serverApi: ServerApi,
     rxBus: RxBus
 ) : ViewModel() {

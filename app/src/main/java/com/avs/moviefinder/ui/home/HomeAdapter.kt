@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.find
+package com.avs.moviefinder.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

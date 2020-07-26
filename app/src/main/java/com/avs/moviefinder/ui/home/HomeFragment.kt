@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.find
+package com.avs.moviefinder.ui.home
 
 import android.content.Context
 import android.os.Bundle
@@ -9,19 +9,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
-import com.avs.moviefinder.databinding.FragmentFindBinding
+import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
 
-class FindFragment : BaseFragment() {
+class HomeFragment : BaseFragment() {
 
     @Inject
-    lateinit var findViewModel: FindViewModel
+    lateinit var homeViewModel: HomeViewModel
 
-    private lateinit var binding: FragmentFindBinding
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,41 +34,41 @@ class FindFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_find, container, false
+            inflater, R.layout.fragment_home, container, false
         )
         val root: View = binding.root
-        binding.findViewModel = findViewModel
+        binding.findViewModel = homeViewModel
         binding.lifecycleOwner = this
         val adapter = FindAdapter(
             MovieListener(
-                { movieId -> findViewModel.openMovieDetails(movieId) },
-                { movieId -> findViewModel.shareMovie(movieId) },
-                { movieId -> findViewModel.addToWatched(movieId) },
-                { movieId -> findViewModel.addToWatchLater(movieId) }),
+                { movieId -> homeViewModel.openMovieDetails(movieId) },
+                { movieId -> homeViewModel.shareMovie(movieId) },
+                { movieId -> homeViewModel.addToWatched(movieId) },
+                { movieId -> homeViewModel.addToWatchLater(movieId) }),
             CategoryClickListener(
-                { findViewModel.onPopularClick() },
-                { findViewModel.onTopRatedClick() }
+                { homeViewModel.onPopularClick() },
+                { homeViewModel.onTopRatedClick() }
             )
         )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
-        findViewModel.movies.observe(viewLifecycleOwner, Observer {
+        homeViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        findViewModel.selectedCategory.observe(viewLifecycleOwner, Observer {
+        homeViewModel.selectedCategory.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.setSelectedCategory(it)
             }
         })
-        findViewModel.shareBody.observe(viewLifecycleOwner, Observer {
+        homeViewModel.shareBody.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
-        findViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
+        homeViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        findViewModel.errorType.observe(viewLifecycleOwner, Observer {
+        homeViewModel.errorType.observe(viewLifecycleOwner, Observer {
             handleErrorEvent(it)
         })
         return root

@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.network.dto.Movie
-import com.avs.moviefinder.ui.find.MoviesCategory
+import com.avs.moviefinder.ui.home.MoviesCategory
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropTransformation
 
