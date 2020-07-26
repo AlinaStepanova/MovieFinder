@@ -2,13 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_find"
-    app:startDestination="@+id/navigation_find">
+    android:id="@+id/navigation_home"
+    app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/navigation_find"
+        android:id="@+id/navigation_home"
         android:name="com.avs.moviefinder.ui.find.FindFragment"
-        android:label="@string/title_find_movie"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_find" />
 
 </navigation>

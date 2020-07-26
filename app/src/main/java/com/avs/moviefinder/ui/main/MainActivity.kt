@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.MainComponent
-import com.avs.moviefinder.ui.find_detail.FindDetailFragment
 import com.avs.moviefinder.utils.openFindDetailFragment
 import com.avs.moviefinder.utils.popFindDetailFragment
 import com.avs.moviefinder.utils.setupWithNavController
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = binding.navView
 
         val navGraphIds = listOf(
-            R.navigation.navigation_find,
+            R.navigation.navigation_home,
             R.navigation.navigation_watched,
             R.navigation.navigation_watch_later
         )

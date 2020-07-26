@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_find"
-        android:icon="@drawable/ic_find"
-        android:title="@string/title_find_movie" />
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_watch_later"
