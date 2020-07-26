@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.find
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,8 +31,8 @@ class FindViewModel @Inject constructor(
     private var _errorType = MutableLiveData<ErrorType?>()
     val errorType: LiveData<ErrorType?>
         get() = _errorType
-    private var _shareBody = MutableLiveData<String>()
-    val shareBody: LiveData<String>
+    private var _shareBody = MutableLiveData<String?>()
+    val shareBody: LiveData<String?>
         get() = _shareBody
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
@@ -52,7 +53,9 @@ class FindViewModel @Inject constructor(
             if (event.movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
             val movies = event.movies
-            movies.addFirst(Movie())
+            if (movies.first.id != 0L) {
+                movies.addFirst(Movie())
+            }
             _movies.value = movies
         } else if (event is Throwable) {
             _isProgressVisible.value = false
@@ -72,6 +75,7 @@ class FindViewModel @Inject constructor(
 
     fun shareMovie(movieId: Long) {
         _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = null
     }
 
     fun addToWatchLater(movieId: Long) {}
