@@ -74,8 +74,7 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    openFindDetailFragment(supportFragmentManager)
-                    mainViewModel.onQuerySubmitted(query)
+                    openFindDetailFragment(supportFragmentManager, query)
                     return false
                 }
 

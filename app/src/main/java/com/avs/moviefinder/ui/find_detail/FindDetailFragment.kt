@@ -2,17 +2,18 @@ package com.avs.moviefinder.ui.find_detail
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
 val FIND_DETAIL_FRAGMENT_TAG = FindDetailFragment::class.simpleName
@@ -40,6 +41,8 @@ class FindDetailFragment : BaseFragment() {
         val root: View = binding.root
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
+        val query = arguments?.getString(this::class.java.simpleName)
+        findDetailViewModel.onQuerySubmitted(query)
         val adapter = FindDetailAdapter(
             MovieListener(
                 { movieId -> findDetailViewModel.openMovieDetails(movieId) },
@@ -50,6 +53,7 @@ class FindDetailFragment : BaseFragment() {
         binding.rvFindRecyclerView.adapter = adapter
         findDetailViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
+                Log.d("jjj", "here 111")
                 adapter.submitList(it)
             }
         })

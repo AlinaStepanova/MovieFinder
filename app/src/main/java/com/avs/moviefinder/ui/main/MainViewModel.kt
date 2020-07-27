@@ -18,11 +18,8 @@ class MainViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun onQuerySubmitted(query: String) {
-        apiDisposable = serverApi.getMovieByTitle(query)
-    }
-
     fun onQueryTextChange(newText: String) {
-
+        // todo update query
+        // todo fix rotation search bar issue
     }
 }

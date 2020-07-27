@@ -1,9 +1,11 @@
 package com.avs.moviefinder.ui.find_detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.dto.MoviesSearchFilter
 import com.avs.moviefinder.utils.RxBus
@@ -11,7 +13,8 @@ import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class FindDetailViewModel @Inject constructor(
-    rxBus: RxBus
+    private val rxBus: RxBus,
+    private val serverApi: ServerApi
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<List<Movie>>()
@@ -25,6 +28,7 @@ class FindDetailViewModel @Inject constructor(
     val errorType: LiveData<ErrorType?>
         get() = _errorType
     private var rxBusDisposable: Disposable? = null
+    private var apiDisposable: Disposable? = null
 
     init {
         _isProgressVisible.value = true
@@ -46,6 +50,13 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
+    fun onQuerySubmitted(query: String?) {
+        apiDisposable?.dispose()
+        if (query != null) {
+            apiDisposable = serverApi.getMovieByTitle(query)
+        }
+    }
+
     fun openMovieDetails(movieId: Long) {}
 
     fun shareMovie(movieId: Long) {}
@@ -56,6 +67,7 @@ class FindDetailViewModel @Inject constructor(
 
     override fun onCleared() {
         rxBusDisposable?.dispose()
+        apiDisposable?.dispose()
         super.onCleared()
     }
 }
