@@ -2,8 +2,8 @@ package com.avs.moviefinder.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import com.avs.moviefinder.R
-import java.lang.NumberFormatException
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
@@ -59,4 +59,8 @@ fun getShareIntent(context: Context, movieLink: String): Intent {
     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, context.resources.getString(R.string.app_name))
     sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
     return sharingIntent
+}
+
+fun dpToPx(dp: Int): Float {
+    return (dp * Resources.getSystem().displayMetrics.density)
 }
