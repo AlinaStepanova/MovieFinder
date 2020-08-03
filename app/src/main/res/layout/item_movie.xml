@@ -23,7 +23,7 @@
         android:background="@drawable/rounded_item_shape"
         android:elevation="2dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPoster"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_find_movie_max_height"

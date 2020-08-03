@@ -1,15 +1,20 @@
 package com.avs.moviefinder.utils
 
+import android.content.res.Configuration
 import android.os.Build
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.home.MoviesCategory
+import com.google.android.material.imageview.ExperimentalImageView
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.CornerFamily
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropTransformation
+import jp.wasabeef.picasso.transformations.CropTransformation.GravityHorizontal
+import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {
@@ -26,10 +31,28 @@ fun TextView.setRatingFormatted(item: Movie?) {
 }
 
 @BindingAdapter("posterImage")
-fun ImageView.setPosterImage(item: Movie) {
+@ExperimentalImageView
+fun ShapeableImageView.setPosterImage(item: Movie) {
+    val widthRatio = 1F
+    var heightRatio = 0.5F
+    if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        heightRatio = 0.25F
+    }
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setTopRightCorner(CornerFamily.ROUNDED, dpToPx(16))
+        .setTopLeftCorner(CornerFamily.ROUNDED, dpToPx(16))
+        .build()
     Picasso.get()
         .load(POSTER_URL + item.posterPath)
-        .transform(CropTransformation(0, 0, POSTER_WIDTH, POSTER_WIDTH))
+        .transform(
+            CropTransformation(
+                widthRatio,
+                heightRatio,
+                GravityHorizontal.CENTER,
+                GravityVertical.TOP
+            )
+        )
         .placeholder(R.drawable.ic_local_movies_grey)
         .error(R.drawable.ic_local_movies_grey)
         .into(this)
