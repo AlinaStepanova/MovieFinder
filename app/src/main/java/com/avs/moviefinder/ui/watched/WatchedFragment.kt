@@ -7,19 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
+import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.ui.watch_later.WatchLaterViewModel
 import javax.inject.Inject
 
 class WatchedFragment : BaseFragment() {
 
     @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var watchedViewModel: WatchedViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).mainComponent.inject(this)
+        watchedViewModel = ViewModelProvider(this).get(WatchedViewModel::class.java)
     }
 
     override fun onCreateView(

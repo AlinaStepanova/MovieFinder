@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
+import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
@@ -21,13 +22,14 @@ val FIND_DETAIL_FRAGMENT_TAG = FindDetailFragment::class.simpleName
 class FindDetailFragment : BaseFragment() {
 
     @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var findDetailViewModel: FindDetailViewModel
 
     private lateinit var binding: FragmentFindDetailBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).mainComponent.inject(this)
+        findDetailViewModel = ViewModelProvider(this, viewModelFactory).get(FindDetailViewModel::class.java)
     }
 
     override fun onCreateView(

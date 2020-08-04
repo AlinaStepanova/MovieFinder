@@ -1,23 +1,38 @@
 package com.avs.moviefinder.di
 
-import android.content.Context
+import android.app.Application
+import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import dagger.android.support.DaggerApplication
 import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [NetworkModule::class, AppSubcomponents::class])
-interface AppComponent {
+@Component(
+    modules = [
+        NetworkModule::class,
+        ViewModelsModule::class,
+        AndroidSupportInjectionModule::class,
+        ActivityBindingModule::class,
+        ViewModelsModule::class,
+        ContextModule::class
+    ]
+)
+interface AppComponent : AndroidInjector<DaggerApplication> {
+    fun inject(application: MovieFinderApplication)
 
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+        fun build(): AppComponent
     }
 
-    fun mainComponent(): MainComponent.Factory
     fun serverApi() : ServerApi
     fun rxBus() : RxBus
 }

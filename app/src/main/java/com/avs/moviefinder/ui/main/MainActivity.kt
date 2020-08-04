@@ -3,38 +3,36 @@ package com.avs.moviefinder.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
-import com.avs.moviefinder.di.MainComponent
+import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.utils.openFindDetailFragment
 import com.avs.moviefinder.utils.popFindDetailFragment
 import com.avs.moviefinder.utils.setupWithNavController
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
-
-    lateinit var mainComponent: MainComponent
+class MainActivity : DaggerAppCompatActivity() {
 
     private var currentNavController: LiveData<NavController>? = null
 
     @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     lateinit var mainViewModel: MainViewModel
 
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mainComponent = (application as MovieFinderApplication).appComponent
-            .mainComponent().create()
-        mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mainViewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         setSupportActionBar(binding.toolbar)
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = this

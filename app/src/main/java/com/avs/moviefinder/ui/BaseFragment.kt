@@ -7,8 +7,9 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
+import dagger.android.support.DaggerFragment
 
-open class BaseFragment : Fragment() {
+open class BaseFragment : DaggerFragment() {
 
     protected lateinit var fragmentContext: Context
 
