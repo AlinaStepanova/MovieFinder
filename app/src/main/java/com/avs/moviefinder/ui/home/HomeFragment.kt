@@ -2,6 +2,7 @@ package com.avs.moviefinder.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,6 +63,7 @@ class HomeFragment : BaseFragment() {
             }
         })
         homeViewModel.selectedCategory.observe(viewLifecycleOwner, Observer {
+            Log.d("jjj", "selectedCategory = $it")
             it?.let {
                 adapter.setSelectedCategory(it)
             }

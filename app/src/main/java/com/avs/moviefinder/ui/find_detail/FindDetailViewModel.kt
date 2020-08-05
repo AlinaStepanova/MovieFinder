@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.find_detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +7,7 @@ import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.dto.MoviesSearchFilter
+import com.avs.moviefinder.network.dto.Query
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -27,6 +27,7 @@ class FindDetailViewModel @Inject constructor(
     private var _errorType = MutableLiveData<ErrorType?>()
     val errorType: LiveData<ErrorType?>
         get() = _errorType
+    private var _query = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
 
@@ -37,22 +38,29 @@ class FindDetailViewModel @Inject constructor(
     }
 
     private fun handleServerResponse(event: Any?) {
-        if (event is MoviesSearchFilter) {
-            _isProgressVisible.value = false
-            _isLoading.value = false
-            if (event.movies.isEmpty()) _errorType.value =
-                ErrorType.NO_RESULTS else _errorType.value = null
-            _movies.value = event.movies
-        } else if (event is Throwable) {
-            _isProgressVisible.value = false
-            _isLoading.value = false
-            _errorType.value = ErrorType.NETWORK
+        when (event) {
+            is MoviesSearchFilter -> {
+                _isProgressVisible.value = false
+                _isLoading.value = false
+                if (event.movies.isEmpty()) _errorType.value =
+                    ErrorType.NO_RESULTS else _errorType.value = null
+                _movies.value = event.movies
+            }
+            is Throwable -> {
+                _isProgressVisible.value = false
+                _isLoading.value = false
+                _errorType.value = ErrorType.NETWORK
+            }
+            is Query -> {
+                onQuerySubmitted(event.query)
+            }
         }
     }
 
     fun onQuerySubmitted(query: String?) {
         apiDisposable?.dispose()
         if (query != null) {
+            _query.value = query
             apiDisposable = serverApi.getMovieByTitle(query)
         }
     }

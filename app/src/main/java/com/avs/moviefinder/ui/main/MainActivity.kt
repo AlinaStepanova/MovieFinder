@@ -6,8 +6,8 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
@@ -28,6 +28,8 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     lateinit var binding: ActivityMainBinding
+    private var savedInstanceState: Bundle? = null
+    var query: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,11 @@ class MainActivity : DaggerAppCompatActivity() {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
+//        mainViewModel.query.observe(this, Observer {
+//            it?.let {
+//                query = it
+//            }
+//        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,11 +80,11 @@ class MainActivity : DaggerAppCompatActivity() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     openFindDetailFragment(supportFragmentManager, query)
+                    mainViewModel.onQueryTextSubmit(query)
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    mainViewModel.onQueryTextChange(newText)
                     return false
                 }
             })

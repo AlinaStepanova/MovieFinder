@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.find_detail
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,6 @@ class FindDetailFragment : BaseFragment() {
         binding.rvFindRecyclerView.adapter = adapter
         findDetailViewModel.movies.observe(viewLifecycleOwner, Observer {
             it?.let {
-                Log.d("jjj", "here 111")
                 adapter.submitList(it)
             }
         })

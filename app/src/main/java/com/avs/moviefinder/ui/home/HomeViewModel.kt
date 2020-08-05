@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,12 +37,15 @@ class HomeViewModel @Inject constructor(
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
-    val selectedCategory: LiveData<MoviesCategory?>
+    val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
 
     init {
-        _selectedCategory.value = MoviesCategory.POPULAR
-        getPopularMovies()
+        Log.d("jjj", "init HomeViewModel " + _selectedCategory.value)
+        if (_selectedCategory.value == null) {
+            _selectedCategory.value = MoviesCategory.POPULAR
+            getPopularMovies()
+        }
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
 
@@ -123,6 +127,7 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCleared() {
+        Log.d("jjj", "onCleared")
         apiDisposable?.dispose()
         rxBusDisposable?.dispose()
         super.onCleared()
