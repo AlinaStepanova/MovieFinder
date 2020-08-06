@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,7 +40,6 @@ class HomeViewModel @Inject constructor(
         get() = _selectedCategory
 
     init {
-        Log.d("jjj", "init HomeViewModel " + _selectedCategory.value)
         if (_selectedCategory.value == null) {
             _selectedCategory.value = MoviesCategory.POPULAR
             getPopularMovies()
@@ -127,7 +125,6 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        Log.d("jjj", "onCleared")
         apiDisposable?.dispose()
         rxBusDisposable?.dispose()
         super.onCleared()

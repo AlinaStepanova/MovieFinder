@@ -18,7 +18,6 @@ package com.avs.moviefinder.utils
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import androidx.core.util.forEach
 import androidx.core.util.set
@@ -34,8 +33,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 fun popFindDetailFragment(fragmentManager: FragmentManager) {
-    // if the fragment is on the top of the screen
-    Log.d("jjj", "111")
     val position = fragmentManager.backStackEntryCount - 1
     if (position >= 0 && isSameTags(fragmentManager, position)) {
         fragmentManager.popBackStack()

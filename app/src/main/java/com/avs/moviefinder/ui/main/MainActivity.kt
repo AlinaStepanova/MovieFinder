@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.avs.moviefinder.R
@@ -28,8 +27,6 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     lateinit var binding: ActivityMainBinding
-    private var savedInstanceState: Bundle? = null
-    var query: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +42,6 @@ class MainActivity : DaggerAppCompatActivity() {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
-//        mainViewModel.query.observe(this, Observer {
-//            it?.let {
-//                query = it
-//            }
-//        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -118,9 +110,6 @@ class MainActivity : DaggerAppCompatActivity() {
             containerId = R.id.nav_host_fragment,
             intent = intent
         )
-        /*controller.observe(this, Observer { navController ->
-            popFindDetailsFragment()
-        })*/
         currentNavController = controller
     }
 
