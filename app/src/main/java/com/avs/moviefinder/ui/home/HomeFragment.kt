@@ -1,25 +1,19 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.find_detail.FindDetailViewModel
-import com.avs.moviefinder.ui.main.MainActivity
 import javax.inject.Inject
 
 
@@ -58,10 +52,6 @@ class HomeFragment : BaseFragment() {
                 { homeViewModel.onTopRatedClick() }
             )
         )
-        binding.rvFindRecyclerView.layoutManager = LinearLayoutManager(context)
-        if (context?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvFindRecyclerView.layoutManager = GridLayoutManager(context, 2)
-        }
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         homeViewModel.movies.observe(viewLifecycleOwner, Observer {

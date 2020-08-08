@@ -34,15 +34,22 @@ fun TextView.setRatingFormatted(item: Movie?) {
 @ExperimentalImageView
 fun ShapeableImageView.setPosterImage(item: Movie) {
     val widthRatio = 1F
+    val pixels = dpToPx(16)
     var heightRatio = 0.5F
     if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        heightRatio = 0.675F
+        heightRatio = 0.725F
+        this.shapeAppearanceModel = this.shapeAppearanceModel
+            .toBuilder()
+            .setBottomLeftCorner(CornerFamily.ROUNDED, pixels)
+            .setTopLeftCorner(CornerFamily.ROUNDED, pixels)
+            .build()
+    } else {
+        this.shapeAppearanceModel = this.shapeAppearanceModel
+            .toBuilder()
+            .setTopRightCorner(CornerFamily.ROUNDED, pixels)
+            .setTopLeftCorner(CornerFamily.ROUNDED, pixels)
+            .build()
     }
-    this.shapeAppearanceModel = this.shapeAppearanceModel
-        .toBuilder()
-        .setTopRightCorner(CornerFamily.ROUNDED, dpToPx(16))
-        .setTopLeftCorner(CornerFamily.ROUNDED, dpToPx(16))
-        .build()
     Picasso.get()
         .load(POSTER_URL + item.posterPath)
         .transform(
