@@ -36,7 +36,7 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
     val widthRatio = 1F
     var heightRatio = 0.5F
     if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        heightRatio = 0.25F
+        heightRatio = 0.675F
     }
     this.shapeAppearanceModel = this.shapeAppearanceModel
         .toBuilder()
