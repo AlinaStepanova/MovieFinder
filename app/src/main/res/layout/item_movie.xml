@@ -26,7 +26,8 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPoster"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/image_find_movie_max_height"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
             android:background="@color/white"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"

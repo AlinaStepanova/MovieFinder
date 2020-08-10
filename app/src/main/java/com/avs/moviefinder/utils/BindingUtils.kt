@@ -35,7 +35,7 @@ fun TextView.setRatingFormatted(item: Movie?) {
 fun ShapeableImageView.setPosterImage(item: Movie) {
     val widthRatio = 1F
     val pixels = dpToPx(16)
-    var heightRatio = 0.5F
+    var heightRatio = 0.65F
     if (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         heightRatio = 0.725F
         this.shapeAppearanceModel = this.shapeAppearanceModel
