@@ -57,7 +57,13 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    fun onQuerySubmitted(query: String?) {
+    fun onQueryFirstSubmitted(query: String?) {
+        if (_query.value == null) {
+            onQuerySubmitted(query)
+        }
+    }
+
+    private fun onQuerySubmitted(query: String?) {
         apiDisposable?.dispose()
         if (query != null) {
             _query.value = query

@@ -43,7 +43,7 @@ class FindDetailFragment : BaseFragment() {
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
-        findDetailViewModel.onQuerySubmitted(query)
+        findDetailViewModel.onQueryFirstSubmitted(query)
         val adapter = FindDetailAdapter(
             MovieListener(
                 { movieId -> findDetailViewModel.openMovieDetails(movieId) },
