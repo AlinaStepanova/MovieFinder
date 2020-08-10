@@ -64,7 +64,7 @@
             android:layout_marginBottom="@dimen/margin_4dp"
             android:ellipsize="end"
             android:gravity="top"
-            android:maxLines="8"
+            android:maxLines="@integer/maxLines"
             app:layout_constraintDimensionRatio="1:0"
             android:textColor="@color/greyDark"
             android:textSize="@dimen/text_size_movie_details"
