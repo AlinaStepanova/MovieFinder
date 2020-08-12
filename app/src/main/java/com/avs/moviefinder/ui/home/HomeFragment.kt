@@ -1,6 +1,7 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.BaseFragment
+import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.ui.movie.MovieActivity
 import javax.inject.Inject
 
 
@@ -43,7 +48,7 @@ class HomeFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val adapter = FindAdapter(
             MovieListener(
-                { movieId -> homeViewModel.openMovieDetails(movieId) },
+                { movieId -> startMovieActivity(movieId) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
                 { movieId -> homeViewModel.addToWatched(movieId) },
                 { movieId -> homeViewModel.addToWatchLater(movieId) }),
@@ -74,6 +79,12 @@ class HomeFragment : BaseFragment() {
             handleErrorEvent(it)
         })
         return root
+    }
+
+    private fun startMovieActivity(movieId: Long) {
+        startActivity(Intent(activity, MovieActivity::class.java).apply {
+            putExtra(Movie::class.java.simpleName, movieId)
+        })
     }
 
     private fun handleErrorEvent(it: ErrorType?) {
