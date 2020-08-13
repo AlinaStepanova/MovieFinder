@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.ui.find_detail.FindDetailViewModel
 import com.avs.moviefinder.ui.home.HomeViewModel
 import com.avs.moviefinder.ui.main.MainViewModel
+import com.avs.moviefinder.ui.movie.MovieViewModel
 import com.avs.moviefinder.ui.watch_later.WatchLaterViewModel
 import com.avs.moviefinder.ui.watched.WatchedViewModel
 import dagger.Binds
@@ -22,6 +23,11 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     internal abstract fun mainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieViewModel::class)
+    internal abstract fun movieViewModel(viewModel: MovieViewModel): ViewModel
 
     @Binds
     @IntoMap
