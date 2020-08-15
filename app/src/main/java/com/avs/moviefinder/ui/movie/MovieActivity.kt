@@ -6,6 +6,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -20,6 +21,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_movie)
         movieViewModel = ViewModelProvider(this, viewModelFactory).get(MovieViewModel::class.java)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        movieViewModel.openMovieDetails(intent.extras?.getLong(Movie::class.java.simpleName))
+        movieViewModel.openMovieDetails(intent.extras?.getLong(MOVIE_EXTRA_TAG))
+        //todo fix back up navigation
     }
 }

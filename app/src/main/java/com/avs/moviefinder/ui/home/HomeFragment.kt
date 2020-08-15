@@ -80,12 +80,6 @@ class HomeFragment : BaseFragment() {
         return root
     }
 
-    private fun startMovieActivity(movieId: Long) {
-        startActivity(Intent(activity, MovieActivity::class.java).apply {
-            putExtra(Movie::class.java.simpleName, movieId)
-        })
-    }
-
     private fun handleErrorEvent(it: ErrorType?) {
         when (it) {
             null -> {

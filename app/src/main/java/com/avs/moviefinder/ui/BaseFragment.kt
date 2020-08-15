@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.avs.moviefinder.R
+import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
+
+val MOVIE_EXTRA_TAG = Movie::class.java.simpleName
 
 open class BaseFragment : DaggerFragment() {
 
@@ -16,6 +20,12 @@ open class BaseFragment : DaggerFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentContext = context
+    }
+
+    fun startMovieActivity(movieId: Long) {
+        startActivity(Intent(activity, MovieActivity::class.java).apply {
+            putExtra(MOVIE_EXTRA_TAG, movieId)
+        })
     }
 
     fun shareMovie(movieLink: String) {

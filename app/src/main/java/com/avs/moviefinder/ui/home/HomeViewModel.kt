@@ -69,11 +69,6 @@ class HomeViewModel @Inject constructor(
         makeAPICall()
     }
 
-    fun openMovieDetails(movieId: Long) {
-        apiDisposable?.dispose()
-        apiDisposable = serverApi.getMovieById(movieId)
-    }
-
     fun shareMovie(movieId: Long) {
         _shareBody.value = BASE_URL + "movie/" + movieId + "/"
         _shareBody.value = null
