@@ -1,6 +1,6 @@
 package com.avs.moviefinder.ui.recycler_view
 
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.network.dto.BaseMovie
 
 class MovieListener(
     val movieClickListener: (sleepId: Long) -> Unit,
@@ -8,8 +8,8 @@ class MovieListener(
     val watchedClick: (sleepId: Long) -> Unit,
     val watchLaterClick: (sleepId: Long) -> Unit
 ) {
-    fun onClick(movie: Movie) = movieClickListener(movie.id)
-    fun onShareClick(movie: Movie) = shareListener(movie.id)
-    fun onWatchedClick(movie: Movie) = watchedClick(movie.id)
-    fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie.id)
+    fun onClick(baseMovie: BaseMovie) = movieClickListener(baseMovie.id)
+    fun onShareClick(baseMovie: BaseMovie) = shareListener(baseMovie.id)
+    fun onWatchedClick(baseMovie: BaseMovie) = watchedClick(baseMovie.id)
+    fun onWatchLaterClick(baseMovie: BaseMovie) = watchLaterClick(baseMovie.id)
 }

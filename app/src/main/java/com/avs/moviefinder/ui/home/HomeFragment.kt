@@ -9,15 +9,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.movie.MovieActivity
 import javax.inject.Inject
 

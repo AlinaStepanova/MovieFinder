@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.databinding.ItemHeaderBinding
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.ui.recycler_view.MovieViewHolder
 
 
@@ -15,7 +15,7 @@ class FindAdapter(
     private val movieClickListener: MovieListener,
     private val categoryClickListener: CategoryClickListener
 ) :
-    ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
+    ListAdapter<BaseMovie, RecyclerView.ViewHolder>(MovieDiffCallback()) {
 
     private var selectedCategory = MoviesCategory.POPULAR
 

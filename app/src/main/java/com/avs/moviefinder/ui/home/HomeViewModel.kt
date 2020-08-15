@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.ServerApi
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.MoviesFilter
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
@@ -18,8 +18,8 @@ class HomeViewModel @Inject constructor(
     rxBus: RxBus
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<LinkedList<Movie>>()
-    val movies: LiveData<LinkedList<Movie>>
+    private var _movies = MutableLiveData<LinkedList<BaseMovie>>()
+    val movies: LiveData<LinkedList<BaseMovie>>
         get() = _movies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
@@ -51,11 +51,11 @@ class HomeViewModel @Inject constructor(
         if (event is MoviesFilter) {
             _isProgressVisible.value = false
             _isLoading.value = false
-            if (event.movies.isEmpty()) _errorType.value =
+            if (event.baseMovies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
-            val movies = event.movies
+            val movies = event.baseMovies
             if (movies.first.id != 0L) {
-                movies.addFirst(Movie())
+                movies.addFirst(BaseMovie())
             }
             _movies.value = movies
         } else if (event is Throwable) {

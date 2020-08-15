@@ -2,8 +2,8 @@ package com.avs.moviefinder.ui.movie
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.network.ErrorType
 import com.avs.moviefinder.network.ServerApi
+import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
@@ -22,7 +22,7 @@ class MovieViewModel @Inject constructor(
 
     private fun handleServerResponse(event: Any?) {
         if (event is Movie) {
-            Log.d("jjj", event.toString())
+            Log.d("jjjk", event.toString())
         } else if (event is Throwable) {
            // todo add error handling
         }

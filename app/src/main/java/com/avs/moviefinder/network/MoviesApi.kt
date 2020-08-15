@@ -1,5 +1,6 @@
 package com.avs.moviefinder.network
 
+import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.network.dto.MoviesFilter
 import com.avs.moviefinder.network.dto.MoviesSearchFilter

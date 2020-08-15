@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.databinding.ItemMovieBinding
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.network.dto.BaseMovie
 
 class MovieViewHolder private constructor(private val binding: ItemMovieBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(
         movieClickListener: MovieListener,
-        item: Movie
+        item: BaseMovie
     ) {
         binding.movieClickListener = movieClickListener
         binding.tvMovieTitle.text = item.title
