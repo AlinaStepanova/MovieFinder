@@ -7,6 +7,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.movie.MovieActivity
+import com.avs.moviefinder.ui.movie.ScrollingActivity
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
@@ -23,7 +24,7 @@ open class BaseFragment : DaggerFragment() {
     }
 
     fun startMovieActivity(movieId: Long) {
-        startActivity(Intent(activity, MovieActivity::class.java).apply {
+        startActivity(Intent(activity, ScrollingActivity::class.java).apply {
             putExtra(MOVIE_EXTRA_TAG, movieId)
         })
     }
