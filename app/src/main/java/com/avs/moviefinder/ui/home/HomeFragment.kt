@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +13,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.ErrorType
-import com.avs.moviefinder.network.dto.BaseMovie
-import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.movie.MovieActivity
 import javax.inject.Inject
 
 
