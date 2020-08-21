@@ -19,7 +19,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/image_find_movie_max_height"
+            android:layout_height="@dimen/collapsing_layout_height"
             android:background="#FFFFFF"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme">
