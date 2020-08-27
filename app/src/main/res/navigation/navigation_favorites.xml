@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_watched"
-    app:startDestination="@+id/navigation_watched">
+    android:id="@+id/navigation_favorites"
+    app:startDestination="@+id/navigation_favorites">
 
     <fragment
-        android:id="@+id/navigation_watched"
-        android:name="com.avs.moviefinder.ui.watched.WatchedFragment"
+        android:id="@+id/navigation_favorites"
+        android:name="com.avs.moviefinder.ui.favorites.FavoritesFragment"
         android:label="@string/title_watched"
         tools:layout="@layout/fragment_watched" />
 </navigation>

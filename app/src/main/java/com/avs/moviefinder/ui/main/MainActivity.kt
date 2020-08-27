@@ -99,7 +99,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
         val navGraphIds = listOf(
             R.navigation.navigation_home,
-            R.navigation.navigation_watched,
+            R.navigation.navigation_favorites,
             R.navigation.navigation_watch_later
         )
 

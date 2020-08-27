@@ -7,13 +7,13 @@
         android:title="@string/title_home" />
 
     <item
+        android:id="@+id/navigation_favorites"
+        android:icon="@drawable/ic_favorite"
+        android:title="Favorites" />
+
+    <item
         android:id="@+id/navigation_watch_later"
         android:icon="@drawable/ic_watch_later"
         android:title="@string/title_watch_later" />
-
-    <item
-        android:id="@+id/navigation_watched"
-        android:icon="@drawable/ic_done"
-        android:title="@string/title_watched" />
 
 </menu>

@@ -7,7 +7,7 @@ import com.avs.moviefinder.ui.home.HomeViewModel
 import com.avs.moviefinder.ui.main.MainViewModel
 import com.avs.moviefinder.ui.movie.MovieViewModel
 import com.avs.moviefinder.ui.watch_later.WatchLaterViewModel
-import com.avs.moviefinder.ui.watched.WatchedViewModel
+import com.avs.moviefinder.ui.favorites.FavoritesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -41,7 +41,7 @@ abstract class ViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(WatchedViewModel::class)
+    @ViewModelKey(FavoritesViewModel::class)
     internal abstract fun watchedViewModel(watchedViewModel: WatchLaterViewModel): ViewModel
 
     @Binds

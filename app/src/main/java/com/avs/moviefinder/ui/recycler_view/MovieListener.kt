@@ -10,6 +10,6 @@ class MovieListener(
 ) {
     fun onClick(baseMovie: BaseMovie) = movieClickListener(baseMovie.id)
     fun onShareClick(baseMovie: BaseMovie) = shareListener(baseMovie.id)
-    fun onWatchedClick(baseMovie: BaseMovie) = watchedClick(baseMovie.id)
+    fun onFavoritesClick(baseMovie: BaseMovie) = watchedClick(baseMovie.id)
     fun onWatchLaterClick(baseMovie: BaseMovie) = watchLaterClick(baseMovie.id)
 }

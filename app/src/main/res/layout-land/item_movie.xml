@@ -127,10 +127,10 @@
             app:ratingFormatted="@{movie}" />
 
         <ImageView
-            android:id="@+id/ivWatchedIcon"
+            android:id="@+id/ivFavoritesIcon"
             style="@style/MovieItemControlStyle"
             android:layout_marginBottom="@dimen/margin_12dp"
-            android:onClick="@{() -> movieClickListener.onWatchedClick(movie)}"
+            android:onClick="@{() -> movieClickListener.onFavoritesClick(movie)}"
             android:src="@drawable/ic_done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +146,7 @@
             android:onClick="@{() -> movieClickListener.onWatchLaterClick(movie)}"
             android:src="@drawable/ic_watch_later"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon"
+            app:layout_constraintEnd_toStartOf="@+id/ivFavoritesIcon"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/ivShareIcon" />
 

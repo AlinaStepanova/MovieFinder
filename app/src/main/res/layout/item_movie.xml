@@ -7,6 +7,7 @@
         <variable
             name="movie"
             type="com.avs.moviefinder.network.dto.BaseMovie" />
+
         <variable
             name="movieClickListener"
             type="com.avs.moviefinder.ui.recycler_view.MovieListener" />
@@ -16,20 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/item_layout_margin"
-        android:layout_marginEnd="@dimen/item_layout_margin"
         android:layout_marginTop="@dimen/item_layout_margin_vertical"
+        android:layout_marginEnd="@dimen/item_layout_margin"
         android:layout_marginBottom="@dimen/item_layout_margin_vertical"
-        android:onClick="@{() -> movieClickListener.onClick(movie)}"
         android:background="@drawable/rounded_item_shape"
-        android:elevation="2dp">
+        android:elevation="2dp"
+        android:onClick="@{() -> movieClickListener.onClick(movie)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivPoster"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
             android:background="@color/white"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -135,14 +136,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/ivWatchedIcon"
+            android:id="@+id/ivFavoritesIcon"
             style="@style/MovieItemControlStyle"
             android:layout_marginEnd="@dimen/margin_16dp"
             android:layout_marginBottom="@dimen/margin_12dp"
-            android:src="@drawable/ic_done"
-            android:onClick="@{() -> movieClickListener.onWatchedClick(movie)}"
+            android:onClick="@{() -> movieClickListener.onFavoritesClick(movie)}"
+            android:src="@drawable/ic_favorite_border"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon">
 
         </ImageView>
 
@@ -152,19 +153,19 @@
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:onClick="@{() -> movieClickListener.onWatchLaterClick(movie)}"
-            android:src="@drawable/ic_watch_later"
+            android:src="@drawable/ic_outline_watch_later"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivWatchedIcon" />
+            app:layout_constraintEnd_toStartOf="@+id/ivShareIcon" />
 
         <ImageView
             android:id="@+id/ivShareIcon"
             style="@style/MovieItemControlStyle"
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="@dimen/margin_12dp"
-            android:src="@drawable/ic_share"
             android:onClick="@{() -> movieClickListener.onShareClick(movie)}"
+            android:src="@drawable/ic_share"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
