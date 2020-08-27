@@ -10,6 +10,7 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="searchViewStyle">@style/CustomSearchView</item>
+        <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
 
     <style name="AppThemeActionBar" parent="Theme.AppCompat.Light">
@@ -18,6 +19,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/CustomActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
 
     <style name="CustomSearchView" parent="Widget.AppCompat.Light.SearchView">
@@ -55,6 +57,7 @@
         <item name="actionBarStyle">@style/CustomActionBar</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
