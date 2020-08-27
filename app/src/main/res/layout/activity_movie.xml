@@ -66,14 +66,26 @@
         <include layout="@layout/content_scrolling" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabWatched"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             app:layout_anchor="@id/app_bar"
+            app:fabSize="mini"
             app:rippleColor="@color/colorPrimaryTransparent"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_done" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabWatchLater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_64dp"
+            app:layout_anchor="@id/app_bar"
+            app:fabSize="mini"
+            app:rippleColor="@color/colorPrimaryTransparent"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/ic_watch_later" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
