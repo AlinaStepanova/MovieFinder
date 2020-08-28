@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.network.ServerApi
 import com.avs.moviefinder.network.dto.BaseMovie
 import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import java.util.*
@@ -19,6 +20,9 @@ class MovieViewModel @Inject constructor(
     private var _movie = MutableLiveData<Movie?>()
     val movie: LiveData<Movie?>
         get() = _movie
+    private var _shareBody = MutableLiveData<String?>()
+    val shareBody: LiveData<String?>
+        get() = _shareBody
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
 
@@ -33,6 +37,13 @@ class MovieViewModel @Inject constructor(
         } else if (event is Throwable) {
             // todo add error handling
         }
+    }
+
+    fun shareMovie() {
+        movie.value?.let {
+            _shareBody.value = BASE_URL + "movie/" + _movie.value?.id + "/"
+        }
+        _shareBody.value = null
     }
 
     fun openMovieDetails(movieId: Long?) {

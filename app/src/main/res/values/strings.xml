@@ -13,8 +13,9 @@
     <string name="top_rated_movies">Top Rated</string>
     <string name="now_playing_movies">Now Playing</string>
     <string name="share_body_text">Check out this movie - </string>
-    <string name="share_text">Share via</string>
-    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="share_via_text">Share via</string>
+    <string name="share_text">Share</string>
+    <string name="title_activity_movie">MovieActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

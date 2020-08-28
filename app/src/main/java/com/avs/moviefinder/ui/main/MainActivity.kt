@@ -45,7 +45,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         val item = menu.findItem(R.id.search)
         item?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {

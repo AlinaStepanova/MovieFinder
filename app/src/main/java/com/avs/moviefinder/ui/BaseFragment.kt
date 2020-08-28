@@ -31,7 +31,7 @@ open class BaseFragment : DaggerFragment() {
         startActivity(
             Intent.createChooser(
                 getShareIntent(fragmentContext, movieLink),
-                resources.getString(R.string.share_text)
+                resources.getString(R.string.share_via_text)
             )
         )
     }

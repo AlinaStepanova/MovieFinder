@@ -1,7 +1,8 @@
 package com.avs.moviefinder.ui.movie
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -11,7 +12,7 @@ import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.POSTER_URL
-import com.avs.moviefinder.utils.setPosterImage
+import com.avs.moviefinder.utils.getShareIntent
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
 import jp.wasabeef.picasso.transformations.CropTransformation
@@ -42,6 +43,9 @@ class MovieActivity : DaggerAppCompatActivity() {
                 loadImage(it.posterPath)
             }
         })
+        movieViewModel.shareBody.observe(this, Observer {
+            if (!it.isNullOrEmpty()) shareMovie(it)
+        })
     }
 
     private fun loadImage(posterPath: String) {
@@ -59,10 +63,28 @@ class MovieActivity : DaggerAppCompatActivity() {
             .into(binding.ivPoster)
     }
 
+    private fun shareMovie(movieLink: String) {
+        startActivity(
+            Intent.createChooser(
+                getShareIntent(this, movieLink),
+                resources.getString(R.string.share_via_text)
+            )
+        )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_movie, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
+                true
+            }
+            R.id.action_share -> {
+                movieViewModel.shareMovie()
                 true
             }
             else -> super.onOptionsItemSelected(item)
