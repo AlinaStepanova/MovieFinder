@@ -4,5 +4,5 @@
     <dimen name="text_size_movie_title">20sp</dimen>
     <dimen name="text_size_movie_details">18sp</dimen>
     <dimen name="image_control_size">22dp</dimen>
-    <dimen name="collapsing_layout_height">430dp</dimen>
+    <dimen name="collapsing_layout_height">435dp</dimen>
 </resources>

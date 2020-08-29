@@ -28,13 +28,12 @@
             android:id="@+id/ivPoster"
             android:layout_width="@dimen/image_find_movie_max_height"
             android:layout_height="0dp"
-            android:background="@color/white"
+            android:background="@drawable/ic_local_movies_grey"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1.125"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:posterImage="@{movie}" />
 
         <TextView

@@ -6,5 +6,5 @@
     <dimen name="image_control_size">20dp</dimen>
     <dimen name="item_layout_margin">10dp</dimen>
     <dimen name="item_layout_margin_vertical">5dp</dimen>
-    <dimen name="collapsing_layout_height">310dp</dimen>
+    <dimen name="collapsing_layout_height">320dp</dimen>
 </resources>
