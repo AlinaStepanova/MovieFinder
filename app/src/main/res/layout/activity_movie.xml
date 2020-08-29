@@ -70,8 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dimen_72dp"
-            app:layout_anchor="@id/app_bar"
             app:fabSize="mini"
+            app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_favorite_border" />
 
@@ -79,10 +79,10 @@
             android:id="@+id/fabWatched"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
-            app:layout_anchor="@id/app_bar"
+            android:layout_marginEnd="@dimen/margin_16dp"
             app:fabSize="mini"
+            app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_outline_watch_later" />
 

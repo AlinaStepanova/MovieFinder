@@ -2,6 +2,7 @@ package com.avs.moviefinder.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import com.avs.moviefinder.R
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
@@ -37,11 +38,13 @@ open class BaseFragment : DaggerFragment() {
     }
 
     fun showSnackBar(message: String) {
-        val activity = (activity as MainActivity);
+        val activity = (activity as MainActivity)
         val snackBar = Snackbar.make(
             activity.binding.navHostFragment, message,
             Snackbar.LENGTH_LONG
         )
+        snackBar.setBackgroundTint(Color.WHITE)
+        snackBar.setTextColor(Color.BLACK)
         snackBar.anchorView = activity.binding.navView
         snackBar.show()
     }
