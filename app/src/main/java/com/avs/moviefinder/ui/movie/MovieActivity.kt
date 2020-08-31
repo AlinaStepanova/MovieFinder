@@ -11,8 +11,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.utils.POSTER_URL
-import com.avs.moviefinder.utils.getShareIntent
+import com.avs.moviefinder.utils.*
 import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
 import jp.wasabeef.picasso.transformations.CropTransformation
@@ -40,6 +39,10 @@ class MovieActivity : DaggerAppCompatActivity() {
         movieViewModel.movie.observe(this, Observer {
             it?.let {
                 binding.toolbar.title = it.title
+                binding.tvTagline.text = it.tagline
+                binding.tvOverview.text = it.overview
+                binding.tvMovieYear.text = formatDate(it.year)
+                binding.tvMovieRating.text = formatRating(it.rating)
                 loadImage(it.posterPath)
             }
         })

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,7 +10,7 @@
             type="com.avs.moviefinder.ui.movie.MovieViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -63,19 +64,100 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".ui.movie.MovieActivity"
             tools:showIn="@layout/activity_movie">
 
-            <TextView
-                android:id="@+id/someText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@string/large_text" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivCalendar"
+                    android:layout_width="@dimen/margin_16dp"
+                    android:layout_height="@dimen/margin_16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_calendar"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/mainGrey" />
+
+                <TextView
+                    android:id="@+id/tvMovieYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_4dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxEms="16"
+                    android:maxLines="1"
+                    android:textColor="@color/greyDark"
+                    android:textSize="@dimen/text_size_movie_details"
+                    app:layout_constraintStart_toEndOf="@+id/ivCalendar"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/ivStar"
+                    android:layout_width="@dimen/margin_16dp"
+                    android:layout_height="@dimen/margin_16dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_star"
+                    app:tint="@color/mainGrey"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+                    app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
+                    app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+
+                <TextView
+                    android:id="@+id/tvMovieRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_4dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxEms="6"
+                    android:maxLines="1"
+                    android:textColor="@color/greyDark"
+                    android:textSize="@dimen/text_size_movie_details"
+                    app:layout_constraintStart_toEndOf="@+id/ivStar"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvTagline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ivStar" />
+
+                <TextView
+                    android:id="@+id/tvOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:text=""
+                    android:textColor="@color/greyDark"
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 

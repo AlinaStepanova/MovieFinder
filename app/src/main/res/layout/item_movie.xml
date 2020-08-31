@@ -85,7 +85,7 @@
                 android:layout_height="@dimen/margin_16dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_calendar"
-                android:tint="@color/mainGrey"
+                app:tint="@color/mainGrey"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
@@ -112,7 +112,7 @@
                 android:layout_height="@dimen/margin_16dp"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/ic_star"
-                android:tint="@color/mainGrey"
+                app:tint="@color/mainGrey"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                 app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
                 app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
