@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import com.avs.moviefinder.R
+import com.avs.moviefinder.network.dto.Genre
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+
+const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 
 fun formatDate(dateToFormat: String) : String {
     val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -49,6 +52,12 @@ fun formatRating(number: String) : String {
         result = result.substring(0, result.length - 1)
     }
     return result
+}
+
+fun formatGenres(genres: List<Genre>) : String {
+    return genres.fold("") { names, genre ->
+        if (names.isEmpty()) genre.name else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
+    }
 }
 
 fun getShareIntent(context: Context, movieLink: String): Intent {

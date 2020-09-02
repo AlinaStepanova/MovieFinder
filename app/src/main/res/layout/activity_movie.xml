@@ -143,6 +143,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/ivStar" />
 
                 <TextView
+                    android:id="@+id/tvGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:layout_marginEnd="@dimen/text_margin"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_movie_details"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
+
+                <TextView
                     android:id="@+id/tvOverview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -154,7 +167,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvGenres" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

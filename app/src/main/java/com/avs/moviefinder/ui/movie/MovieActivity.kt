@@ -43,6 +43,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvOverview.text = it.overview
                 binding.tvMovieYear.text = formatDate(it.year)
                 binding.tvMovieRating.text = formatRating(it.rating)
+                binding.tvGenres.text = formatGenres(it.genres)
                 loadImage(it.posterPath)
             }
         })
