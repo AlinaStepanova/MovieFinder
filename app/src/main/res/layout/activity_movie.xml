@@ -80,8 +80,8 @@
                     android:id="@+id/ivCalendar"
                     android:layout_width="@dimen/margin_16dp"
                     android:layout_height="@dimen/margin_16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_18dp"
                     android:src="@drawable/ic_calendar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -127,6 +127,32 @@
                     app:layout_constraintBottom_toBottomOf="@+id/ivStar"
                     app:layout_constraintStart_toEndOf="@+id/ivStar"
                     app:layout_constraintTop_toTopOf="@+id/ivStar" />
+
+                <ImageView
+                    android:id="@+id/ivHourglass"
+                    android:layout_width="@dimen/margin_16dp"
+                    android:layout_height="@dimen/margin_16dp"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:src="@drawable/ic_hourglass"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMovieRating"
+                    app:layout_constraintStart_toEndOf="@+id/tvMovieRating"
+                    app:layout_constraintTop_toTopOf="@+id/tvMovieRating"
+                    app:tint="@color/mainGrey" />
+
+                <TextView
+                    android:id="@+id/tvRuntime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxEms="6"
+                    android:maxLines="1"
+                    android:textColor="@color/greyDark"
+                    android:textSize="@dimen/text_size_movie_details"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivHourglass"
+                    app:layout_constraintStart_toEndOf="@+id/ivHourglass"
+                    app:layout_constraintTop_toTopOf="@+id/ivHourglass" />
 
                 <TextView
                     android:id="@+id/tvTagline"

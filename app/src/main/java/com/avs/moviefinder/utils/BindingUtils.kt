@@ -19,7 +19,7 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: BaseMovie?) {
     item?.let {
-        text = formatDate(item.year)
+        text = formatDate(item.releaseDate)
     }
 }
 

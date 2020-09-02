@@ -38,18 +38,19 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         movieViewModel.openMovieDetails(intent.extras?.getLong(MOVIE_EXTRA_TAG))
-        movieViewModel.movie.observe(this, Observer {
+        movieViewModel.movie.observe(this, {
             it?.let {
                 binding.toolbar.title = it.title
                 setTagline(it)
                 binding.tvOverview.text = it.overview
-                binding.tvMovieYear.text = formatDate(it.year)
+                binding.tvMovieYear.text = formatDate(it.releaseDate, pattern = "dd/MM/yyyy")
                 binding.tvMovieRating.text = formatRating(it.rating)
                 binding.tvGenres.text = formatGenres(it.genres)
+                binding.tvRuntime.text = formatRuntime(it.runtime)
                 loadImage(it.posterPath)
             }
         })
-        movieViewModel.shareBody.observe(this, Observer {
+        movieViewModel.shareBody.observe(this, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
     }

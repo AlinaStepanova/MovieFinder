@@ -12,10 +12,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
+const val MINUTES_IN_HOUR = 60
 
-fun formatDate(dateToFormat: String) : String {
+fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    val outputFormat: DateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+    val outputFormat: DateFormat = SimpleDateFormat(pattern, Locale.US)
     val date: Date?
     var formattedDate = dateToFormat
     try {
@@ -31,12 +32,13 @@ fun round(value: String, decimalPlace: Int): Double {
     var number = BigDecimal("0")
     try {
         number = BigDecimal(value)
-    } catch (e: NumberFormatException) { }
+    } catch (e: NumberFormatException) {
+    }
     number = number.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP)
     return number.toDouble()
 }
 
-fun formatRating(number: String) : String {
+fun formatRating(number: String): String {
     if (number.contains("-")) {
         return ""
     }
@@ -54,10 +56,25 @@ fun formatRating(number: String) : String {
     return result
 }
 
-fun formatGenres(genres: List<Genre>) : String {
+fun formatGenres(genres: List<Genre>): String {
     return genres.fold("") { names, genre ->
         if (names.isEmpty()) genre.name else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
     }
+}
+
+fun formatRuntime(duration: Int): String {
+    var result: String
+    if (duration < MINUTES_IN_HOUR) {
+        result = duration.toString() + "m"
+    } else {
+        val hours = duration / MINUTES_IN_HOUR
+        result = "$hours" + "h"
+        val minutes = duration - hours * MINUTES_IN_HOUR
+        if (minutes > 0) {
+            result += " $minutes" + "m"
+        }
+    }
+    return result
 }
 
 fun getShareIntent(context: Context, movieLink: String): Intent {

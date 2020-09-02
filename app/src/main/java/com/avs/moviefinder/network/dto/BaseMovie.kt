@@ -9,12 +9,12 @@ open class BaseMovie(
     @SerializedName("poster_path")
     val posterPath: String = "",
     @SerializedName("release_date")
-    val year: String = "",
+    val releaseDate: String = "",
     @SerializedName("vote_average")
     val rating: String = ""
 ) {
     override fun toString(): String {
-        return "BaseMovie(id=$id, title='$title', overview='$overview', posterPath='$posterPath', year='$year', rating='$rating')"
+        return "BaseMovie(id=$id, title='$title', overview='$overview', posterPath='$posterPath', year='$releaseDate', rating='$rating')"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -25,7 +25,7 @@ open class BaseMovie(
         if (title != other.title) return false
         if (overview != other.overview) return false
         if (posterPath != other.posterPath) return false
-        if (year != other.year) return false
+        if (releaseDate != other.releaseDate) return false
         if (rating != other.rating) return false
 
         return true
@@ -36,7 +36,7 @@ open class BaseMovie(
         result = 31 * result + title.hashCode()
         result = 31 * result + overview.hashCode()
         result = 31 * result + posterPath.hashCode()
-        result = 31 * result + year.hashCode()
+        result = 31 * result + releaseDate.hashCode()
         result = 31 * result + rating.hashCode()
         return result
     }
