@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.ViewModelFactory
+import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.*
 import com.squareup.picasso.Picasso
@@ -39,7 +41,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         movieViewModel.movie.observe(this, Observer {
             it?.let {
                 binding.toolbar.title = it.title
-                binding.tvTagline.text = it.tagline
+                setTagline(it)
                 binding.tvOverview.text = it.overview
                 binding.tvMovieYear.text = formatDate(it.year)
                 binding.tvMovieRating.text = formatRating(it.rating)
@@ -50,6 +52,14 @@ class MovieActivity : DaggerAppCompatActivity() {
         movieViewModel.shareBody.observe(this, Observer {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
+    }
+
+    private fun setTagline(it: Movie) {
+        if (it.tagline.isEmpty()) {
+            binding.tvTagline.visibility = View.GONE
+        } else {
+            binding.tvTagline.text = it.tagline
+        }
     }
 
     private fun loadImage(posterPath: String) {
