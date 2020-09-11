@@ -1,14 +1,19 @@
 package com.avs.moviefinder.network.dto
 
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 open class BaseMovie(
+    @PrimaryKey
     val id: Long = 0,
     val title: String = "",
     val overview: String = "",
     @SerializedName("poster_path")
+    @ColumnInfo(name = "poster_path")
     val posterPath: String = "",
     @SerializedName("release_date")
+    @ColumnInfo(name = "release_date")
     val releaseDate: String = "",
     @SerializedName("vote_average")
     val rating: String = ""

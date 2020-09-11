@@ -81,6 +81,11 @@ dependencies {
     })
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
+    // Room and Lifecycle dependencies
+    implementation "androidx.room:room-runtime:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
