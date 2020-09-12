@@ -1,6 +1,6 @@
 package com.avs.moviefinder.ui.recycler_view
 
-import com.avs.moviefinder.network.dto.BaseMovie
+import com.avs.moviefinder.data.dto.BaseMovie
 
 class MovieListener(
     val movieClickListener: (sleepId: Long) -> Unit,

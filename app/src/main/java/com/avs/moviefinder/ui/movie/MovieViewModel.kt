@@ -1,16 +1,13 @@
 package com.avs.moviefinder.ui.movie
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.network.ServerApi
-import com.avs.moviefinder.network.dto.BaseMovie
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
-import java.util.*
 import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(

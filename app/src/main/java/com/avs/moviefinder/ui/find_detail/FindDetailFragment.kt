@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.di.ViewModelFactory
-import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject

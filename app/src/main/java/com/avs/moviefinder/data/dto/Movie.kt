@@ -1,4 +1,4 @@
-package com.avs.moviefinder.network.dto
+package com.avs.moviefinder.data.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 // inheritance of data classes is not supported
 // see: https://stackoverflow.com/questions/26444145/extend-data-class-in-kotlin
 @Entity(tableName = "movie_table")
-class Movie(
+open class Movie(
     @SerializedName("imdb_id")
     @ColumnInfo(name = "imdb_id")
     val imdbId: String = "",

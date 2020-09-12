@@ -1,4 +1,4 @@
-package com.avs.moviefinder.network.dto
+package com.avs.moviefinder.data.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.*

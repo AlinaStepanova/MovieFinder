@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
-import com.avs.moviefinder.network.dto.BaseMovie
+import com.avs.moviefinder.data.dto.BaseMovie
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.google.android.material.imageview.ExperimentalImageView
 import com.google.android.material.imageview.ShapeableImageView

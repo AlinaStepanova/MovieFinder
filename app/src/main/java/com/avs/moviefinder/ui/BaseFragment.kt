@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import com.avs.moviefinder.R
-import com.avs.moviefinder.network.dto.Movie
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.utils.getShareIntent

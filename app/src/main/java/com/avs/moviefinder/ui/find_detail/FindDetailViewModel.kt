@@ -3,11 +3,11 @@ package com.avs.moviefinder.ui.find_detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.network.ErrorType
-import com.avs.moviefinder.network.ServerApi
-import com.avs.moviefinder.network.dto.BaseMovie
-import com.avs.moviefinder.network.dto.MoviesSearchFilter
-import com.avs.moviefinder.network.dto.Query
+import com.avs.moviefinder.data.network.ErrorType
+import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.data.dto.BaseMovie
+import com.avs.moviefinder.data.dto.MoviesSearchFilter
+import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject

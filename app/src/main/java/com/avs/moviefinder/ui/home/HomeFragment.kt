@@ -12,7 +12,7 @@ import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
-import com.avs.moviefinder.network.ErrorType
+import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import javax.inject.Inject
 

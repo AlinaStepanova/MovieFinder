@@ -1,9 +1,8 @@
-package com.avs.moviefinder.network
+package com.avs.moviefinder.data.network
 
-import com.avs.moviefinder.network.dto.BaseMovie
-import com.avs.moviefinder.network.dto.Movie
-import com.avs.moviefinder.network.dto.MoviesFilter
-import com.avs.moviefinder.network.dto.MoviesSearchFilter
+import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesFilter
+import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.utils.API_KEY
 import io.reactivex.Single
 import retrofit2.http.GET

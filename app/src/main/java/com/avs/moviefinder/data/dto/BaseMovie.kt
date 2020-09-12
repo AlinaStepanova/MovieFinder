@@ -1,6 +1,7 @@
-package com.avs.moviefinder.network.dto
+package com.avs.moviefinder.data.dto
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 

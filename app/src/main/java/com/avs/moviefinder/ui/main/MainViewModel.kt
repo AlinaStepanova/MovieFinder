@@ -1,7 +1,7 @@
 package com.avs.moviefinder.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.network.dto.Query
+import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject

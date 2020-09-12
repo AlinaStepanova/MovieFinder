@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.databinding.ItemMovieBinding
-import com.avs.moviefinder.network.dto.BaseMovie
+import com.avs.moviefinder.data.dto.BaseMovie
 
 class MovieViewHolder private constructor(private val binding: ItemMovieBinding) :
     RecyclerView.ViewHolder(binding.root) {

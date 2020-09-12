@@ -1,7 +1,7 @@
 package com.avs.moviefinder.ui.recycler_view
 
 import androidx.recyclerview.widget.DiffUtil
-import com.avs.moviefinder.network.dto.BaseMovie
+import com.avs.moviefinder.data.dto.BaseMovie
 
 class MovieDiffCallback : DiffUtil.ItemCallback<BaseMovie>() {
     override fun areItemsTheSame(oldItem: BaseMovie, newItem: BaseMovie): Boolean {

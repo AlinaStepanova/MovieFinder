@@ -6,7 +6,7 @@
 
         <variable
             name="movie"
-            type="com.avs.moviefinder.network.dto.BaseMovie" />
+            type="com.avs.moviefinder.data.dto.BaseMovie" />
 
         <variable
             name="movieClickListener"
@@ -79,7 +79,7 @@
             android:layout_marginStart="@dimen/margin_12dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:src="@drawable/ic_calendar"
-            android:tint="@color/mainGrey"
+            app:tint="@color/mainGrey"
             app:layout_constraintStart_toEndOf="@+id/ivPoster"
             app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle" />
 
@@ -104,7 +104,7 @@
             android:layout_height="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_8dp"
             android:src="@drawable/ic_star"
-            android:tint="@color/mainGrey"
+            app:tint="@color/mainGrey"
             app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
             app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
             app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />

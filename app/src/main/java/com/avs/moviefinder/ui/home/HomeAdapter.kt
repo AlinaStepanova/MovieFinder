@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.databinding.ItemHeaderBinding
-import com.avs.moviefinder.network.dto.BaseMovie
+import com.avs.moviefinder.data.dto.BaseMovie
 import com.avs.moviefinder.ui.recycler_view.MovieViewHolder
 
 

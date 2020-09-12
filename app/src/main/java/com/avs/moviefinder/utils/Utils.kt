@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import com.avs.moviefinder.R
-import com.avs.moviefinder.network.dto.Genre
+import com.avs.moviefinder.data.dto.Genre
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
