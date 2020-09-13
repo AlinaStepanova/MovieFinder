@@ -2,6 +2,8 @@ package com.avs.moviefinder.data.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.TypeConverters
+import com.avs.moviefinder.data.database.GenresConverter
 import com.google.gson.annotations.SerializedName
 
 // inheritance of data classes is not supported
@@ -10,18 +12,18 @@ import com.google.gson.annotations.SerializedName
 open class Movie(
     @SerializedName("imdb_id")
     @ColumnInfo(name = "imdb_id")
-    val imdbId: String = "",
-    val revenue: Double = 0.0,
-    val budget: Double = 0.0,
-    val runtime: Int = 0,
-    val popularity: Double = 0.0,
-    val tagline: String = "",
-    val homepage: String = "",
+    var imdbId: String = "",
+    var revenue: Double = 0.0,
+    var budget: Double = 0.0,
+    var runtime: Int = 0,
+    var popularity: Double = 0.0,
+    var tagline: String = "",
+    var homepage: String = "",
     @SerializedName("vote_count")
     @ColumnInfo(name = "vote_count")
-    val voteCount: Int = 0,
+    var voteCount: Int = 0,
     @SerializedName("genres")
-    val genres: List<Genre> = ArrayList()
+    var genres: List<Genre> = ArrayList()
 ) : BaseMovie() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

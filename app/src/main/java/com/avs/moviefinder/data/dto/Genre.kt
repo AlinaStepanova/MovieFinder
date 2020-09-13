@@ -1,3 +1,3 @@
 package com.avs.moviefinder.data.dto
 
-data class Genre(val name: String = "")
+data class Genre(var name: String = "")

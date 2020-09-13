@@ -7,17 +7,17 @@ import com.google.gson.annotations.SerializedName
 
 open class BaseMovie(
     @PrimaryKey
-    val id: Long = 0,
-    val title: String = "",
-    val overview: String = "",
+    var id: Long = 0,
+    var title: String = "",
+    var overview: String = "",
     @SerializedName("poster_path")
     @ColumnInfo(name = "poster_path")
-    val posterPath: String = "",
+    var posterPath: String = "",
     @SerializedName("release_date")
     @ColumnInfo(name = "release_date")
-    val releaseDate: String = "",
+    var releaseDate: String = "",
     @SerializedName("vote_average")
-    val rating: String = ""
+    var rating: String = ""
 ) {
     override fun toString(): String {
         return "BaseMovie(id=$id, title='$title', overview='$overview', posterPath='$posterPath', year='$releaseDate', rating='$rating')"
