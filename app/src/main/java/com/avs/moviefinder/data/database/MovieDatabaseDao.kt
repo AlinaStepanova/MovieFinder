@@ -14,6 +14,12 @@ interface MovieDatabaseDao {
     @Query("SELECT * from movie_table WHERE id = :id")
     fun get(id: Long): Movie?
 
+    @Query("SELECT * from movie_table WHERE isFavorite = 1")
+    fun getFavoritesList(): List<Movie>?
+
+    @Query("SELECT * from movie_table WHERE isInWatchLater = 1")
+    fun getWatchLaterList(): List<Movie>?
+
     @Delete
     fun delete(movie: Movie)
 }

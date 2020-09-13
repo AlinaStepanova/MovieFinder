@@ -2,9 +2,9 @@ package com.avs.moviefinder.data.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.TypeConverters
-import com.avs.moviefinder.data.database.GenresConverter
 import com.google.gson.annotations.SerializedName
+
+enum class BOOLEAN { FALSE, TRUE }
 
 // inheritance of data classes is not supported
 // see: https://stackoverflow.com/questions/26444145/extend-data-class-in-kotlin
@@ -23,7 +23,9 @@ open class Movie(
     @ColumnInfo(name = "vote_count")
     var voteCount: Int = 0,
     @SerializedName("genres")
-    var genres: List<Genre> = ArrayList()
+    var genres: List<Genre> = ArrayList(),
+    var isFavorite: Boolean = false,
+    var isInWatchLater: Boolean = false,
 ) : BaseMovie() {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -39,6 +41,8 @@ open class Movie(
         if (homepage != other.homepage) return false
         if (voteCount != other.voteCount) return false
         if (genres != other.genres) return false
+        if (isFavorite != other.isFavorite) return false
+        if (isInWatchLater != other.isInWatchLater) return false
 
         return true
     }
@@ -54,10 +58,12 @@ open class Movie(
         result = 31 * result + homepage.hashCode()
         result = 31 * result + voteCount
         result = 31 * result + genres.hashCode()
+        result = 31 * result + isFavorite.hashCode()
+        result = 31 * result + isInWatchLater.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "Movie(imdbId='$imdbId', revenue=$revenue, budget=$budget, runtime=$runtime, popularity=$popularity, tagline='$tagline', homepage='$homepage', voteCount=$voteCount, genres=$genres) ${super.toString()}"
+        return "Movie(imdbId='$imdbId', revenue=$revenue, budget=$budget, runtime=$runtime, popularity=$popularity, tagline='$tagline', homepage='$homepage', voteCount=$voteCount, genres=$genres, isFavorite=$isFavorite, isInWatchList=$isInWatchLater) ${super.toString()}"
     }
 }
