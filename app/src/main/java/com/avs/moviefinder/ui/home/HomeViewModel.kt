@@ -3,9 +3,11 @@ package com.avs.moviefinder.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.data.database.DatabaseManager
+import com.avs.moviefinder.data.database.MovieDatabaseDao
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
-import com.avs.moviefinder.data.dto.BaseMovie
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesFilter
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
@@ -15,11 +17,12 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val serverApi: ServerApi,
-    rxBus: RxBus
+    rxBus: RxBus,
+    private val databaseManager: DatabaseManager
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<LinkedList<BaseMovie>>()
-    val movies: LiveData<LinkedList<BaseMovie>>
+    private var _movies = MutableLiveData<LinkedList<Movie>>()
+    val movies: LiveData<LinkedList<Movie>>
         get() = _movies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
@@ -51,13 +54,14 @@ class HomeViewModel @Inject constructor(
         if (event is MoviesFilter) {
             _isProgressVisible.value = false
             _isLoading.value = false
-            if (event.baseMovies.isEmpty()) _errorType.value =
+            if (event.Movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
-            val movies = event.baseMovies
+            val movies = event.Movies
             if (movies.first.id != 0L) {
-                movies.addFirst(BaseMovie())
+                movies.addFirst(Movie())
             }
             _movies.value = movies
+            databaseManager.insertMovie(movies.first as Movie)
         } else if (event is Throwable) {
             _isProgressVisible.value = false
             _isLoading.value = false

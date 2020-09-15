@@ -2,14 +2,23 @@ package com.avs.moviefinder.data.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-enum class BOOLEAN { FALSE, TRUE }
-
-// inheritance of data classes is not supported
-// see: https://stackoverflow.com/questions/26444145/extend-data-class-in-kotlin
 @Entity(tableName = "movie_table")
-open class Movie(
+data class Movie(
+    @PrimaryKey
+    var id: Long = 0,
+    var title: String = "",
+    var overview: String = "",
+    @SerializedName("poster_path")
+    @ColumnInfo(name = "poster_path")
+    var posterPath: String = "",
+    @SerializedName("release_date")
+    @ColumnInfo(name = "release_date")
+    var releaseDate: String = "",
+    @SerializedName("vote_average")
+    var rating: String = "",
     @SerializedName("imdb_id")
     @ColumnInfo(name = "imdb_id")
     var imdbId: String = "",
@@ -26,44 +35,4 @@ open class Movie(
     var genres: List<Genre> = ArrayList(),
     var isFavorite: Boolean = false,
     var isInWatchLater: Boolean = false,
-) : BaseMovie() {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Movie) return false
-        if (!super.equals(other)) return false
-
-        if (imdbId != other.imdbId) return false
-        if (revenue != other.revenue) return false
-        if (budget != other.budget) return false
-        if (runtime != other.runtime) return false
-        if (popularity != other.popularity) return false
-        if (tagline != other.tagline) return false
-        if (homepage != other.homepage) return false
-        if (voteCount != other.voteCount) return false
-        if (genres != other.genres) return false
-        if (isFavorite != other.isFavorite) return false
-        if (isInWatchLater != other.isInWatchLater) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + imdbId.hashCode()
-        result = 31 * result + revenue.hashCode()
-        result = 31 * result + budget.hashCode()
-        result = 31 * result + runtime
-        result = 31 * result + popularity.hashCode()
-        result = 31 * result + tagline.hashCode()
-        result = 31 * result + homepage.hashCode()
-        result = 31 * result + voteCount
-        result = 31 * result + genres.hashCode()
-        result = 31 * result + isFavorite.hashCode()
-        result = 31 * result + isInWatchLater.hashCode()
-        return result
-    }
-
-    override fun toString(): String {
-        return "Movie(imdbId='$imdbId', revenue=$revenue, budget=$budget, runtime=$runtime, popularity=$popularity, tagline='$tagline', homepage='$homepage', voteCount=$voteCount, genres=$genres, isFavorite=$isFavorite, isInWatchList=$isInWatchLater) ${super.toString()}"
-    }
-}
+)

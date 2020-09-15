@@ -3,13 +3,15 @@ package com.avs.moviefinder.data.database
 import androidx.room.*
 import com.avs.moviefinder.data.dto.Movie
 import io.reactivex.Single
+import java.util.*
 import javax.inject.Singleton
 
 @Singleton
 @Dao
 interface MovieDatabaseDao {
-    @Insert
-    fun insert(movie: Movie)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(movie: Movie): Single<Long>
 
     @Update
     fun update(movie: Movie)

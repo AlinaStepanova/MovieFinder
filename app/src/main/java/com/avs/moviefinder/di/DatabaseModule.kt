@@ -1,8 +1,10 @@
 package com.avs.moviefinder.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.avs.moviefinder.data.database.MovieDatabase
+import com.avs.moviefinder.data.database.MovieDatabaseDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,5 +21,11 @@ class DatabaseModule {
         )
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun getDAO(movieDatabase: MovieDatabase): MovieDatabaseDao {
+        return movieDatabase.movieDatabaseDao
     }
 }

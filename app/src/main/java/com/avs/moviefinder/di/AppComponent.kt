@@ -2,6 +2,7 @@ package com.avs.moviefinder.di
 
 import android.app.Application
 import com.avs.moviefinder.MovieFinderApplication
+import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
 import dagger.BindsInstance
@@ -35,5 +36,6 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     }
 
     fun serverApi() : ServerApi
+    fun databaseManager() : DatabaseManager
     fun rxBus() : RxBus
 }

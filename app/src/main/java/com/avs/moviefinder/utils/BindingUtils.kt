@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
-import com.avs.moviefinder.data.dto.BaseMovie
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.google.android.material.imageview.ExperimentalImageView
 import com.google.android.material.imageview.ShapeableImageView
@@ -17,14 +17,14 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityHorizontal
 import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
 @BindingAdapter("releaseDateFormatted")
-fun TextView.setReleaseDateFormatted(item: BaseMovie?) {
+fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
         text = formatDate(item.releaseDate)
     }
 }
 
 @BindingAdapter("ratingFormatted")
-fun TextView.setRatingFormatted(item: BaseMovie?) {
+fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
         text = formatRating(item.rating)
     }
@@ -32,7 +32,7 @@ fun TextView.setRatingFormatted(item: BaseMovie?) {
 
 @BindingAdapter("posterImage")
 @ExperimentalImageView
-fun ShapeableImageView.setPosterImage(item: BaseMovie) {
+fun ShapeableImageView.setPosterImage(item: Movie) {
     val widthRatio = 1F
     val pixels = dpToPx(16)
     var heightRatio = 0.65F
