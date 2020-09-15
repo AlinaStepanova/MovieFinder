@@ -13,6 +13,9 @@ interface MovieDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: Movie): Single<Long>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(movies: List<Movie>): Single<List<Long>>
+
     @Update
     fun update(movie: Movie)
 

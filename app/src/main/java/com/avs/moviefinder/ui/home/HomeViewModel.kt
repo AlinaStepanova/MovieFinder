@@ -57,11 +57,11 @@ class HomeViewModel @Inject constructor(
             if (event.Movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
             val movies = event.Movies
+            databaseManager.insertMovies(movies)
             if (movies.first.id != 0L) {
                 movies.addFirst(Movie())
             }
             _movies.value = movies
-            databaseManager.insertMovie(movies.first as Movie)
         } else if (event is Throwable) {
             _isProgressVisible.value = false
             _isLoading.value = false

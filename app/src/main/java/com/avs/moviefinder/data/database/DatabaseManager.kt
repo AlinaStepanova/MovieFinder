@@ -23,7 +23,14 @@ class DatabaseManager @Inject constructor(
             .subscribe({ readSuccessMessage(it) }, { handleError(it) })
     }
 
-    private fun readSuccessMessage(items: Long) {
+    fun insertMovies(movies: List<Movie>): Disposable {
+        return dataSource.insertAll(movies)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ readSuccessMessage(it) }, { handleError(it) })
+    }
+
+    private fun readSuccessMessage(items: Any) {
         Log.d(this.javaClass.simpleName, "Inserted successfully $items")
     }
 
