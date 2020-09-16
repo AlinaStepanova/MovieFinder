@@ -2,11 +2,11 @@ package com.avs.moviefinder.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
@@ -54,23 +54,23 @@ class HomeFragment : BaseFragment() {
         )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
-        homeViewModel.movies.observe(viewLifecycleOwner, Observer {
+        homeViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        homeViewModel.selectedCategory.observe(viewLifecycleOwner, Observer {
+        homeViewModel.selectedCategory.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.setSelectedCategory(it)
             }
         })
-        homeViewModel.shareBody.observe(viewLifecycleOwner, Observer {
+        homeViewModel.shareBody.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
-        homeViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
+        homeViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        homeViewModel.errorType.observe(viewLifecycleOwner, Observer {
+        homeViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
         return root

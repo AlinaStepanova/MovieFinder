@@ -20,11 +20,25 @@ class DatabaseManager @Inject constructor(
         return dataSource.insert(movie)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ readSuccessMessage(it) }, { handleError(it) })
+            .subscribe({ }, { handleError(it) })
     }
 
     fun insertMovies(movies: List<Movie>): Disposable {
         return dataSource.insertAll(movies)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ }, { handleError(it) })
+    }
+
+    fun getAllMovies(): Disposable {
+        return dataSource.getAllEntries()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ readSuccessMessage(it) }, { handleError(it) })
+    }
+
+    fun update(movie: Movie): Disposable {
+        return dataSource.update(movie)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ readSuccessMessage(it) }, { handleError(it) })

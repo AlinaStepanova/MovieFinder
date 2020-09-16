@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
-import com.avs.moviefinder.data.database.MovieDatabaseDao
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesFilter
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
@@ -38,6 +38,7 @@ class HomeViewModel @Inject constructor(
         get() = _shareBody
     private var apiDisposable: Disposable? = null
     private var rxBusDisposable: Disposable? = null
+    private val dbDisposable = CompositeDisposable()
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
@@ -57,11 +58,12 @@ class HomeViewModel @Inject constructor(
             if (event.Movies.isEmpty()) _errorType.value =
                 ErrorType.NO_RESULTS else _errorType.value = null
             val movies = event.Movies
-            databaseManager.insertMovies(movies)
+            //dbDisposable.add(databaseManager.insertMovies(event.Movies))
             if (movies.first.id != 0L) {
                 movies.addFirst(Movie())
             }
             _movies.value = movies
+            //dbDisposable.add(databaseManager.getAllMovies())
         } else if (event is Throwable) {
             _isProgressVisible.value = false
             _isLoading.value = false
@@ -80,7 +82,14 @@ class HomeViewModel @Inject constructor(
 
     fun addToWatchLater(movieId: Long) {}
 
-    fun addToWatched(movieId: Long) {}
+    fun addToWatched(movieId: Long) {
+//        val movie = _movies.value?.first { it.id == movieId }
+//        if (movie != null) {
+//            movie.isFavorite = !movie.isFavorite
+//            dbDisposable.add(databaseManager.update(movie))
+//            _movies.value?.map { if (it.id == movieId) it.isFavorite = movie.isFavorite }
+//        }
+    }
 
     private fun makeAPICall() {
         when (_selectedCategory.value) {
@@ -126,6 +135,7 @@ class HomeViewModel @Inject constructor(
     override fun onCleared() {
         apiDisposable?.dispose()
         rxBusDisposable?.dispose()
+        dbDisposable.dispose()
         super.onCleared()
     }
 }

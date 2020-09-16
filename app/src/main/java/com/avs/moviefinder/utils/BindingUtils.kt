@@ -2,6 +2,8 @@ package com.avs.moviefinder.utils
 
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -27,6 +29,24 @@ fun TextView.setReleaseDateFormatted(item: Movie?) {
 fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
         text = formatRating(item.rating)
+    }
+}
+
+@BindingAdapter("favoritesIcon")
+fun ImageView.setFavoritesAppearance(item: Movie?) {
+    item?.let {
+        val imageResource =
+            if (item.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        setImageResource(imageResource)
+    }
+}
+
+@BindingAdapter("watchLaterIcon")
+fun ImageView.setWatchLaterAppearance(item: Movie?) {
+    item?.let {
+        val imageResource =
+            if (item.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later
+        setImageResource(imageResource)
     }
 }
 

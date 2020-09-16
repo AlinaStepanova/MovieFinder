@@ -134,9 +134,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ivPoster">
-
-        </ImageView>
+            app:layout_constraintStart_toEndOf="@+id/ivPoster"
+            app:favoritesIcon="@{movie}" />
 
         <ImageView
             android:id="@+id/ivWatchLaterIcon"
@@ -147,7 +146,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivFavoritesIcon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ivShareIcon" />
+            app:layout_constraintStart_toEndOf="@+id/ivShareIcon"
+            app:watchLaterIcon="@{movie}"/>
 
         <ImageView
             android:id="@+id/ivShareIcon"

@@ -143,9 +143,8 @@
             android:onClick="@{() -> movieClickListener.onFavoritesClick(movie)}"
             android:src="@drawable/ic_favorite_border"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon">
-
-        </ImageView>
+            app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon"
+            app:favoritesIcon="@{movie}" />
 
         <ImageView
             android:id="@+id/ivWatchLaterIcon"
@@ -155,7 +154,8 @@
             android:onClick="@{() -> movieClickListener.onWatchLaterClick(movie)}"
             android:src="@drawable/ic_outline_watch_later"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivShareIcon" />
+            app:layout_constraintEnd_toStartOf="@+id/ivShareIcon"
+            app:watchLaterIcon="@{movie}"/>
 
         <ImageView
             android:id="@+id/ivShareIcon"
