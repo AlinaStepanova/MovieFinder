@@ -155,6 +155,7 @@
             android:layout_marginBottom="@dimen/margin_12dp"
             android:onClick="@{() -> movieClickListener.onShareClick(movie)}"
             android:src="@drawable/ic_share"
+            app:tint="@color/mainGrey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

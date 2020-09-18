@@ -206,6 +206,7 @@
             android:layout_marginEnd="@dimen/dimen_72dp"
             app:fabSize="mini"
             app:layout_anchor="@id/app_bar"
+            android:tint="@android:color/white"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_favorite_border" />
 
@@ -216,6 +217,7 @@
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
             app:fabSize="mini"
+            android:tint="@android:color/white"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_outline_watch_later" />
