@@ -46,6 +46,8 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvMovieRating.text = formatRating(it.rating)
                 binding.tvGenres.text = formatGenres(it.genres)
                 binding.tvRuntime.text = formatRuntime(it.runtime)
+                binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
+                binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
                 loadImage(it.posterPath)
             }
         })
