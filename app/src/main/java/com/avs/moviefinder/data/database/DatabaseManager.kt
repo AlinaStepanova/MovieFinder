@@ -41,7 +41,7 @@ class DatabaseManager @Inject constructor(
         return dataSource.update(movie)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ readSuccessMessage(it) }, { handleError(it) })
+            .subscribe({ rxBus.send(movie) }, { handleError(it) })
     }
 
     private fun readSuccessMessage(items: Any) {

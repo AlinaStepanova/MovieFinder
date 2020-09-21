@@ -42,6 +42,9 @@ class HomeViewModel @Inject constructor(
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
+    private var _updateMovie = MutableLiveData<Int>()
+    val updateMovie: LiveData<Int>
+        get() = _updateMovie
 
     init {
         if (_selectedCategory.value == null) {
@@ -52,22 +55,30 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleServerResponse(event: Any?) {
-        if (event is MoviesFilter) {
-            _isProgressVisible.value = false
-            _isLoading.value = false
-            if (event.Movies.isEmpty()) _errorType.value =
-                ErrorType.NO_RESULTS else _errorType.value = null
-            val movies = event.Movies
-            //dbDisposable.add(databaseManager.insertMovies(event.Movies))
-            if (movies.first.id != 0L) {
-                movies.addFirst(Movie())
+        when (event) {
+            is MoviesFilter -> {
+                _isProgressVisible.value = false
+                _isLoading.value = false
+                if (event.Movies.isEmpty()) _errorType.value =
+                    ErrorType.NO_RESULTS else _errorType.value = null
+                val movies = event.Movies
+                //dbDisposable.add(databaseManager.insertMovies(event.Movies))
+                if (movies.first.id != 0L) {
+                    movies.addFirst(Movie())
+                }
+                _movies.value = movies
             }
-            _movies.value = movies
-            //dbDisposable.add(databaseManager.getAllMovies())
-        } else if (event is Throwable) {
-            _isProgressVisible.value = false
-            _isLoading.value = false
-            _errorType.value = ErrorType.NETWORK
+            is Movie -> {
+                val updatedMovieIndex = _movies.value?.indexOf(event)
+                if (updatedMovieIndex != null && updatedMovieIndex != -1) {
+                    _updateMovie.value = updatedMovieIndex
+                }
+            }
+            is Throwable -> {
+                _isProgressVisible.value = false
+                _isLoading.value = false
+                _errorType.value = ErrorType.NETWORK
+            }
         }
     }
 
@@ -80,15 +91,20 @@ class HomeViewModel @Inject constructor(
         _shareBody.value = null
     }
 
-    fun addToWatchLater(movieId: Long) {}
+    fun addToWatchLater(movieId: Long) {
+        val movie = _movies.value?.first { it.id == movieId }
+        movie?.let {
+            movie.isInWatchLater = !movie.isInWatchLater
+            dbDisposable.add(databaseManager.update(movie))
+        }
+    }
 
-    fun addToWatched(movieId: Long) {
-//        val movie = _movies.value?.first { it.id == movieId }
-//        if (movie != null) {
-//            movie.isFavorite = !movie.isFavorite
-//            dbDisposable.add(databaseManager.update(movie))
-//            _movies.value?.map { if (it.id == movieId) it.isFavorite = movie.isFavorite }
-//        }
+    fun addToFavorites(movieId: Long) {
+        val movie = _movies.value?.first { it.id == movieId }
+        movie?.let {
+            movie.isFavorite = !movie.isFavorite
+            dbDisposable.add(databaseManager.update(movie))
+        }
     }
 
     private fun makeAPICall() {

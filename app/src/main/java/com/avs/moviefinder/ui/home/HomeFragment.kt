@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +44,7 @@ class HomeFragment : BaseFragment() {
             MovieListener(
                 { movieId -> startMovieActivity(movieId) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
-                { movieId -> homeViewModel.addToWatched(movieId) },
+                { movieId -> homeViewModel.addToFavorites(movieId) },
                 { movieId -> homeViewModel.addToWatchLater(movieId) }),
             CategoryClickListener(
                 { homeViewModel.onPopularClick() },
@@ -57,6 +56,11 @@ class HomeFragment : BaseFragment() {
         homeViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
+            }
+        })
+        homeViewModel.updateMovie.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.notifyItemChanged(it)
             }
         })
         homeViewModel.selectedCategory.observe(viewLifecycleOwner, {
