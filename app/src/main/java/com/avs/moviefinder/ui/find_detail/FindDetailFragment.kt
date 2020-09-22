@@ -46,7 +46,7 @@ class FindDetailFragment : BaseFragment() {
         findDetailViewModel.onQueryFirstSubmitted(query)
         val adapter = FindDetailAdapter(
             MovieListener(
-                { movieId -> startMovieActivity(movieId) },
+                { movie -> startMovieActivity(movie) },
                 { movieId -> findDetailViewModel.shareMovie(movieId) },
                 { movieId -> findDetailViewModel.addToWatched(movieId) },
                 { movieId -> findDetailViewModel.addToWatchLater(movieId) })

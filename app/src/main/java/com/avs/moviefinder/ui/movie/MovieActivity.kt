@@ -36,19 +36,19 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        movieViewModel.openMovieDetails(intent.extras?.getLong(MOVIE_EXTRA_TAG))
+        movieViewModel.openMovieDetails(intent.extras?.getParcelable<Movie>(MOVIE_EXTRA_TAG))
         movieViewModel.movie.observe(this, {
             it?.let {
                 binding.toolbar.title = it.title
                 setTagline(it)
                 binding.tvOverview.text = it.overview
-                binding.tvMovieYear.text = formatDate(it.releaseDate, pattern = "dd/MM/yyyy")
-                binding.tvMovieRating.text = formatRating(it.rating)
-                binding.tvGenres.text = formatGenres(it.genres)
+                binding.tvMovieYear.text = it.releaseDate?.let { it1 -> formatDate(it1, pattern = "dd/MM/yyyy") }
+                binding.tvMovieRating.text = it.rating?.let { it1 -> formatRating(it1) }
+                binding.tvGenres.text = it.genres?.let { it1 -> formatGenres(it1) }
                 binding.tvRuntime.text = formatRuntime(it.runtime)
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
-                loadImage(it.posterPath)
+                it.posterPath?.let { it1 -> loadImage(it1) }
             }
         })
         movieViewModel.shareBody.observe(this, {
@@ -57,7 +57,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     }
 
     private fun setTagline(it: Movie) {
-        if (it.tagline.isEmpty()) {
+        if (it.tagline.isNullOrEmpty()) {
             binding.tvTagline.visibility = View.GONE
         } else {
             binding.tvTagline.text = it.tagline

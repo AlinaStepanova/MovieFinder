@@ -8,7 +8,7 @@ open class GenresConverter {
     @TypeConverter
     open fun fromGenres(genres: List<Genre>): String {
         return genres.fold("") { names, genre ->
-            if (names.isEmpty()) genre.name else names + "," + genre.name
+            if (names.isEmpty()) genre.name ?: "" else names + "," + genre.name
         }
     }
 

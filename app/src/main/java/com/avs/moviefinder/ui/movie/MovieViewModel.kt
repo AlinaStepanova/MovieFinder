@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui.movie
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
     private val serverApi: ServerApi,
-    private val rxBus: RxBus
+    private val databaseManager: DatabaseManager,
+    rxBus: RxBus
 ) : ViewModel() {
     private var _movie = MutableLiveData<Movie?>()
     val movie: LiveData<Movie?>
@@ -22,6 +24,7 @@ class MovieViewModel @Inject constructor(
         get() = _shareBody
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
+    private var extrasMovie = Movie()
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
@@ -29,8 +32,11 @@ class MovieViewModel @Inject constructor(
 
     private fun handleServerResponse(event: Any?) {
         if (event is Movie) {
+            event.isFavorite = extrasMovie.isFavorite
+            event.isInWatchLater = extrasMovie.isInWatchLater
             _movie.value = event
-            // todo build UI
+            //databaseManager.update(_movie.value as Movie)
+            // todo update database
         } else if (event is Throwable) {
             // todo add error handling
         }
@@ -43,10 +49,11 @@ class MovieViewModel @Inject constructor(
         _shareBody.value = null
     }
 
-    fun openMovieDetails(movieId: Long?) {
-        if (movieId != null) {
+    fun openMovieDetails(movie: Movie?) {
+        if (movie != null) {
+            extrasMovie = movie
             apiDisposable?.dispose()
-            apiDisposable = serverApi.getMovieById(movieId)
+            apiDisposable = serverApi.getMovieById(movie.id)
         }
     }
 

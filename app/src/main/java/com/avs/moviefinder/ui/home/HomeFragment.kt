@@ -42,7 +42,7 @@ class HomeFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val adapter = FindAdapter(
             MovieListener(
-                { movieId -> startMovieActivity(movieId) },
+                { movie -> startMovieActivity(movie) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
                 { movieId -> homeViewModel.addToFavorites(movieId) },
                 { movieId -> homeViewModel.addToWatchLater(movieId) }),

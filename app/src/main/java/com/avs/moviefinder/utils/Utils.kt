@@ -58,7 +58,7 @@ fun formatRating(number: String): String {
 
 fun formatGenres(genres: List<Genre>): String {
     return genres.fold("") { names, genre ->
-        if (names.isEmpty()) genre.name else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
+        if (names.isEmpty()) genre.name ?: "" else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
     }
 }
 

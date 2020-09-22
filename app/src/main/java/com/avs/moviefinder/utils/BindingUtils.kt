@@ -21,14 +21,14 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
-        text = formatDate(item.releaseDate)
+        text = item.releaseDate?.let { it1 -> formatDate(it1) }
     }
 }
 
 @BindingAdapter("ratingFormatted")
 fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
-        text = formatRating(item.rating)
+        text = item.rating?.let { it1 -> formatRating(it1) }
     }
 }
 

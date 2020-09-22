@@ -22,9 +22,9 @@ open class BaseFragment : DaggerFragment() {
         fragmentContext = context
     }
 
-    fun startMovieActivity(movieId: Long) {
+    fun startMovieActivity(movie: Movie) {
         startActivity(Intent(activity, MovieActivity::class.java).apply {
-            putExtra(MOVIE_EXTRA_TAG, movieId)
+            putExtra(MOVIE_EXTRA_TAG, movie)
         })
     }
 
