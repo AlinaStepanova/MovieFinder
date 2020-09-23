@@ -42,7 +42,7 @@ abstract class ViewModelsModule {
     @Binds
     @IntoMap
     @ViewModelKey(FavoritesViewModel::class)
-    internal abstract fun watchedViewModel(watchedViewModel: WatchLaterViewModel): ViewModel
+    internal abstract fun favoritesViewModel(favoritesViewModel: FavoritesViewModel): ViewModel
 
     @Binds
     @IntoMap

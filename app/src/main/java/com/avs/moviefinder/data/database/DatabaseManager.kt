@@ -44,6 +44,13 @@ class DatabaseManager @Inject constructor(
             .subscribe({ rxBus.send(movie) }, { handleError(it) })
     }
 
+    fun getAllFavorites(): Disposable {
+        return dataSource.getFavoritesList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ it?.let { it1 -> rxBus.send(it1) } }, { handleError(it) })
+    }
+
     private fun readSuccessMessage(items: Any) {
         Log.d(this.javaClass.simpleName, "Inserted successfully $items")
     }

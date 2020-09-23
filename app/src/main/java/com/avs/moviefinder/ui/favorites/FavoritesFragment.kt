@@ -5,23 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
+import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
+import com.avs.moviefinder.ui.find_detail.FindDetailViewModel
+import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
 class FavoritesFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var watchedViewModel: FavoritesViewModel
+    lateinit var favoritesViewModel: FavoritesViewModel
+
+    private lateinit var binding: FragmentFavoritesBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        watchedViewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
+        favoritesViewModel = ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -29,11 +35,25 @@ class FavoritesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_watched, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        watchedViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_favorites, container, false
+        )
+        val root: View = binding.root
+        binding.favoritesViewModel = favoritesViewModel
+        binding.lifecycleOwner = this
+        val adapter = BaseMoviesAdapter(
+            MovieListener(
+                { movie -> startMovieActivity(movie) },
+                { movieId -> favoritesViewModel.shareMovie(movieId) },
+                { movieId -> favoritesViewModel.addToWatched(movieId) },
+                { movieId -> favoritesViewModel.addToWatchLater(movieId) })
+        )
+        favoritesViewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
         })
+        binding.rvFindRecyclerView.adapter = adapter
         return root
     }
 }

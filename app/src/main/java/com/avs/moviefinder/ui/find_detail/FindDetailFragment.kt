@@ -13,6 +13,7 @@ import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
+import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class FindDetailFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
         findDetailViewModel.onQueryFirstSubmitted(query)
-        val adapter = FindDetailAdapter(
+        val adapter = BaseMoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> findDetailViewModel.shareMovie(movieId) },

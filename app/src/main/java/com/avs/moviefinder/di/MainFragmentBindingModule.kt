@@ -20,5 +20,5 @@ abstract class MainFragmentBindingModule {
     abstract fun provideWatchLaterFragment(): WatchLaterFragment
 
     @ContributesAndroidInjector
-    abstract fun provideFindWatchedFragment(): FavoritesFragment
+    abstract fun provideFavoritesFragment(): FavoritesFragment
 }

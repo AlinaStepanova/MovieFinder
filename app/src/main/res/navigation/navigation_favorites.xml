@@ -9,5 +9,5 @@
         android:id="@+id/navigation_favorites"
         android:name="com.avs.moviefinder.ui.favorites.FavoritesFragment"
         android:label="@string/title_watched"
-        tools:layout="@layout/fragment_watched" />
+        tools:layout="@layout/fragment_favorites" />
 </navigation>
