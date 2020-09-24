@@ -27,7 +27,8 @@ class FavoritesFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        favoritesViewModel = ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
+        favoritesViewModel =
+            ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -53,7 +54,15 @@ class FavoritesFragment : BaseFragment() {
                 adapter.submitList(it)
             }
         })
+        favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+            binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
         binding.rvFindRecyclerView.adapter = adapter
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        favoritesViewModel.fetchFavoriteMovies()
     }
 }
