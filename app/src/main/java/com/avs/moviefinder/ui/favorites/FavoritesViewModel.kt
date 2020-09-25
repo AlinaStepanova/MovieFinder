@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -22,6 +23,9 @@ class FavoritesViewModel @Inject constructor(
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
+    private var _shareBody = MutableLiveData<String?>()
+    val shareBody: LiveData<String?>
+        get() = _shareBody
     private val dbDisposable = CompositeDisposable()
     private var rxBusDisposable: Disposable? = null
 
@@ -48,7 +52,10 @@ class FavoritesViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun shareMovie(movieId: Long) {}
+    fun shareMovie(movieId: Long) {
+        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = null
+    }
 
     fun addToWatchLater(movieId: Long) {}
 

@@ -54,6 +54,9 @@ class FavoritesFragment : BaseFragment() {
                 adapter.submitList(it)
             }
         })
+        favoritesViewModel.shareBody.observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) shareMovie(it)
+        })
         favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
