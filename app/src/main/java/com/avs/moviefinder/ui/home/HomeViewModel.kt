@@ -58,7 +58,6 @@ class HomeViewModel @Inject constructor(
         when (event) {
             is MoviesDBFilter -> {
                 _moviesDB.value = event.movies as ArrayList<Movie>
-                Log.d("jjj", _moviesDB.toString())
                 makeAPICall()
             }
             is MoviesAPIFilter -> {
@@ -96,9 +95,11 @@ class HomeViewModel @Inject constructor(
         } else {
             movies.forEach { movie ->
                 val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
-                insertedMovie?.let {
+                if (insertedMovie != null) {
                     movie.isInWatchLater = insertedMovie.isInWatchLater
                     movie.isFavorite = insertedMovie.isFavorite
+                } else if (movie.id != 0L) {
+                    dbDisposable.add(databaseManager.insertMovie(movie))
                 }
             }
         }
@@ -131,8 +132,10 @@ class HomeViewModel @Inject constructor(
 
     private fun makeAPICall() {
         if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
+            _selectedCategory.value = MoviesCategory.POPULAR
             getPopularMovies()
         } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+            _selectedCategory.value = MoviesCategory.TOP_RATED
             getTopRatedMovies()
         }
     }
