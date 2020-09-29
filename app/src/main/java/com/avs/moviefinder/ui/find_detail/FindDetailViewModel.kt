@@ -42,9 +42,9 @@ class FindDetailViewModel @Inject constructor(
             is MoviesSearchFilter -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (event.Movies.isEmpty()) _errorType.value =
+                if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
-                _movies.value = event.Movies
+                _movies.value = event.movies
             }
             is Throwable -> {
                 _isProgressVisible.value = false

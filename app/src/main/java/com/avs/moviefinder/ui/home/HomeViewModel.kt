@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,8 @@ import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesFilter
+import com.avs.moviefinder.data.dto.MoviesAPIFilter
+import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +26,7 @@ class HomeViewModel @Inject constructor(
     private var _movies = MutableLiveData<LinkedList<Movie>>()
     val movies: LiveData<LinkedList<Movie>>
         get() = _movies
+    private var _moviesDB = MutableLiveData<ArrayList<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -47,22 +50,24 @@ class HomeViewModel @Inject constructor(
         get() = _updateMovie
 
     init {
-        if (_selectedCategory.value == null) {
-            _selectedCategory.value = MoviesCategory.POPULAR
-            getPopularMovies()
-        }
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
+        dbDisposable.add(databaseManager.getAllMovies())
     }
 
     private fun handleServerResponse(event: Any?) {
         when (event) {
-            is MoviesFilter -> {
+            is MoviesDBFilter -> {
+                _moviesDB.value = event.movies as ArrayList<Movie>
+                Log.d("jjj", _moviesDB.toString())
+                makeAPICall()
+            }
+            is MoviesAPIFilter -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (event.Movies.isEmpty()) _errorType.value =
+                if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
-                val movies = event.Movies
-                dbDisposable.add(databaseManager.insertMovies(event.Movies))
+                val movies = event.movies
+                combineServerAndDatabaseData(event, movies)
                 if (movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
@@ -82,8 +87,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun combineServerAndDatabaseData(
+        event: MoviesAPIFilter,
+        movies: LinkedList<Movie>
+    ) {
+        if (_moviesDB.value!!.isEmpty()) {
+            dbDisposable.add(databaseManager.insertMovies(event.movies))
+        } else {
+            movies.forEach { movie ->
+                val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
+                insertedMovie?.let {
+                    movie.isInWatchLater = insertedMovie.isInWatchLater
+                    movie.isFavorite = insertedMovie.isFavorite
+                }
+            }
+        }
+    }
+
     fun onRefresh() {
-        makeAPICall()
+        dbDisposable.add(databaseManager.getAllMovies())
     }
 
     fun shareMovie(movieId: Long) {
@@ -108,27 +130,24 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun makeAPICall() {
-        when (_selectedCategory.value) {
-            MoviesCategory.POPULAR -> {
-                getPopularMovies()
-            }
-            MoviesCategory.TOP_RATED -> {
-                getTopRatedMovies()
-            }
+        if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
+            getPopularMovies()
+        } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+            getTopRatedMovies()
         }
     }
 
     fun onPopularClick() {
         if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
             _selectedCategory.value = MoviesCategory.POPULAR
-            getPopularMovies()
+            onRefresh()
         }
     }
 
     fun onTopRatedClick() {
         if (_selectedCategory.value == MoviesCategory.POPULAR) {
             _selectedCategory.value = MoviesCategory.TOP_RATED
-            getTopRatedMovies()
+            onRefresh()
         }
     }
 

@@ -3,10 +3,12 @@ package com.avs.moviefinder.data.database
 import android.util.Log
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +36,7 @@ class DatabaseManager @Inject constructor(
         return dataSource.getAllEntries()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ readSuccessMessage(it) }, { handleError(it) })
+            .subscribe({ rxBus.send(MoviesDBFilter(it)) }, { handleError(it) })
     }
 
     fun update(movie: Movie): Disposable {
