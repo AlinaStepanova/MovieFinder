@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
+import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.home.HomeViewModel
-import com.avs.moviefinder.ui.main.MainActivity
+import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
 class WatchLaterFragment : BaseFragment() {
@@ -20,6 +20,8 @@ class WatchLaterFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var watchLaterViewModel: WatchLaterViewModel
+
+    private lateinit var binding: FragmentWatchLaterBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -31,11 +33,36 @@ class WatchLaterFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_watch_later, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        watchLaterViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_watch_later, container, false
+        )
+        val root: View = binding.root
+        binding.watchLaterViewModel = watchLaterViewModel
+        binding.lifecycleOwner = this
+        val adapter = BaseMoviesAdapter(
+            MovieListener(
+                { movie -> startMovieActivity(movie) },
+                { movieId -> watchLaterViewModel.shareMovie(movieId) },
+                { movieId -> watchLaterViewModel.addFavorites(movieId) },
+                { movieId -> watchLaterViewModel.addToWatchLater(movieId) })
+        )
+        watchLaterViewModel.movies.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.submitList(it)
+            }
         })
+        watchLaterViewModel.shareBody.observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) shareMovie(it)
+        })
+        watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+            binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
+        binding.rvWatchLaterRecyclerView.adapter = adapter
         return root
+    }
+
+    override fun onResume() {
+        watchLaterViewModel.fetchWatchLaterList()
+        super.onResume()
     }
 }

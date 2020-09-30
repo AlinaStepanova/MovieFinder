@@ -50,7 +50,14 @@ class DatabaseManager @Inject constructor(
         return dataSource.getFavoritesList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { it1 -> rxBus.send(it1) } }, { handleError(it) })
+            .subscribe({ it?.let { favorites -> rxBus.send(favorites) } }, { handleError(it) })
+    }
+
+    fun getWatchLaterList(): Disposable {
+        return dataSource.getWatchLaterList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ it?.let { watchList -> rxBus.send(watchList) } }, { handleError(it) })
     }
 
     private fun readSuccessMessage(items: Any) {
