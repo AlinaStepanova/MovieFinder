@@ -9,7 +9,6 @@ import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import java.util.*
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
@@ -30,19 +29,22 @@ class FavoritesViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
 
     init {
-        rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
+
+        rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
     }
 
-    private fun handleServerResponse(event: Any) {
+    private fun handleDBResponse(event: Any) {
         if (event is List<*>) {
             _isProgressVisible.value = false
-            _movies.value = event as List<Movie>
+            val query = event as List<Movie>
+            if (query != _movies.value) {
+                _movies.value = query
+            }
         }
     }
 
     fun fetchFavoriteMovies() {
         _isProgressVisible.value = true
-        _movies.value = LinkedList()
         dbDisposable.add(databaseManager.getAllFavorites())
     }
 
@@ -59,6 +61,6 @@ class FavoritesViewModel @Inject constructor(
 
     fun addToWatchLater(movieId: Long) {}
 
-    fun addToWatched(movieId: Long) {}
+    fun addFavorites(movieId: Long) {}
 
 }

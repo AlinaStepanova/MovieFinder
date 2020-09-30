@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.find_detail.FindDetailViewModel
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
@@ -46,10 +44,10 @@ class FavoritesFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> favoritesViewModel.shareMovie(movieId) },
-                { movieId -> favoritesViewModel.addToWatched(movieId) },
+                { movieId -> favoritesViewModel.addFavorites(movieId) },
                 { movieId -> favoritesViewModel.addToWatchLater(movieId) })
         )
-        favoritesViewModel.movies.observe(viewLifecycleOwner, Observer {
+        favoritesViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
@@ -65,7 +63,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     override fun onResume() {
-        super.onResume()
         favoritesViewModel.fetchFavoriteMovies()
+        super.onResume()
     }
 }
