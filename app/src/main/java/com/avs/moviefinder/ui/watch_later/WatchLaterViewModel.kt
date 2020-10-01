@@ -26,6 +26,9 @@ class WatchLaterViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
+    private var _updateMovie = MutableLiveData<Int?>()
+    val updateMovie: LiveData<Int?>
+        get() = _updateMovie
     private val dbDisposable = CompositeDisposable()
     private var rxBusDisposable: Disposable? = null
 
@@ -34,11 +37,22 @@ class WatchLaterViewModel @Inject constructor(
     }
 
     private fun handleDBResponse(event: Any) {
-        if (event is List<*>) {
-            _isProgressVisible.value = false
-            val query = event as List<Movie>
-            if (query != _movies.value) {
-                _movies.value = query
+        when (event) {
+            is List<*> -> {
+                _isProgressVisible.value = false
+                val query = event as List<Movie>
+                if (query != _movies.value) {
+                    _movies.value = query
+                }
+            }
+            is Movie -> {
+                _movies.value?.let {
+                    val updatedMovieIndex = _movies.value!!.indexOf(event)
+                    if (updatedMovieIndex != -1) {
+                        _updateMovie.value = updatedMovieIndex
+                        _updateMovie.value = null
+                    }
+                }
             }
         }
     }
@@ -61,5 +75,11 @@ class WatchLaterViewModel @Inject constructor(
 
     fun addToWatchLater(movieId: Long) {}
 
-    fun addFavorites(movieId: Long) {}
+    fun addFavorites(movieId: Long) {
+        val movie = _movies.value?.first { it.id == movieId }
+        movie?.let {
+            movie.isFavorite = !movie.isFavorite
+            dbDisposable.add(databaseManager.update(movie))
+        }
+    }
 }

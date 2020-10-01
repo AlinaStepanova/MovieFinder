@@ -68,6 +68,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     override fun onResume() {
+        binding.rvFindRecyclerView.smoothScrollToPosition(0)
         favoritesViewModel.fetchFavoriteMovies()
         super.onResume()
     }

@@ -45,8 +45,8 @@ class HomeViewModel @Inject constructor(
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
-    private var _updateMovie = MutableLiveData<Int>()
-    val updateMovie: LiveData<Int>
+    private var _updateMovie = MutableLiveData<Int?>()
+    val updateMovie: LiveData<Int?>
         get() = _updateMovie
 
     init {
@@ -75,7 +75,10 @@ class HomeViewModel @Inject constructor(
             is Movie -> {
                 _movies.value?.let {
                     val updatedMovieIndex = _movies.value!!.indexOf(event)
-                    if (updatedMovieIndex != -1) _updateMovie.value = updatedMovieIndex
+                    if (updatedMovieIndex != -1) {
+                        _updateMovie.value = updatedMovieIndex
+                        _updateMovie.value = null
+                    }
                 }
             }
             is Throwable -> {

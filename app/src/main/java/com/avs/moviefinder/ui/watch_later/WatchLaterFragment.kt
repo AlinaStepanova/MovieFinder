@@ -2,6 +2,7 @@ package com.avs.moviefinder.ui.watch_later
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,11 +58,18 @@ class WatchLaterFragment : BaseFragment() {
         watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
+        watchLaterViewModel.updateMovie.observe(viewLifecycleOwner, {
+            it?.let {
+                Log.d("jjj", it.toString())
+                adapter.notifyItemChanged(it)
+            }
+        })
         binding.rvWatchLaterRecyclerView.adapter = adapter
         return root
     }
 
     override fun onResume() {
+        binding.rvWatchLaterRecyclerView.smoothScrollToPosition(0)
         watchLaterViewModel.fetchWatchLaterList()
         super.onResume()
     }
