@@ -73,9 +73,9 @@ class HomeViewModel @Inject constructor(
                 _movies.value = movies
             }
             is Movie -> {
-                val updatedMovieIndex = _movies.value?.indexOf(event)
-                if (updatedMovieIndex != null && updatedMovieIndex != -1) {
-                    _updateMovie.value = updatedMovieIndex
+                _movies.value?.let {
+                    val updatedMovieIndex = _movies.value!!.indexOf(event)
+                    if (updatedMovieIndex != -1) _updateMovie.value = updatedMovieIndex
                 }
             }
             is Throwable -> {
