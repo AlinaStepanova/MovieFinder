@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,9 +44,9 @@ class HomeViewModel @Inject constructor(
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
-    private var _updateMovie = MutableLiveData<Int?>()
-    val updateMovie: LiveData<Int?>
-        get() = _updateMovie
+    private var _updateMovieIndex = MutableLiveData<Int?>()
+    val updateMovieIndex: LiveData<Int?>
+        get() = _updateMovieIndex
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
@@ -74,10 +73,14 @@ class HomeViewModel @Inject constructor(
             }
             is Movie -> {
                 _movies.value?.let {
-                    val updatedMovieIndex = _movies.value!!.indexOf(event)
-                    if (updatedMovieIndex != -1) {
-                        _updateMovie.value = updatedMovieIndex
-                        _updateMovie.value = null
+                    val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
+                    fetchedMovie?.let {
+                        val updatedMovieIndex = _movies.value!!.indexOf(fetchedMovie)
+                        if (updatedMovieIndex != -1) {
+                            _movies.value!![updatedMovieIndex] = event
+                            _updateMovieIndex.value = updatedMovieIndex
+                            _updateMovieIndex.value = null
+                        }
                     }
                 }
             }

@@ -12,7 +12,9 @@ import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class WatchLaterViewModel @Inject constructor(
     rxBus: RxBus,

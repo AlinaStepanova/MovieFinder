@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment() {
                 adapter.submitList(it)
             }
         })
-        homeViewModel.updateMovie.observe(viewLifecycleOwner, {
+        homeViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.notifyItemChanged(it)
             }

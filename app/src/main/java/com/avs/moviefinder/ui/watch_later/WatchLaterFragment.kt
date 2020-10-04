@@ -60,7 +60,6 @@ class WatchLaterFragment : BaseFragment() {
         })
         watchLaterViewModel.updateMovie.observe(viewLifecycleOwner, {
             it?.let {
-                Log.d("jjj", it.toString())
                 adapter.notifyItemChanged(it)
             }
         })
