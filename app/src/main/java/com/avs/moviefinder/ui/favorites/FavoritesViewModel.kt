@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
+import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
@@ -38,11 +39,10 @@ class FavoritesViewModel @Inject constructor(
 
     private fun handleDBResponse(event: Any) {
         when (event) {
-            is List<*> -> {
+            is FavoritesList -> {
                 _isProgressVisible.value = false
-                val query = event as List<Movie>
-                if (query != _movies.value) {
-                    _movies.value = query
+                if (event.movies != null && event.movies != _movies.value) {
+                    _movies.value = event.movies!!
                 }
             }
             is Movie -> {

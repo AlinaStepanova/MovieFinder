@@ -8,3 +8,7 @@ data class MoviesAPIFilter(@SerializedName("results") val movies: LinkedList<Mov
 data class MoviesSearchFilter(@SerializedName("results") val movies: LinkedList<Movie> = LinkedList())
 
 data class MoviesDBFilter(val movies: List<Movie> = LinkedList())
+
+data class FavoritesList(val movies: List<Movie>? = LinkedList())
+
+data class WatchList(val movies: List<Movie>? = LinkedList())
