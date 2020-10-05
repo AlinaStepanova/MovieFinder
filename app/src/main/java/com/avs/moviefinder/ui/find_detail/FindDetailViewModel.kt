@@ -8,6 +8,7 @@ import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.dto.Query
+import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -27,6 +28,9 @@ class FindDetailViewModel @Inject constructor(
     private var _errorType = MutableLiveData<ErrorType?>()
     val errorType: LiveData<ErrorType?>
         get() = _errorType
+    private var _shareBody = MutableLiveData<String?>()
+    val shareBody: LiveData<String?>
+        get() = _shareBody
     private var _query = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
@@ -71,13 +75,14 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    fun openMovieDetails(movieId: Long) {}
-
-    fun shareMovie(movieId: Long) {}
+    fun shareMovie(movieId: Long) {
+        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = null
+    }
 
     fun addToWatchLater(movieId: Long) {}
 
-    fun addToWatched(movieId: Long) {}
+    fun addToFavorites(movieId: Long) {}
 
     override fun onCleared() {
         rxBusDisposable?.dispose()

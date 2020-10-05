@@ -29,7 +29,8 @@ class FindDetailFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        findDetailViewModel = ViewModelProvider(this, viewModelFactory).get(FindDetailViewModel::class.java)
+        findDetailViewModel =
+            ViewModelProvider(this, viewModelFactory).get(FindDetailViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -49,7 +50,7 @@ class FindDetailFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> findDetailViewModel.shareMovie(movieId) },
-                { movieId -> findDetailViewModel.addToWatched(movieId) },
+                { movieId -> findDetailViewModel.addToFavorites(movieId) },
                 { movieId -> findDetailViewModel.addToWatchLater(movieId) })
         )
         binding.rvFindRecyclerView.adapter = adapter
@@ -57,6 +58,9 @@ class FindDetailFragment : BaseFragment() {
             it?.let {
                 adapter.submitList(it)
             }
+        })
+        findDetailViewModel.shareBody.observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) shareMovie(it)
         })
         findDetailViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE

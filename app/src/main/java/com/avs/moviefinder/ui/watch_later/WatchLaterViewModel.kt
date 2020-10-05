@@ -54,7 +54,7 @@ class WatchLaterViewModel @Inject constructor(
                     if (updatedMovieIndex != -1) {
                         _updateMovie.value = updatedMovieIndex
                         _updateMovie.value = null
-                    }
+                    } //todo otherwise add this movie to the list
                 }
             }
         }
