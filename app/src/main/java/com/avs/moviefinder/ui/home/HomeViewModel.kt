@@ -121,7 +121,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addToWatchLater(movieId: Long) {
-        val movie = _movies.value?.first { it.id == movieId }
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
             dbDisposable.add(databaseManager.update(movie))
@@ -129,7 +129,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addToFavorites(movieId: Long) {
-        val movie = _movies.value?.first { it.id == movieId }
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isFavorite = !movie.isFavorite
             dbDisposable.add(databaseManager.update(movie))

@@ -26,7 +26,8 @@ class WatchLaterFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        watchLaterViewModel = ViewModelProvider(this, viewModelFactory).get(WatchLaterViewModel::class.java)
+        watchLaterViewModel =
+            ViewModelProvider(this, viewModelFactory).get(WatchLaterViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -61,6 +62,18 @@ class WatchLaterFragment : BaseFragment() {
         watchLaterViewModel.updateMovie.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.notifyItemChanged(it)
+            }
+        })
+        watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
+            it?.let {
+                if (!it) watchLaterViewModel.updateMovieIndex.value?.let { index ->
+                    adapter.notifyItemRemoved(
+                        index
+                    )
+                } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
+                    adapter.notifyItemInserted(index)
+                }
+
             }
         })
         binding.rvWatchLaterRecyclerView.adapter = adapter
