@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.favorites
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +18,8 @@ class FavoritesViewModel @Inject constructor(
     private val databaseManager: DatabaseManager
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
+    private var _movies = MutableLiveData<ArrayList<Movie>>()
+    val movies: LiveData<ArrayList<Movie>>
         get() = _movies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
@@ -26,9 +27,12 @@ class FavoritesViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var _updateMovie = MutableLiveData<Int?>()
-    val updateMovie: LiveData<Int?>
-        get() = _updateMovie
+    private var _updateMovieIndex = MutableLiveData<Int?>()
+    val updateMovieIndex: LiveData<Int?>
+        get() = _updateMovieIndex
+    private var _isInserted = MutableLiveData<Boolean?>()
+    val isInserted: LiveData<Boolean?>
+        get() = _isInserted
     private val dbDisposable = CompositeDisposable()
     private var rxBusDisposable: Disposable? = null
 
@@ -42,15 +46,23 @@ class FavoritesViewModel @Inject constructor(
             is FavoritesList -> {
                 _isProgressVisible.value = false
                 if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = event.movies!!
+                    _movies.value = (event.movies as ArrayList<Movie>)
                 }
             }
             is Movie -> {
                 _movies.value?.let {
-                    val updatedMovieIndex = _movies.value!!.indexOf(event)
-                    if (updatedMovieIndex != -1) {
-                        _updateMovie.value = updatedMovieIndex
-                        _updateMovie.value = null
+                    val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
+                    fetchedMovie?.let {
+                        val updatedMovieIndex = _movies.value!!.indexOf(fetchedMovie)
+                        if (updatedMovieIndex != -1) {
+                            _updateMovieIndex.value = updatedMovieIndex
+                            if (!event.isFavorite) {
+                                _isInserted.value = false
+                                _movies.value!!.removeAt(updatedMovieIndex)
+                            } else {
+                                _movies.value!![updatedMovieIndex] = event
+                            }
+                        }
                     }
                 }
             }
@@ -74,13 +86,19 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun addToWatchLater(movieId: Long) {
-        val movie = _movies.value?.first { it.id == movieId }
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
             dbDisposable.add(databaseManager.update(movie))
         }
     }
 
-    fun addFavorites(movieId: Long) {}
+    fun addFavorites(movieId: Long) {
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
+        movie?.let {
+            movie.isFavorite = !movie.isFavorite
+            dbDisposable.add(databaseManager.update(movie))
+        }
+    }
 
 }

@@ -58,9 +58,21 @@ class FavoritesFragment : BaseFragment() {
         favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        favoritesViewModel.updateMovie.observe(viewLifecycleOwner, {
+        favoritesViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.notifyItemChanged(it)
+            }
+        })
+        favoritesViewModel.isInserted.observe(viewLifecycleOwner, {
+            it?.let {
+                if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
+                    adapter.notifyItemRemoved(
+                        index
+                    )
+                } else favoritesViewModel.updateMovieIndex.value?.let { index ->
+                    adapter.notifyItemInserted(index)
+                }
+
             }
         })
         binding.rvFindRecyclerView.adapter = adapter
