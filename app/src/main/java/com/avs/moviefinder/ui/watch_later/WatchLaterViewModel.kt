@@ -26,9 +26,6 @@ class WatchLaterViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var _updateMovie = MutableLiveData<Int?>()
-    val updateMovie: LiveData<Int?>
-        get() = _updateMovie
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex

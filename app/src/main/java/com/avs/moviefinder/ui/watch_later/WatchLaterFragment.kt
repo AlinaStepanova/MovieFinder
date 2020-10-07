@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.watch_later
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +58,7 @@ class WatchLaterFragment : BaseFragment() {
         watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        watchLaterViewModel.updateMovie.observe(viewLifecycleOwner, {
+        watchLaterViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.notifyItemChanged(it)
             }

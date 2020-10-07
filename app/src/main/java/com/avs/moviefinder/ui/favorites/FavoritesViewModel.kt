@@ -37,7 +37,6 @@ class FavoritesViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
 
     init {
-
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
     }
 
