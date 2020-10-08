@@ -61,7 +61,7 @@ class FavoritesViewModel @Inject constructor(
                             } else {
                                 _movies.value!![updatedMovieIndex] = event
                             }
-                        }
+                        } // todo add new movie to the list
                     }
                 }
             }
@@ -71,6 +71,10 @@ class FavoritesViewModel @Inject constructor(
     fun fetchFavoriteMovies() {
         _isProgressVisible.value = true
         dbDisposable.add(databaseManager.getAllFavorites())
+    }
+
+    fun undoRemovingMovie() {
+
     }
 
     override fun onCleared() {

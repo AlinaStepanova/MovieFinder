@@ -66,9 +66,10 @@ class FavoritesFragment : BaseFragment() {
         favoritesViewModel.isInserted.observe(viewLifecycleOwner, {
             it?.let {
                 if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemRemoved(
-                        index
-                    )
+                    adapter.notifyItemRemoved(index)
+                    showSnackBarWithAction(
+                        "Movie was deleted from favorites list"
+                    ) { favoritesViewModel.undoRemovingMovie() }
                 } else favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)
                 }

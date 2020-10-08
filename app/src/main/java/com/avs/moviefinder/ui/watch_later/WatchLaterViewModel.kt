@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.watch_later
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -76,6 +77,10 @@ class WatchLaterViewModel @Inject constructor(
         dbDisposable.dispose()
         rxBusDisposable?.dispose()
         super.onCleared()
+    }
+
+    fun undoRemovingMovies() {
+
     }
 
     fun shareMovie(movieId: Long) {

@@ -66,9 +66,10 @@ class WatchLaterFragment : BaseFragment() {
         watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
             it?.let {
                 if (!it) watchLaterViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemRemoved(
-                        index
-                    )
+                    adapter.notifyItemRemoved(index)
+                    showSnackBarWithAction(
+                        "Movie was deleted from watch-list"
+                    ) { watchLaterViewModel.undoRemovingMovies() }
                 } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)
                 }
