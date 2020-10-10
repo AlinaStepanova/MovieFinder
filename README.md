@@ -1,4 +1,4 @@
-# FindMovie
+# MovieFinder
 
 Find movies to be added to your personal watch- and favorites lists
 
