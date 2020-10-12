@@ -1,14 +1,19 @@
 package com.avs.moviefinder.ui.main
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.network.dto.Query
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.Disposable
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
-    private val rxBus: RxBus
+class MainViewModel constructor(
+    private val rxBus: RxBus,
+    private val handle: SavedStateHandle
 ) : ViewModel() {
+
+    companion object {
+        val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
+    }
 
     private var apiDisposable: Disposable? = null
 
@@ -19,6 +24,8 @@ class MainViewModel @Inject constructor(
 
     fun onQueryTextSubmit(newText: String) {
         rxBus.send(Query(newText))
-        // todo fix rotation search bar issue
     }
+
+    fun onQueryTextChanged(newText: String) = handle.set(KEY_SEARCH_QUERY, newText)
+    fun getLatestQueryTest(): String? = handle.get<String>(KEY_SEARCH_QUERY)
 }
