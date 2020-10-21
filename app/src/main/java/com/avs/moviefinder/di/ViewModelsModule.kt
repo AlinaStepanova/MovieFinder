@@ -21,11 +21,6 @@ abstract class ViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    internal abstract fun mainViewModel(viewModel: MainViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(MovieViewModel::class)
     internal abstract fun movieViewModel(viewModel: MovieViewModel): ViewModel
 
