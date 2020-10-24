@@ -36,7 +36,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        movieViewModel.openMovieDetails(intent.extras?.getParcelable<Movie>(MOVIE_EXTRA_TAG))
+        movieViewModel.openMovieDetails(intent.extras?.getParcelable(MOVIE_EXTRA_TAG))
         movieViewModel.movie.observe(this, {
             it?.let {
                 binding.toolbar.title = it.title
@@ -54,6 +54,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         movieViewModel.shareBody.observe(this, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
+        binding.fabFavorite.setOnClickListener { movieViewModel.addToFavorites() }
+        binding.fabWatched.setOnClickListener { movieViewModel.addToWatchLater() }
     }
 
     private fun setTagline(it: Movie) {

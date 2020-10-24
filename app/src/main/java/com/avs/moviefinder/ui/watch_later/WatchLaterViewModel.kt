@@ -58,6 +58,7 @@ class WatchLaterViewModel @Inject constructor(
                             if (!event.isInWatchLater) {
                                 _isInserted.value = false
                                 _movies.value!!.removeAt(updatedMovieIndex)
+                                _isInserted.value = null
                             } else {
                                 _movies.value!![updatedMovieIndex] = event
                             }

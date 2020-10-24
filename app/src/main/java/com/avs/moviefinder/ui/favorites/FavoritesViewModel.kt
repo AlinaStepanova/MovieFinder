@@ -58,6 +58,7 @@ class FavoritesViewModel @Inject constructor(
                             if (!event.isFavorite) {
                                 _isInserted.value = false
                                 _movies.value!!.removeAt(updatedMovieIndex)
+                                _isInserted.value = null
                             } else {
                                 _movies.value!![updatedMovieIndex] = event
                             }

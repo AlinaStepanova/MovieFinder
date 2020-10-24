@@ -7,6 +7,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.data.dto.WatchList
 import com.avs.moviefinder.utils.RxBus
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -46,6 +47,10 @@ class DatabaseManager @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ rxBus.send(movie) }, { handleError(it) })
+    }
+
+    fun getById(id: Long): Single<Movie?> {
+        return dataSource.get(id)
     }
 
     fun getAllFavorites(): Disposable {

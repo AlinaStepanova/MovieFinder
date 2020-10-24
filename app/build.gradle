@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -60,7 +63,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
 
     //dagger
-    def dagger_version = "2.25.2"
+    def dagger_version = "2.28.1"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
@@ -90,7 +93,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$version_room"
     implementation "androidx.room:room-rxjava2:$version_room"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 

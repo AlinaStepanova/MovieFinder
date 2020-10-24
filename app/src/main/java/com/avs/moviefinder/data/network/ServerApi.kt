@@ -2,10 +2,13 @@ package com.avs.moviefinder.data.network
 
 import android.util.Log
 import com.avs.moviefinder.BuildConfig
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.RxBus
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,6 +31,10 @@ class ServerApi @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ rxBus.send(it) }, { handleError(it) })
+    }
+
+    fun callMovieById(id: Long): Single<Movie> {
+        return moviesApi.getMovieById(id)
     }
 
     fun getTopRatedMovies(): Disposable {

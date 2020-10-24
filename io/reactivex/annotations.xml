@@ -1,0 +1,8 @@
+<root>
+    <item
+        name='io.reactivex.Single io.reactivex.Single&lt;R&gt; zipWith(io.reactivex.SingleSource&lt;U&gt;, io.reactivex.functions.BiFunction&lt;? super T,? super U,? extends R&gt;)'>
+        <annotation name='org.jetbrains.annotations.Contract'>
+            <val val="&quot; _, null -&gt; null&quot;" />
+        </annotation>
+    </item>
+</root>
