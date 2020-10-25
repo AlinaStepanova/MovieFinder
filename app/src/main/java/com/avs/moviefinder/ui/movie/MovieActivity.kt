@@ -110,7 +110,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 statusBarColor
             }
             IDLE -> {
-                ColorUtils.setAlphaComponent(statusBarColor, 220)
+                ColorUtils.setAlphaComponent(statusBarColor, 180)
             }
             else -> {
                 getPrimaryDarkColor()
