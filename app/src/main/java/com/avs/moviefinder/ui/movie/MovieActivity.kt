@@ -2,11 +2,16 @@ package com.avs.moviefinder.ui.movie
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.palette.graphics.Palette
@@ -16,11 +21,14 @@ import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.*
+import com.avs.moviefinder.utils.AppBarStateChangeListener.State.*
+import com.google.android.material.appbar.AppBarLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import dagger.android.support.DaggerAppCompatActivity
 import jp.wasabeef.picasso.transformations.CropTransformation
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class MovieActivity : DaggerAppCompatActivity() {
 
@@ -29,31 +37,16 @@ class MovieActivity : DaggerAppCompatActivity() {
     lateinit var movieViewModel: MovieViewModel
 
     lateinit var binding: ActivityMovieBinding
+    var statusBarColor by Delegates.notNull<Int>()
 
-    private val target = object : Target {
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            bitmap?.let {
-                binding.ivPoster.setImageBitmap(bitmap)
-                Palette.from(bitmap)
-                    .generate { palette ->
-                        val swatch = palette!!.dominantSwatch
-                        swatch?.let {
-                            this@MovieActivity.window.statusBarColor = it.rgb
-                        }
-                    }
-            }
-        }
-
-        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
-
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-    }
+    private val target = initTarget()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
         movieViewModel = ViewModelProvider(this, viewModelFactory).get(MovieViewModel::class.java)
         setSupportActionBar(binding.toolbar)
+        statusBarColor = getPrimaryDarkColor()
         binding.mainViewModel = movieViewModel
         binding.lifecycleOwner = this
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -61,6 +54,11 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         movieViewModel.openMovieDetails(intent.extras?.getLong(MOVIE_EXTRA_TAG))
         binding.ivPoster.tag = target
+        binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) =
+                setAppBArColor(state)
+
+        })
         movieViewModel.movie.observe(this, {
             it?.let {
                 binding.toolbar.title = it.title
@@ -106,6 +104,42 @@ class MovieActivity : DaggerAppCompatActivity() {
             .into(target)
     }
 
+    private fun setAppBArColor(state: AppBarStateChangeListener.State?) {
+        this@MovieActivity.window.statusBarColor = when (state) {
+            EXPANDED -> {
+                statusBarColor
+            }
+            IDLE -> {
+                ColorUtils.setAlphaComponent(statusBarColor, 220)
+            }
+            else -> {
+                getPrimaryDarkColor()
+            }
+        }
+    }
+
+    private fun initTarget(): Target {
+        return object : Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                bitmap?.let {
+                    binding.ivPoster.setImageBitmap(bitmap)
+                    Palette.from(bitmap)
+                        .generate { palette ->
+                            val swatch = palette!!.dominantSwatch
+                            swatch?.let {
+                                statusBarColor = it.rgb
+                                this@MovieActivity.window.statusBarColor = statusBarColor
+                            }
+                        }
+                }
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+        }
+    }
+
     private fun shareMovie(movieLink: String) {
         startActivity(
             Intent.createChooser(
@@ -133,4 +167,7 @@ class MovieActivity : DaggerAppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun getPrimaryDarkColor() =
+        ContextCompat.getColor(this, R.color.colorPrimaryDark)
 }
