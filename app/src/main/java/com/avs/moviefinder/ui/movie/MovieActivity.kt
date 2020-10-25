@@ -1,13 +1,15 @@
 package com.avs.moviefinder.ui.movie
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.ViewModelFactory
@@ -15,6 +17,7 @@ import com.avs.moviefinder.network.dto.Movie
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.*
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import dagger.android.support.DaggerAppCompatActivity
 import jp.wasabeef.picasso.transformations.CropTransformation
 import javax.inject.Inject
@@ -27,6 +30,25 @@ class MovieActivity : DaggerAppCompatActivity() {
 
     lateinit var binding: ActivityMovieBinding
 
+    private val target = object : Target {
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            bitmap?.let {
+                binding.ivPoster.setImageBitmap(bitmap)
+                Palette.from(bitmap)
+                    .generate { palette ->
+                        val swatch = palette!!.dominantSwatch
+                        swatch?.let {
+                            this@MovieActivity.window.statusBarColor = it.rgb
+                        }
+                    }
+            }
+        }
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
@@ -38,6 +60,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         movieViewModel.openMovieDetails(intent.extras?.getLong(MOVIE_EXTRA_TAG))
+        binding.ivPoster.tag = target
         movieViewModel.movie.observe(this, {
             it?.let {
                 binding.toolbar.title = it.title
@@ -53,6 +76,11 @@ class MovieActivity : DaggerAppCompatActivity() {
         movieViewModel.shareBody.observe(this, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
+    }
+
+    override fun onDestroy() {
+        Picasso.get().cancelRequest(target)
+        super.onDestroy()
     }
 
     private fun setTagline(it: Movie) {
@@ -75,7 +103,7 @@ class MovieActivity : DaggerAppCompatActivity() {
             )
             .placeholder(R.drawable.ic_local_movies_grey)
             .error(R.drawable.ic_local_movies_grey)
-            .into(binding.ivPoster)
+            .into(target)
     }
 
     private fun shareMovie(movieLink: String) {
