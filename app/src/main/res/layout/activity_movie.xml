@@ -97,7 +97,7 @@
                     android:maxEms="16"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivCalendar"
                     app:layout_constraintStart_toEndOf="@+id/ivCalendar"
                     app:layout_constraintTop_toTopOf="@+id/ivCalendar" />
@@ -123,7 +123,7 @@
                     android:maxEms="6"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivStar"
                     app:layout_constraintStart_toEndOf="@+id/ivStar"
                     app:layout_constraintTop_toTopOf="@+id/ivStar" />
@@ -149,7 +149,7 @@
                     android:maxEms="6"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivHourglass"
                     app:layout_constraintStart_toEndOf="@+id/ivHourglass"
                     app:layout_constraintTop_toTopOf="@+id/ivHourglass" />

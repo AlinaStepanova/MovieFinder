@@ -101,7 +101,7 @@
                 android:maxEms="16"
                 android:maxLines="1"
                 android:textColor="@color/greyDark"
-                android:textSize="@dimen/text_size_movie_details"
+                android:textSize="@dimen/text_size_extra_info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivCalendar"
                 app:releaseDateFormatted="@{movie}" />
@@ -128,7 +128,7 @@
                 android:maxEms="6"
                 android:maxLines="1"
                 android:textColor="@color/greyDark"
-                android:textSize="@dimen/text_size_movie_details"
+                android:textSize="@dimen/text_size_extra_info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivStar"
                 app:ratingFormatted="@{movie}" />
