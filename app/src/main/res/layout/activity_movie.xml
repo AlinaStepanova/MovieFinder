@@ -130,8 +130,8 @@
 
                 <ImageView
                     android:id="@+id/ivHourglass"
-                    android:layout_width="@dimen/margin_16dp"
-                    android:layout_height="@dimen/margin_16dp"
+                    android:layout_width="@dimen/margin_14dp"
+                    android:layout_height="@dimen/margin_14dp"
                     android:layout_marginStart="@dimen/margin_8dp"
                     android:src="@drawable/ic_hourglass"
                     app:layout_constraintBottom_toBottomOf="@+id/tvMovieRating"
@@ -166,7 +166,7 @@
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMovieRating" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMovieYear" />
 
                 <TextView
                     android:id="@+id/tvGenres"

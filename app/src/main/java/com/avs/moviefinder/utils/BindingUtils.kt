@@ -2,6 +2,8 @@ package com.avs.moviefinder.utils
 
 import android.content.res.Configuration
 import android.os.Build
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -26,7 +28,22 @@ fun TextView.setReleaseDateFormatted(item: BaseMovie?) {
 @BindingAdapter("ratingFormatted")
 fun TextView.setRatingFormatted(item: BaseMovie?) {
     item?.let {
-        text = formatRating(item.rating)
+        val rating = formatRating(it.rating)
+        if (rating == "0") {
+            visibility = View.GONE
+        } else {
+            text = formatRating(item.rating)
+        }
+    }
+}
+
+@BindingAdapter("ratingFormattedIcon")
+fun ImageView.setRatingFormatted(item: BaseMovie?) {
+    item?.let {
+        val rating = formatRating(it.rating)
+        if (rating == "0") {
+            visibility = View.GONE
+        }
     }
 }
 

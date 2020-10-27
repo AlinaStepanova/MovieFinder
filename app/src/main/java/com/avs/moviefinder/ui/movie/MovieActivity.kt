@@ -64,16 +64,36 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.toolbar.title = it.title
                 setTagline(it)
                 binding.tvOverview.text = it.overview
-                binding.tvMovieYear.text = formatDate(it.releaseDate, pattern = "dd/MM/yyyy")
-                binding.tvMovieRating.text = formatRating(it.rating)
+                binding.tvMovieYear.text = formatDate(it.releaseDate)
                 binding.tvGenres.text = formatGenres(it.genres)
-                binding.tvRuntime.text = formatRuntime(it.runtime)
+                formatRating(it)
+                formatRuntime(it)
                 loadImage(it.posterPath)
             }
         })
         movieViewModel.shareBody.observe(this, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
+    }
+
+    private fun formatRuntime(it: Movie) {
+        val runtime = formatRuntime(it.runtime)
+        if (runtime.isEmpty()) {
+            binding.ivHourglass.visibility = View.GONE
+            binding.tvRuntime.visibility = View.GONE
+        } else {
+            binding.tvRuntime.text = runtime
+        }
+    }
+
+    private fun formatRating(it: Movie) {
+        val rating = formatRating(it.rating)
+        if (rating == "0") {
+            binding.tvMovieRating.visibility = View.GONE
+            binding.ivStar.visibility = View.GONE
+        } else {
+            binding.tvMovieRating.text = rating
+        }
     }
 
     override fun onDestroy() {

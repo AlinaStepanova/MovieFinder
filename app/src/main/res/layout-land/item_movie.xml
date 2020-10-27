@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ivWatchLaterIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivPoster"
-            app:layout_constraintTop_toBottomOf="@+id/ivStar" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMovieYear" />
 
         <ImageView
             android:id="@+id/ivCalendar"
@@ -107,7 +107,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
             app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
             app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
-            app:tint="@color/mainGrey" />
+            app:tint="@color/mainGrey"
+            app:ratingFormattedIcon="@{movie}"/>
 
         <TextView
             android:id="@+id/tvMovieRating"
