@@ -13,7 +13,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         tools:context=".ui.movie.MovieActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -97,7 +97,7 @@
                     android:maxEms="16"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivCalendar"
                     app:layout_constraintStart_toEndOf="@+id/ivCalendar"
                     app:layout_constraintTop_toTopOf="@+id/ivCalendar" />
@@ -123,15 +123,15 @@
                     android:maxEms="6"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivStar"
                     app:layout_constraintStart_toEndOf="@+id/ivStar"
                     app:layout_constraintTop_toTopOf="@+id/ivStar" />
 
                 <ImageView
                     android:id="@+id/ivHourglass"
-                    android:layout_width="@dimen/margin_16dp"
-                    android:layout_height="@dimen/margin_16dp"
+                    android:layout_width="@dimen/margin_14dp"
+                    android:layout_height="@dimen/margin_14dp"
                     android:layout_marginStart="@dimen/margin_8dp"
                     android:src="@drawable/ic_hourglass"
                     app:layout_constraintBottom_toBottomOf="@+id/tvMovieRating"
@@ -149,7 +149,7 @@
                     android:maxEms="6"
                     android:maxLines="1"
                     android:textColor="@color/greyDark"
-                    android:textSize="@dimen/text_size_movie_details"
+                    android:textSize="@dimen/text_size_extra_info"
                     app:layout_constraintBottom_toBottomOf="@+id/ivHourglass"
                     app:layout_constraintStart_toEndOf="@+id/ivHourglass"
                     app:layout_constraintTop_toTopOf="@+id/ivHourglass" />
@@ -166,7 +166,7 @@
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMovieRating" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMovieYear" />
 
                 <TextView
                     android:id="@+id/tvGenres"

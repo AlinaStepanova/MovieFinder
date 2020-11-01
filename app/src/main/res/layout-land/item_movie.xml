@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ivWatchLaterIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivPoster"
-            app:layout_constraintTop_toBottomOf="@+id/ivStar" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMovieYear" />
 
         <ImageView
             android:id="@+id/ivCalendar"
@@ -79,9 +79,9 @@
             android:layout_marginStart="@dimen/margin_12dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:src="@drawable/ic_calendar"
-            app:tint="@color/mainGrey"
             app:layout_constraintStart_toEndOf="@+id/ivPoster"
-            app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
+            app:tint="@color/mainGrey" />
 
         <TextView
             android:id="@+id/tvMovieYear"
@@ -92,7 +92,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/greyDark"
-            android:textSize="@dimen/text_size_movie_details"
+            android:textSize="@dimen/text_size_extra_info"
             app:layout_constraintBottom_toBottomOf="@+id/ivCalendar"
             app:layout_constraintStart_toEndOf="@+id/ivCalendar"
             app:layout_constraintTop_toTopOf="@+id/ivCalendar"
@@ -104,10 +104,11 @@
             android:layout_height="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_8dp"
             android:src="@drawable/ic_star"
-            app:tint="@color/mainGrey"
             app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
             app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
-            app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+            app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
+            app:tint="@color/mainGrey"
+            app:ratingFormattedIcon="@{movie}"/>
 
         <TextView
             android:id="@+id/tvMovieRating"
@@ -119,7 +120,7 @@
             android:maxEms="6"
             android:maxLines="1"
             android:textColor="@color/greyDark"
-            android:textSize="@dimen/text_size_movie_details"
+            android:textSize="@dimen/text_size_extra_info"
             app:layout_constraintBottom_toBottomOf="@+id/ivStar"
             app:layout_constraintStart_toEndOf="@+id/ivStar"
             app:layout_constraintTop_toTopOf="@+id/ivStar"

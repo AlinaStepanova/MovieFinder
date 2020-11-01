@@ -2,7 +2,7 @@ package com.avs.moviefinder.utils
 
 import android.content.res.Configuration
 import android.os.Build
-import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -21,14 +21,14 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
-        text = item.releaseDate?.let { it1 -> formatDate(it1) }
+        text = item.releaseDate?.let { date -> formatDate(date) }
     }
 }
 
 @BindingAdapter("ratingFormatted")
 fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
-        text = item.rating?.let { it1 -> formatRating(it1) }
+        text = item.rating?.let { rating -> formatRating(rating) }
     }
 }
 
@@ -38,6 +38,16 @@ fun ImageView.setFavoritesAppearance(item: Movie?) {
         val imageResource =
             if (item.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
         setImageResource(imageResource)
+    }
+}
+
+@BindingAdapter("ratingFormattedIcon")
+fun ImageView.setRatingFormatted(item: Movie?) {
+    item?.let {
+        val rating = it.rating?.let { rating -> formatRating(rating) }
+        if (rating == "0") {
+            visibility = View.GONE
+        }
     }
 }
 

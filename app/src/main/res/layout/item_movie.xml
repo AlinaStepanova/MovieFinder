@@ -101,7 +101,7 @@
                 android:maxEms="16"
                 android:maxLines="1"
                 android:textColor="@color/greyDark"
-                android:textSize="@dimen/text_size_movie_details"
+                android:textSize="@dimen/text_size_extra_info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivCalendar"
                 app:releaseDateFormatted="@{movie}" />
@@ -115,7 +115,8 @@
                 app:tint="@color/mainGrey"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                 app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
-                app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+                app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
+                app:ratingFormattedIcon="@{movie}"/>
 
             <TextView
                 android:id="@+id/tvMovieRating"
@@ -128,7 +129,7 @@
                 android:maxEms="6"
                 android:maxLines="1"
                 android:textColor="@color/greyDark"
-                android:textSize="@dimen/text_size_movie_details"
+                android:textSize="@dimen/text_size_extra_info"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivStar"
                 app:ratingFormatted="@{movie}" />

@@ -64,7 +64,9 @@ fun formatGenres(genres: List<Genre>): String {
 
 fun formatRuntime(duration: Int): String {
     var result: String
-    if (duration < MINUTES_IN_HOUR) {
+    if (duration == 0) {
+        result = ""
+    } else if (duration < MINUTES_IN_HOUR) {
         result = duration.toString() + "m"
     } else {
         val hours = duration / MINUTES_IN_HOUR
