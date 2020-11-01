@@ -28,7 +28,12 @@ fun TextView.setReleaseDateFormatted(item: Movie?) {
 @BindingAdapter("ratingFormatted")
 fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
-        text = item.rating?.let { rating -> formatRating(rating) }
+        val rating = formatRating(it.rating ?: "0")
+        if (rating == "0") {
+            visibility = View.GONE
+        } else {
+            text = rating
+        }
     }
 }
 
