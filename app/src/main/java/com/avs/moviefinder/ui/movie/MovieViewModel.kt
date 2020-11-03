@@ -30,7 +30,7 @@ class MovieViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
     private var extrasMovie = Movie()
-    private val dbDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
@@ -46,9 +46,9 @@ class MovieViewModel @Inject constructor(
 
     fun addToWatchLater() {
         _movie.value?.let {
-            val isisInWatchLater = !it.isInWatchLater
-            it.isInWatchLater = isisInWatchLater
-            dbDisposable.add(databaseManager.update(it))
+            val isInWatchLater = !it.isInWatchLater
+            it.isInWatchLater = isInWatchLater
+            compositeDisposable.add(databaseManager.update(it))
         }
     }
 
@@ -56,7 +56,7 @@ class MovieViewModel @Inject constructor(
         _movie.value?.let {
             val isFavorite = !it.isFavorite
             it.isFavorite = isFavorite
-            dbDisposable.add(databaseManager.update(it))
+            compositeDisposable.add(databaseManager.update(it))
         }
     }
 
@@ -77,7 +77,9 @@ class MovieViewModel @Inject constructor(
             ) { apiMovie, dbMovie -> combineTwoMovies(apiMovie, dbMovie) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ databaseManager.update(extrasMovie) }, {})
+                .doOnError { compositeDisposable.add(serverApi.getMovieById(movie.id)) }
+                //.retry(1)
+                .subscribe({ compositeDisposable.add(databaseManager.update(extrasMovie)) }, {})
         }
     }
 
