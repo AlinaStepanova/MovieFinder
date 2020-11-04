@@ -25,7 +25,7 @@ class DatabaseManager @Inject constructor(
         return dataSource.insert(movie)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ }, { handleError(it) })
+            .subscribe({ rxBus.send(movie) }, { handleError(it) })
     }
 
     fun insertMovies(movies: List<Movie>): Disposable {

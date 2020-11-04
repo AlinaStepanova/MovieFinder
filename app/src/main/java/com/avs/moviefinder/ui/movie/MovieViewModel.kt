@@ -48,7 +48,7 @@ class MovieViewModel @Inject constructor(
         _movie.value?.let {
             val isInWatchLater = !it.isInWatchLater
             it.isInWatchLater = isInWatchLater
-            compositeDisposable.add(databaseManager.update(it))
+            compositeDisposable.add(databaseManager.insertMovie(it))
         }
     }
 
@@ -56,7 +56,7 @@ class MovieViewModel @Inject constructor(
         _movie.value?.let {
             val isFavorite = !it.isFavorite
             it.isFavorite = isFavorite
-            compositeDisposable.add(databaseManager.update(it))
+            compositeDisposable.add(databaseManager.insertMovie(it))
         }
     }
 
@@ -98,6 +98,5 @@ class MovieViewModel @Inject constructor(
         rxBusDisposable?.dispose()
         super.onCleared()
     }
-
 
 }
