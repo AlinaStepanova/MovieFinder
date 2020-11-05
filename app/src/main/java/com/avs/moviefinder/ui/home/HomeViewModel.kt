@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(
         movies: LinkedList<Movie>
     ) {
         if (_moviesDB.value!!.isEmpty()) {
-            dbDisposable.add(databaseManager.insertMovies(event.movies))
+            dbDisposable.add(databaseManager.insertMovies(event.movies.filter { it.id > 0 }))
         } else {
             movies.forEach { movie ->
                 val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
@@ -107,6 +107,7 @@ class HomeViewModel @Inject constructor(
                 } else if (movie.id != 0L) {
                     dbDisposable.add(databaseManager.insertMovie(movie))
                 }
+                // todo delete movies which are not favorites, nor in a watch list
             }
         }
     }

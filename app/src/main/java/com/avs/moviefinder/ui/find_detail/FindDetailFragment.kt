@@ -59,6 +59,11 @@ class FindDetailFragment : BaseFragment() {
                 adapter.submitList(it)
             }
         })
+        findDetailViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.notifyItemChanged(it)
+            }
+        })
         findDetailViewModel.shareBody.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })

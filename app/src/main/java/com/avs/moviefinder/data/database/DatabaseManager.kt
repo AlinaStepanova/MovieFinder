@@ -49,6 +49,14 @@ class DatabaseManager @Inject constructor(
             .subscribe({ rxBus.send(movie) }, { handleError(it) })
     }
 
+    fun delete(movie: Movie): Disposable {
+        return Single
+            .fromCallable { dataSource.delete(movie) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ }, { handleError(it) })
+    }
+
     fun getById(id: Long): Single<Movie?> {
         return dataSource.get(id)
     }
