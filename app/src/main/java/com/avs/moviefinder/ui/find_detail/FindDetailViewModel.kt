@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
+import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
-import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesSearchFilter
-import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
@@ -38,6 +36,7 @@ class FindDetailViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
+    private var _moviesDB = MutableLiveData<ArrayList<Movie>>()
     private var _query = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
@@ -56,7 +55,9 @@ class FindDetailViewModel @Inject constructor(
                 _isLoading.value = false
                 if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
-                _movies.value = event.movies
+                val movies = event.movies
+                combineServerAndDatabaseData(movies)
+                _movies.value = movies
             }
             is Movie -> {
                 _movies.value?.let {
@@ -71,6 +72,10 @@ class FindDetailViewModel @Inject constructor(
                     }
                 }
             }
+            is MoviesDBFilter -> {
+                _moviesDB.value = event.movies as ArrayList<Movie>
+                getQueryByTitle(_query.value)
+            }
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
@@ -82,17 +87,26 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    fun onQueryFirstSubmitted(query: String?) {
-        if (_query.value == null) {
-            onQuerySubmitted(query)
+    fun onQuerySubmitted(query: String?) {
+        if (query != null) {
+            dbDisposable.add(databaseManager.getAllMovies())
+            _query.value = query
         }
     }
 
-    private fun onQuerySubmitted(query: String?) {
+    private fun combineServerAndDatabaseData(movies: LinkedList<Movie>) {
+        movies.forEach { movie ->
+            val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
+            if (insertedMovie != null) {
+                movie.isInWatchLater = insertedMovie.isInWatchLater
+                movie.isFavorite = insertedMovie.isFavorite
+            }
+        }
+    }
+
+    private fun getQueryByTitle(query: String?) {
         apiDisposable?.dispose()
         if (query != null) {
-            _query.value = query
-            // todo zip the call with movies from the db
             apiDisposable = serverApi.getMovieByTitle(query)
         }
     }
@@ -121,7 +135,7 @@ class FindDetailViewModel @Inject constructor(
     }
 
     private fun deleteMovieFromDB(movie: Movie) {
-        if (!movie.isInWatchLater && !movie.isInWatchLater) {
+        if (!movie.isInWatchLater && !movie.isFavorite) {
             dbDisposable.add(databaseManager.delete(movie))
         }
     }

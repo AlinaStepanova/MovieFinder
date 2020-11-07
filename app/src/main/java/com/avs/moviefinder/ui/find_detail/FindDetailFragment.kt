@@ -45,7 +45,7 @@ class FindDetailFragment : BaseFragment() {
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
-        findDetailViewModel.onQueryFirstSubmitted(query)
+        findDetailViewModel.onQuerySubmitted(query)
         val adapter = BaseMoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
