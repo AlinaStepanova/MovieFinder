@@ -9,8 +9,14 @@ import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.LONG_DURATION_MS
+import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
@@ -33,8 +39,10 @@ class FavoritesViewModel @Inject constructor(
     private var _isInserted = MutableLiveData<Boolean?>()
     val isInserted: LiveData<Boolean?>
         get() = _isInserted
+    private var removedMovie: Movie? = null
     private val dbDisposable = CompositeDisposable()
     private var rxBusDisposable: Disposable? = null
+    private var timer: Disposable? = null
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
@@ -49,22 +57,51 @@ class FavoritesViewModel @Inject constructor(
                 }
             }
             is Movie -> {
-                _movies.value?.let {
-                    val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
+                _movies.value?.let { list ->
+                    val fetchedMovie = list.firstOrNull { it.id == event.id }
                     fetchedMovie?.let {
-                        val updatedMovieIndex = _movies.value!!.indexOf(fetchedMovie)
+                        disposeDeletingDependencies()
+                        val updatedMovieIndex = list.indexOf(fetchedMovie)
                         if (updatedMovieIndex != -1) {
                             _updateMovieIndex.value = updatedMovieIndex
                             if (!event.isFavorite) {
                                 _isInserted.value = false
-                                _movies.value!!.removeAt(updatedMovieIndex)
-                                _isInserted.value = null
+                                removedMovie = list[updatedMovieIndex]
+                                list.removeAt(updatedMovieIndex)
+                                //_isInserted.value = null
+                                startCountdown()
                             } else {
-                                _movies.value!![updatedMovieIndex] = event
+                                list[updatedMovieIndex] = event
                             }
                         } // todo add new movie to the list
                     }
                 }
+            }
+        }
+    }
+
+    private fun startCountdown() {
+        timer = Single.timer(LONG_DURATION_MS, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { disposeDeletingDependencies() }
+            .subscribe()
+    }
+
+    private fun disposeDeletingDependencies() {
+        timer?.dispose()
+        _isInserted.value = null
+        _updateMovieIndex.value = null
+        removedMovie = null
+    }
+
+    fun undoRemovingMovie() {
+        if (removedMovie != null && _updateMovieIndex.value != null) {
+            _movies.value?.let {
+                it.add(_updateMovieIndex.value!!, removedMovie!!)
+                addFavorites(removedMovie!!.id)
+                _isInserted.value = true
+                disposeDeletingDependencies()
             }
         }
     }
@@ -74,13 +111,10 @@ class FavoritesViewModel @Inject constructor(
         dbDisposable.add(databaseManager.getAllFavorites())
     }
 
-    fun undoRemovingMovie() {
-
-    }
-
     override fun onCleared() {
         dbDisposable.dispose()
         rxBusDisposable?.dispose()
+        timer?.dispose()
         super.onCleared()
     }
 

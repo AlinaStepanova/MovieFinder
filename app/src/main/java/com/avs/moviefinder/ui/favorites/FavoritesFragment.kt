@@ -2,6 +2,7 @@ package com.avs.moviefinder.ui.favorites
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,12 +69,12 @@ class FavoritesFragment : BaseFragment() {
                 if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        "Movie was deleted from favorites list"
+                        getString(R.string.deleted_favotite_snack_bar_text)
                     ) { favoritesViewModel.undoRemovingMovie() }
                 } else favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)
+                    binding.rvFindRecyclerView.smoothScrollToPosition(index)
                 }
-
             }
         })
         binding.rvFindRecyclerView.adapter = adapter
