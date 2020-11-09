@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.watch_later
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,9 +7,14 @@ import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.WatchList
 import com.avs.moviefinder.utils.BASE_URL
+import com.avs.moviefinder.utils.LONG_DURATION_MS
 import com.avs.moviefinder.utils.RxBus
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class WatchLaterViewModel @Inject constructor(
@@ -33,8 +37,10 @@ class WatchLaterViewModel @Inject constructor(
     private var _isInserted = MutableLiveData<Boolean?>()
     val isInserted: LiveData<Boolean?>
         get() = _isInserted
+    private var removedMovie: Movie? = null
     private val dbDisposable = CompositeDisposable()
     private var rxBusDisposable: Disposable? = null
+    private var timer: Disposable? = null
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
@@ -49,18 +55,20 @@ class WatchLaterViewModel @Inject constructor(
                 }
             }
             is Movie -> {
-                _movies.value?.let {
+                _movies.value?.let { list ->
                     val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
                     fetchedMovie?.let {
-                        val updatedMovieIndex = _movies.value!!.indexOf(fetchedMovie)
+                        disposeDeletingDependencies()
+                        val updatedMovieIndex = list.indexOf(fetchedMovie)
                         if (updatedMovieIndex != -1) {
                             _updateMovieIndex.value = updatedMovieIndex
                             if (!event.isInWatchLater) {
                                 _isInserted.value = false
-                                _movies.value!!.removeAt(updatedMovieIndex)
-                                _isInserted.value = null
+                                removedMovie = list[updatedMovieIndex]
+                                list.removeAt(updatedMovieIndex)
+                                startCountdown()
                             } else {
-                                _movies.value!![updatedMovieIndex] = event
+                                list[updatedMovieIndex] = event
                             }
                         }
                     }
@@ -77,11 +85,34 @@ class WatchLaterViewModel @Inject constructor(
     override fun onCleared() {
         dbDisposable.dispose()
         rxBusDisposable?.dispose()
+        timer?.dispose()
         super.onCleared()
     }
 
-    fun undoRemovingMovies() {
+    private fun startCountdown() {
+        timer = Single.timer(LONG_DURATION_MS, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { disposeDeletingDependencies() }
+            .subscribe()
+    }
 
+    private fun disposeDeletingDependencies() {
+        timer?.dispose()
+        _isInserted.value = null
+        _updateMovieIndex.value = null
+        removedMovie = null
+    }
+
+    fun undoRemovingMovie() {
+        if (removedMovie != null && _updateMovieIndex.value != null) {
+            _movies.value?.let {
+                it.add(_updateMovieIndex.value!!, removedMovie!!)
+                addToWatchLater(removedMovie!!.id)
+                _isInserted.value = true
+                disposeDeletingDependencies()
+            }
+        }
     }
 
     fun shareMovie(movieId: Long) {

@@ -1,6 +1,5 @@
 package com.avs.moviefinder.ui.favorites
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.LONG_DURATION_MS
-import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -68,7 +66,6 @@ class FavoritesViewModel @Inject constructor(
                                 _isInserted.value = false
                                 removedMovie = list[updatedMovieIndex]
                                 list.removeAt(updatedMovieIndex)
-                                //_isInserted.value = null
                                 startCountdown()
                             } else {
                                 list[updatedMovieIndex] = event

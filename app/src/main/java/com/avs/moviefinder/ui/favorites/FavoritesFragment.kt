@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.favorites
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +68,7 @@ class FavoritesFragment : BaseFragment() {
                 if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        getString(R.string.deleted_favotite_snack_bar_text)
+                        getString(R.string.deleted_favorite_snack_bar_text)
                     ) { favoritesViewModel.undoRemovingMovie() }
                 } else favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)

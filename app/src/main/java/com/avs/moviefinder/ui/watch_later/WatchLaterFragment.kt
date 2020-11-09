@@ -68,12 +68,12 @@ class WatchLaterFragment : BaseFragment() {
                 if (!it) watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        "Movie was deleted from watch-list"
-                    ) { watchLaterViewModel.undoRemovingMovies() }
+                        getString(R.string.deleted_watch_snack_bar_text)
+                    ) { watchLaterViewModel.undoRemovingMovie() }
                 } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)
+                    binding.rvWatchLaterRecyclerView.smoothScrollToPosition(index)
                 }
-
             }
         })
         binding.rvWatchLaterRecyclerView.adapter = adapter
