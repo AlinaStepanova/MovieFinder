@@ -3,7 +3,6 @@ package com.avs.moviefinder.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie

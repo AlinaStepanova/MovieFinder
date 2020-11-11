@@ -13,8 +13,8 @@ import javax.inject.Singleton
 class RxBus @Inject constructor() {
 
     private val relay = PublishRelay.create<Any>()
-    fun send(o: Any) {
-        relay.accept(o)
+    fun send(event: Any) {
+        relay.accept(event)
     }
 
     val events: Observable<Any>

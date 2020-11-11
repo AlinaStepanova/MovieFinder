@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
@@ -54,7 +53,7 @@ class FindDetailFragment : BaseFragment() {
                 { movieId -> findDetailViewModel.addToWatchLater(movieId) })
         )
         binding.rvFindRecyclerView.adapter = adapter
-        findDetailViewModel.movies.observe(viewLifecycleOwner, Observer {
+        findDetailViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
@@ -67,10 +66,10 @@ class FindDetailFragment : BaseFragment() {
         findDetailViewModel.shareBody.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
-        findDetailViewModel.isProgressVisible.observe(viewLifecycleOwner, Observer {
+        findDetailViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        findDetailViewModel.errorType.observe(viewLifecycleOwner, Observer {
+        findDetailViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
         return root

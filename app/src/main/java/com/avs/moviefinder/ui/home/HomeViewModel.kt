@@ -72,12 +72,12 @@ class HomeViewModel @Inject constructor(
                 _movies.value = movies
             }
             is Movie -> {
-                _movies.value?.let {
-                    val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
+                _movies.value?.let { list ->
+                    val fetchedMovie = list.firstOrNull { it.id == event.id }
                     fetchedMovie?.let {
-                        val updatedMovieIndex = _movies.value!!.indexOf(fetchedMovie)
+                        val updatedMovieIndex = list.indexOf(it)
                         if (updatedMovieIndex != -1) {
-                            _movies.value!![updatedMovieIndex] = event
+                            list[updatedMovieIndex] = event
                             _updateMovieIndex.value = updatedMovieIndex
                             _updateMovieIndex.value = null
                         }

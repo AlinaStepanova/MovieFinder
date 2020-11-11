@@ -59,7 +59,7 @@ class FavoritesViewModel @Inject constructor(
                     val fetchedMovie = list.firstOrNull { it.id == event.id }
                     fetchedMovie?.let {
                         disposeDeletingDependencies()
-                        val updatedMovieIndex = list.indexOf(fetchedMovie)
+                        val updatedMovieIndex = list.indexOf(it)
                         if (updatedMovieIndex != -1) {
                             _updateMovieIndex.value = updatedMovieIndex
                             if (!event.isFavorite) {
