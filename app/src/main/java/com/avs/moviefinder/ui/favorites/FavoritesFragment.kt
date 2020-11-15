@@ -44,8 +44,8 @@ class FavoritesFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> favoritesViewModel.shareMovie(movieId) },
-                { movieId -> favoritesViewModel.addFavorites(movieId) },
-                { movieId -> favoritesViewModel.addToWatchLater(movieId) })
+                { movieId -> favoritesViewModel.addFavorites(movieId) }
+            ) { movieId -> favoritesViewModel.addToWatchLater(movieId) }
         )
         favoritesViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
@@ -67,6 +67,7 @@ class FavoritesFragment : BaseFragment() {
             it?.let {
                 if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
+                    // todo close snack bar when navigation between fragments
                     showSnackBarWithAction(
                         getString(R.string.deleted_favorite_snack_bar_text)
                     ) { favoritesViewModel.undoRemovingMovie() }

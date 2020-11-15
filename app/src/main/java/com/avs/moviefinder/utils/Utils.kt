@@ -21,7 +21,9 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     var formattedDate = dateToFormat
     try {
         date = inputFormat.parse(dateToFormat)
-        formattedDate = outputFormat.format(date)
+        date?.let {
+            formattedDate = outputFormat.format(it)
+        }
     } catch (e: ParseException) {
         e.printStackTrace()
     }

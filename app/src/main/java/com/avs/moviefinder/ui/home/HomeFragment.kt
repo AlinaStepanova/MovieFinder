@@ -42,11 +42,10 @@ class HomeFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val adapter = FindAdapter(
             MovieListener(
-                // todo use movie object in start activity for result
                 { movie -> startMovieActivity(movie) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
-                { movieId -> homeViewModel.addToFavorites(movieId) },
-                { movieId -> homeViewModel.addToWatchLater(movieId) }),
+                { movieId -> homeViewModel.addToFavorites(movieId) }
+            ) { movieId -> homeViewModel.addToWatchLater(movieId) },
             CategoryClickListener(
                 { homeViewModel.onPopularClick() },
                 { homeViewModel.onTopRatedClick() }

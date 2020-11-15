@@ -44,8 +44,8 @@ class WatchLaterFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> watchLaterViewModel.shareMovie(movieId) },
-                { movieId -> watchLaterViewModel.addFavorites(movieId) },
-                { movieId -> watchLaterViewModel.addToWatchLater(movieId) })
+                { movieId -> watchLaterViewModel.addFavorites(movieId) }
+            ) { movieId -> watchLaterViewModel.addToWatchLater(movieId) }
         )
         watchLaterViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {

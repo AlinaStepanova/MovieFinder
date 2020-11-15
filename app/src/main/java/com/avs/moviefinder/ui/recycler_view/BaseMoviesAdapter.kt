@@ -3,9 +3,6 @@ package com.avs.moviefinder.ui.recycler_view
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
-import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.ui.recycler_view.MovieViewHolder
 
 class BaseMoviesAdapter(private val movieClickListener: MovieListener) :
     ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {

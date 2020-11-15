@@ -30,6 +30,7 @@ class MovieViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
     private var extrasMovie = Movie()
+    private var initialMovie = Movie()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -70,6 +71,7 @@ class MovieViewModel @Inject constructor(
     fun openMovieDetails(movie: Movie?) {
         if (movie != null) {
             extrasMovie = movie
+            initialMovie = movie
             apiDisposable?.dispose()
             apiDisposable = Single.zip(
                 serverApi.callMovieById(movie.id),
@@ -81,6 +83,11 @@ class MovieViewModel @Inject constructor(
                 //.retry(1)
                 .subscribe({ compositeDisposable.add(databaseManager.update(extrasMovie)) }, {})
         }
+    }
+
+    fun isInitialMovieUpdated(): Boolean {
+        return _movie.value?.isFavorite != initialMovie.isFavorite
+                || _movie.value?.isInWatchLater != initialMovie.isInWatchLater
     }
 
     private fun combineTwoMovies(apiMovie: Movie?, dbMovie: Movie?) {

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,12 +13,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.ViewModelFactory
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.*
-import com.avs.moviefinder.utils.AppBarStateChangeListener.State.*
+import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
+import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE
 import com.google.android.material.appbar.AppBarLayout
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -101,6 +101,18 @@ class MovieActivity : DaggerAppCompatActivity() {
     override fun onDestroy() {
         Picasso.get().cancelRequest(target)
         super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        val isMovieUpdated = movieViewModel.isInitialMovieUpdated()
+        if (isMovieUpdated) {
+            val resultIntent = intent
+            resultIntent.putExtra(IS_MOVIE_UPDATED_EXTRA, isMovieUpdated)
+            resultIntent.putExtra(MOVIE_EXTRA_TAG, movieViewModel.movie.value)
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        super.onBackPressed()
     }
 
     private fun setTagline(it: Movie) {

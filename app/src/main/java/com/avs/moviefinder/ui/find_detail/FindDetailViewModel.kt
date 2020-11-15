@@ -1,5 +1,7 @@
 package com.avs.moviefinder.ui.find_detail
 
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +9,9 @@ import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.BASE_URL
+import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -46,6 +50,14 @@ class FindDetailViewModel @Inject constructor(
         _isProgressVisible.value = true
         _errorType.value = null
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
+    }
+
+    override fun onCleared() {
+        rxBusDisposable?.dispose()
+        apiDisposable?.dispose()
+        dbDisposable.clear()
+        dbDisposable.dispose()
+        super.onCleared()
     }
 
     private fun handleServerResponse(event: Any?) {
@@ -87,13 +99,6 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    fun onQuerySubmitted(query: String?) {
-        if (query != null) {
-            dbDisposable.add(databaseManager.getAllMovies())
-            _query.value = query
-        }
-    }
-
     private fun combineServerAndDatabaseData(movies: LinkedList<Movie>) {
         movies.forEach { movie ->
             val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
@@ -111,6 +116,12 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
+    private fun deleteMovieFromDB(movie: Movie) {
+        if (!movie.isInWatchLater && !movie.isFavorite) {
+            dbDisposable.add(databaseManager.delete(movie))
+        }
+    }
+
     fun shareMovie(movieId: Long) {
         _shareBody.value = BASE_URL + "movie/" + movieId + "/"
         _shareBody.value = null
@@ -125,6 +136,13 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
+    fun onQuerySubmitted(query: String?) {
+        if (query != null) {
+            dbDisposable.add(databaseManager.getAllMovies())
+            _query.value = query
+        }
+    }
+
     fun addToFavorites(movieId: Long) {
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
@@ -134,17 +152,14 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    private fun deleteMovieFromDB(movie: Movie) {
-        if (!movie.isInWatchLater && !movie.isFavorite) {
-            dbDisposable.add(databaseManager.delete(movie))
+    fun handleOnActivityResult(resultIntent: Intent) {
+        val isMovieUpdated = resultIntent.getBooleanExtra(IS_MOVIE_UPDATED_EXTRA, false)
+        if (isMovieUpdated) {
+            val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
+            if (updatedMovie != null && updatedMovie.id > 0) {
+                // todo think if the existing logic can be reused
+                dbDisposable.add(databaseManager.update(updatedMovie))
+            }
         }
-    }
-
-    override fun onCleared() {
-        rxBusDisposable?.dispose()
-        apiDisposable?.dispose()
-        dbDisposable.clear()
-        dbDisposable.dispose()
-        super.onCleared()
     }
 }

@@ -46,6 +46,13 @@ class FavoritesViewModel @Inject constructor(
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
     }
 
+    override fun onCleared() {
+        dbDisposable.dispose()
+        rxBusDisposable?.dispose()
+        timer?.dispose()
+        super.onCleared()
+    }
+
     private fun handleDBResponse(event: Any) {
         when (event) {
             is FavoritesList -> {
@@ -92,6 +99,11 @@ class FavoritesViewModel @Inject constructor(
         removedMovie = null
     }
 
+    fun fetchFavoriteMovies() {
+        _isProgressVisible.value = true
+        dbDisposable.add(databaseManager.getAllFavorites())
+    }
+
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
             _movies.value?.let {
@@ -101,18 +113,6 @@ class FavoritesViewModel @Inject constructor(
                 disposeDeletingDependencies()
             }
         }
-    }
-
-    fun fetchFavoriteMovies() {
-        _isProgressVisible.value = true
-        dbDisposable.add(databaseManager.getAllFavorites())
-    }
-
-    override fun onCleared() {
-        dbDisposable.dispose()
-        rxBusDisposable?.dispose()
-        timer?.dispose()
-        super.onCleared()
     }
 
     fun shareMovie(movieId: Long) {
