@@ -67,7 +67,6 @@ class FavoritesFragment : BaseFragment() {
             it?.let {
                 if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
-                    // todo close snack bar when navigation between fragments
                     showSnackBarWithAction(
                         getString(R.string.deleted_favorite_snack_bar_text)
                     ) { favoritesViewModel.undoRemovingMovie() }
@@ -82,7 +81,6 @@ class FavoritesFragment : BaseFragment() {
     }
 
     override fun onResume() {
-        binding.rvFindRecyclerView.smoothScrollToPosition(0)
         favoritesViewModel.fetchFavoriteMovies()
         super.onResume()
     }

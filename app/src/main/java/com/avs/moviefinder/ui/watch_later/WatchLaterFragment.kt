@@ -81,7 +81,6 @@ class WatchLaterFragment : BaseFragment() {
     }
 
     override fun onResume() {
-        binding.rvWatchLaterRecyclerView.smoothScrollToPosition(0)
         watchLaterViewModel.fetchWatchLaterList()
         super.onResume()
     }

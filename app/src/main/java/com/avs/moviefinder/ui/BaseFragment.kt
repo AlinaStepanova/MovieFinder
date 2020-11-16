@@ -17,10 +17,21 @@ val MOVIE_EXTRA_TAG = Movie::class.java.simpleName
 open class BaseFragment : DaggerFragment() {
 
     protected lateinit var fragmentContext: Context
+    private var actionSnackbar: Snackbar? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentContext = context
+    }
+
+    override fun onResume() {
+        actionSnackbar?.dismiss()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        actionSnackbar?.dismiss()
+        super.onPause()
     }
 
     fun startMovieActivity(movie: Movie) {
@@ -52,17 +63,21 @@ open class BaseFragment : DaggerFragment() {
 
     fun showSnackBarWithAction(message: String, call: () -> Unit) {
         val activity = (activity as MainActivity)
-        val snackBar = Snackbar.make(
+        actionSnackbar?.dismiss()
+        actionSnackbar = Snackbar.make(
             activity.binding.navHostFragment, message,
             Snackbar.LENGTH_LONG
         )
-        snackBar.setBackgroundTint(Color.WHITE)
-        snackBar.setTextColor(Color.BLACK)
-        snackBar.setAction(R.string.snack_bar_action_name) { call.invoke() }
-        context?.let {
-            snackBar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+        actionSnackbar?.let { snackbar ->
+            snackbar.setBackgroundTint(Color.WHITE)
+            snackbar.setTextColor(Color.BLACK)
+            snackbar.setAction(R.string.snack_bar_action_name) { call.invoke() }
+            context?.let {
+                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            }
+            snackbar.anchorView = activity.binding.navView
+            snackbar.show()
         }
-        snackBar.anchorView = activity.binding.navView
-        snackBar.show()
+
     }
 }
