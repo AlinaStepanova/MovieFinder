@@ -1,18 +1,24 @@
 package com.avs.moviefinder.ui.home
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
+import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
+import com.avs.moviefinder.ui.movie.MovieActivity
 import javax.inject.Inject
 
 
@@ -23,6 +29,15 @@ class HomeFragment : BaseFragment() {
     lateinit var homeViewModel: HomeViewModel
 
     private lateinit var binding: FragmentHomeBinding
+
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.let {
+                    homeViewModel.handleOnActivityResult(it)
+                }
+            }
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,7 +57,7 @@ class HomeFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val adapter = FindAdapter(
             MovieListener(
-                { movie -> startMovieActivity(movie) },
+                { movie -> startMovieActivityForResult(movie) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
                 { movieId -> homeViewModel.addToFavorites(movieId) }
             ) { movieId -> homeViewModel.addToWatchLater(movieId) },
@@ -78,6 +93,14 @@ class HomeFragment : BaseFragment() {
             handleErrorEvent(it)
         })
         return root
+    }
+
+    private fun startMovieActivityForResult(movie: Movie) {
+        resultLauncher.launch(
+            Intent(activity, MovieActivity::class.java).apply {
+                putExtra(MOVIE_EXTRA_TAG, movie)
+            }
+        )
     }
 
     private fun handleErrorEvent(it: ErrorType?) {

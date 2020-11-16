@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.home
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,9 @@ import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesAPIFilter
 import com.avs.moviefinder.data.dto.MoviesDBFilter
+import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.BASE_URL
+import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -124,16 +127,16 @@ class HomeViewModel @Inject constructor(
     fun addToWatchLater(movieId: Long) {
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
-            movie.isInWatchLater = !movie.isInWatchLater
-            dbDisposable.add(databaseManager.update(movie))
+            it.isInWatchLater = !it.isInWatchLater
+            dbDisposable.add(databaseManager.update(it))
         }
     }
 
     fun addToFavorites(movieId: Long) {
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
-            movie.isFavorite = !movie.isFavorite
-            dbDisposable.add(databaseManager.update(movie))
+            it.isFavorite = !it.isFavorite
+            dbDisposable.add(databaseManager.update(it))
         }
     }
 
@@ -182,5 +185,16 @@ class HomeViewModel @Inject constructor(
         rxBusDisposable?.dispose()
         dbDisposable.dispose()
         super.onCleared()
+    }
+
+    fun handleOnActivityResult(resultIntent: Intent) {
+        val isMovieUpdated = resultIntent.getBooleanExtra(IS_MOVIE_UPDATED_EXTRA, false)
+        if (isMovieUpdated) {
+            val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
+            if (updatedMovie != null && updatedMovie.id > 0) {
+                // todo think if the existing logic can be reused
+                dbDisposable.add(databaseManager.update(updatedMovie))
+            }
+        }
     }
 }
