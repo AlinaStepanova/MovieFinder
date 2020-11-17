@@ -77,11 +77,7 @@ class WatchLaterFragment : BaseFragment() {
             }
         })
         binding.rvWatchLaterRecyclerView.adapter = adapter
-        return root
-    }
-
-    override fun onResume() {
         watchLaterViewModel.fetchWatchLaterList()
-        super.onResume()
+        return root
     }
 }
