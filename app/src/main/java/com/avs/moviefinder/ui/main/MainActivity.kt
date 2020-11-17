@@ -76,6 +76,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     openFindDetailFragment(supportFragmentManager, query)
                     mainViewModel.onQueryTextSubmit(query)
+                    this@MainActivity.currentFocus?.clearFocus()
                     return false
                 }
 
