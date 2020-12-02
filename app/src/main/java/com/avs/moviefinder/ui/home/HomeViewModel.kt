@@ -56,6 +56,13 @@ class HomeViewModel @Inject constructor(
         dbDisposable.add(databaseManager.getAllMovies())
     }
 
+    override fun onCleared() {
+        apiDisposable?.dispose()
+        rxBusDisposable?.dispose()
+        dbDisposable.dispose()
+        super.onCleared()
+    }
+
     private fun handleServerResponse(event: Any?) {
         when (event) {
             is MoviesDBFilter -> {
@@ -68,7 +75,7 @@ class HomeViewModel @Inject constructor(
                 if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
                 val movies = event.movies
-                combineServerAndDatabaseData(event, movies)
+                combineServerAndDatabaseData(movies)
                 if (movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
@@ -95,24 +102,49 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun combineServerAndDatabaseData(
-        event: MoviesAPIFilter,
-        movies: LinkedList<Movie>
-    ) {
-        if (_moviesDB.value!!.isEmpty()) {
-            dbDisposable.add(databaseManager.insertMovies(event.movies.filter { it.id > 0 }))
-        } else {
-            movies.forEach { movie ->
-                val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
-                if (insertedMovie != null) {
-                    movie.isInWatchLater = insertedMovie.isInWatchLater
-                    movie.isFavorite = insertedMovie.isFavorite
-                } else if (movie.id != 0L) {
-                    dbDisposable.add(databaseManager.insertMovie(movie))
+    private fun combineServerAndDatabaseData(movies: LinkedList<Movie>) {
+        _moviesDB.value?.let { localMovies ->
+            if (localMovies.isEmpty()) {
+                dbDisposable.add(databaseManager.insertMovies(movies.filter { it.id > 0 }))
+            } else {
+                movies.forEach { movie ->
+                    val insertedMovie = localMovies.firstOrNull { it.id == movie.id }
+                    if (insertedMovie != null) {
+                        movie.isInWatchLater = insertedMovie.isInWatchLater
+                        movie.isFavorite = insertedMovie.isFavorite
+                    } else if (movie.id != 0L) {
+                        dbDisposable.add(databaseManager.insertMovie(movie))
+                    }
+                    // todo delete movies which are not favorites, nor in a watch list
                 }
-                // todo delete movies which are not favorites, nor in a watch list
             }
         }
+    }
+
+    private fun makeAPICall() {
+        if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
+            _selectedCategory.value = MoviesCategory.POPULAR
+            getPopularMovies()
+        } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+            _selectedCategory.value = MoviesCategory.TOP_RATED
+            getTopRatedMovies()
+        }
+    }
+
+    private fun getPopularMovies() {
+        disposeValues()
+        apiDisposable = serverApi.getPopularMovies()
+    }
+
+    private fun getTopRatedMovies() {
+        disposeValues()
+        apiDisposable = serverApi.getTopRatedMovies()
+    }
+
+    private fun disposeValues() {
+        _isProgressVisible.value = true
+        _movies.value = LinkedList()
+        apiDisposable?.dispose()
     }
 
     fun onRefresh() {
@@ -140,16 +172,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun makeAPICall() {
-        if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
-            _selectedCategory.value = MoviesCategory.POPULAR
-            getPopularMovies()
-        } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
-            _selectedCategory.value = MoviesCategory.TOP_RATED
-            getTopRatedMovies()
-        }
-    }
-
     fun onPopularClick() {
         if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
             _selectedCategory.value = MoviesCategory.POPULAR
@@ -162,29 +184,6 @@ class HomeViewModel @Inject constructor(
             _selectedCategory.value = MoviesCategory.TOP_RATED
             onRefresh()
         }
-    }
-
-    private fun getPopularMovies() {
-        disposeValues()
-        apiDisposable = serverApi.getPopularMovies()
-    }
-
-    private fun getTopRatedMovies() {
-        disposeValues()
-        apiDisposable = serverApi.getTopRatedMovies()
-    }
-
-    private fun disposeValues() {
-        _isProgressVisible.value = true
-        _movies.value = LinkedList()
-        apiDisposable?.dispose()
-    }
-
-    override fun onCleared() {
-        apiDisposable?.dispose()
-        rxBusDisposable?.dispose()
-        dbDisposable.dispose()
-        super.onCleared()
     }
 
     fun handleOnActivityResult(resultIntent: Intent) {
