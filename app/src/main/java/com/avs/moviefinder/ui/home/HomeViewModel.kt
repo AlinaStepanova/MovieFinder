@@ -1,6 +1,7 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -102,12 +103,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun combineServerAndDatabaseData(movies: LinkedList<Movie>) {
+    private fun combineServerAndDatabaseData(fetchedMovies: LinkedList<Movie>) {
         _moviesDB.value?.let { localMovies ->
             if (localMovies.isEmpty()) {
-                dbDisposable.add(databaseManager.insertMovies(movies.filter { it.id > 0 }))
+                dbDisposable.add(databaseManager.insertMovies(fetchedMovies.filter { it.id > 0 }))
             } else {
-                movies.forEach { movie ->
+                localMovies.forEach { movie ->
+                    val isInFetchedList = fetchedMovies.contains(movie)
+                    if (!movie.isInWatchLater && !movie.isFavorite && !isInFetchedList) {
+                        dbDisposable.add(databaseManager.delete(movie))
+                    }
+                }
+                fetchedMovies.forEach { movie ->
                     val insertedMovie = localMovies.firstOrNull { it.id == movie.id }
                     if (insertedMovie != null) {
                         movie.isInWatchLater = insertedMovie.isInWatchLater
@@ -115,7 +122,6 @@ class HomeViewModel @Inject constructor(
                     } else if (movie.id != 0L) {
                         dbDisposable.add(databaseManager.insertMovie(movie))
                     }
-                    // todo delete movies which are not favorites, nor in a watch list
                 }
             }
         }
