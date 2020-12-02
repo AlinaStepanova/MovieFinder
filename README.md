@@ -1,6 +1,8 @@
 # MovieFinder
 
-Find movies to be added to your personal watch- and favorites lists
+Find movies to be added to your personal watch- and favorites lists.
+
+<i>Note: work in progress.</i>
 
 <p align="justify">
   <img src="https://drive.google.com/uc?export=view&id=1aVbqx6SD7n_9yOiFhGGnBLwy3brDyznE" width="24%">
