@@ -166,6 +166,7 @@ class HomeViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             it.isInWatchLater = !it.isInWatchLater
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.update(it))
         }
     }
@@ -174,6 +175,7 @@ class HomeViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             it.isFavorite = !it.isFavorite
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.update(it))
         }
     }

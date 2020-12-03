@@ -51,7 +51,7 @@ class WatchLaterViewModel @Inject constructor(
             is WatchList -> {
                 _isProgressVisible.value = false
                 if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = (event.movies as ArrayList<Movie>)
+                    _movies.value = ArrayList(event.movies.sortedByDescending { it.lastTimeUpdated })
                 }
             }
             is Movie -> {
@@ -132,6 +132,7 @@ class WatchLaterViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isFavorite = !movie.isFavorite
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.update(movie))
         }
     }

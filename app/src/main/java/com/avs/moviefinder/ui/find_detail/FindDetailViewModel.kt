@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui.find_detail
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -131,6 +130,7 @@ class FindDetailViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.insertMovie(movie))
             deleteMovieFromDB(movie)
         }
@@ -147,6 +147,7 @@ class FindDetailViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isFavorite = !movie.isFavorite
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.insertMovie(movie))
             deleteMovieFromDB(movie)
         }

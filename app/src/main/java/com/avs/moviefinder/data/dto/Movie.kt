@@ -37,6 +37,7 @@ data class Movie(
     var genres: List<Genre>? = ArrayList(),
     var isFavorite: Boolean = false,
     var isInWatchLater: Boolean = false,
+    var lastTimeUpdated: Long = System.currentTimeMillis(),
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -55,9 +56,9 @@ data class Movie(
         parcel.readInt(),
         parcel.createTypedArrayList(Genre),
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
-    ) {
-    }
+        parcel.readByte() != 0.toByte(),
+        parcel.readLong()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
@@ -77,6 +78,7 @@ data class Movie(
         parcel.writeTypedList(genres)
         parcel.writeByte(if (isFavorite) 1 else 0)
         parcel.writeByte(if (isInWatchLater) 1 else 0)
+        parcel.writeLong(lastTimeUpdated)
     }
 
     override fun describeContents(): Int {
