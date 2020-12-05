@@ -1,15 +1,12 @@
 package com.avs.moviefinder.ui.favorites
 
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.BASE_URL
-import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.LONG_DURATION_MS
 import io.reactivex.Single
@@ -61,7 +58,7 @@ class FavoritesViewModel @Inject constructor(
             is FavoritesList -> {
                 _isProgressVisible.value = false
                 if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = (event.movies as ArrayList<Movie>)
+                    _movies.value = ArrayList(event.movies.sortedByDescending { it.lastTimeUpdated })
                 }
             }
             is Movie -> {
@@ -127,6 +124,7 @@ class FavoritesViewModel @Inject constructor(
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
+            it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.update(movie))
         }
     }

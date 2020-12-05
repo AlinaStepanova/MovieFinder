@@ -37,6 +37,12 @@ class MovieViewModel @Inject constructor(
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
 
+    override fun onCleared() {
+        apiDisposable?.dispose()
+        rxBusDisposable?.dispose()
+        super.onCleared()
+    }
+
     private fun handleServerResponse(event: Any?) {
         if (event is Movie) {
             _movie.value = event
@@ -45,10 +51,23 @@ class MovieViewModel @Inject constructor(
         }
     }
 
+    private fun combineTwoMovies(apiMovie: Movie?, dbMovie: Movie?) {
+        apiMovie?.let {
+            extrasMovie = it
+        }
+        dbMovie?.let {
+            extrasMovie.isInWatchLater = it.isInWatchLater
+            extrasMovie.isFavorite = it.isFavorite
+        }
+    }
+
     fun addToWatchLater() {
         _movie.value?.let {
             val isInWatchLater = !it.isInWatchLater
             it.isInWatchLater = isInWatchLater
+            if (isInWatchLater) {
+                it.lastTimeUpdated = System.currentTimeMillis()
+            }
             compositeDisposable.add(databaseManager.insertMovie(it))
         }
     }
@@ -57,6 +76,9 @@ class MovieViewModel @Inject constructor(
         _movie.value?.let {
             val isFavorite = !it.isFavorite
             it.isFavorite = isFavorite
+            if (isFavorite) {
+                it.lastTimeUpdated = System.currentTimeMillis()
+            }
             compositeDisposable.add(databaseManager.insertMovie(it))
         }
     }
@@ -89,21 +111,4 @@ class MovieViewModel @Inject constructor(
         return _movie.value?.isFavorite != initialMovie.isFavorite
                 || _movie.value?.isInWatchLater != initialMovie.isInWatchLater
     }
-
-    private fun combineTwoMovies(apiMovie: Movie?, dbMovie: Movie?) {
-        apiMovie?.let {
-            extrasMovie = it
-        }
-        dbMovie?.let {
-            extrasMovie.isInWatchLater = it.isInWatchLater
-            extrasMovie.isFavorite = it.isFavorite
-        }
-    }
-
-    override fun onCleared() {
-        apiDisposable?.dispose()
-        rxBusDisposable?.dispose()
-        super.onCleared()
-    }
-
 }

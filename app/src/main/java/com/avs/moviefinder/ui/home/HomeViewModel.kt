@@ -1,6 +1,7 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,6 +57,13 @@ class HomeViewModel @Inject constructor(
         dbDisposable.add(databaseManager.getAllMovies())
     }
 
+    override fun onCleared() {
+        apiDisposable?.dispose()
+        rxBusDisposable?.dispose()
+        dbDisposable.dispose()
+        super.onCleared()
+    }
+
     private fun handleServerResponse(event: Any?) {
         when (event) {
             is MoviesDBFilter -> {
@@ -68,7 +76,7 @@ class HomeViewModel @Inject constructor(
                 if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
                 val movies = event.movies
-                combineServerAndDatabaseData(event, movies)
+                combineServerAndDatabaseData(movies)
                 if (movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
@@ -95,48 +103,27 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun combineServerAndDatabaseData(
-        event: MoviesAPIFilter,
-        movies: LinkedList<Movie>
-    ) {
-        if (_moviesDB.value!!.isEmpty()) {
-            dbDisposable.add(databaseManager.insertMovies(event.movies.filter { it.id > 0 }))
-        } else {
-            movies.forEach { movie ->
-                val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
-                if (insertedMovie != null) {
-                    movie.isInWatchLater = insertedMovie.isInWatchLater
-                    movie.isFavorite = insertedMovie.isFavorite
-                } else if (movie.id != 0L) {
-                    dbDisposable.add(databaseManager.insertMovie(movie))
+    private fun combineServerAndDatabaseData(fetchedMovies: LinkedList<Movie>) {
+        _moviesDB.value?.let { localMovies ->
+            if (localMovies.isEmpty()) {
+                dbDisposable.add(databaseManager.insertMovies(fetchedMovies.filter { it.id > 0 }))
+            } else {
+                localMovies.forEach { movie ->
+                    val isInFetchedList = fetchedMovies.contains(movie)
+                    if (!movie.isInWatchLater && !movie.isFavorite && !isInFetchedList) {
+                        dbDisposable.add(databaseManager.delete(movie))
+                    }
                 }
-                // todo delete movies which are not favorites, nor in a watch list
+                fetchedMovies.forEach { movie ->
+                    val insertedMovie = localMovies.firstOrNull { it.id == movie.id }
+                    if (insertedMovie != null) {
+                        movie.isInWatchLater = insertedMovie.isInWatchLater
+                        movie.isFavorite = insertedMovie.isFavorite
+                    } else if (movie.id != 0L) {
+                        dbDisposable.add(databaseManager.insertMovie(movie))
+                    }
+                }
             }
-        }
-    }
-
-    fun onRefresh() {
-        dbDisposable.add(databaseManager.getAllMovies())
-    }
-
-    fun shareMovie(movieId: Long) {
-        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
-        _shareBody.value = null
-    }
-
-    fun addToWatchLater(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            it.isInWatchLater = !it.isInWatchLater
-            dbDisposable.add(databaseManager.update(it))
-        }
-    }
-
-    fun addToFavorites(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            it.isFavorite = !it.isFavorite
-            dbDisposable.add(databaseManager.update(it))
         }
     }
 
@@ -147,20 +134,6 @@ class HomeViewModel @Inject constructor(
         } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
             _selectedCategory.value = MoviesCategory.TOP_RATED
             getTopRatedMovies()
-        }
-    }
-
-    fun onPopularClick() {
-        if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
-            _selectedCategory.value = MoviesCategory.POPULAR
-            onRefresh()
-        }
-    }
-
-    fun onTopRatedClick() {
-        if (_selectedCategory.value == MoviesCategory.POPULAR) {
-            _selectedCategory.value = MoviesCategory.TOP_RATED
-            onRefresh()
         }
     }
 
@@ -180,11 +153,45 @@ class HomeViewModel @Inject constructor(
         apiDisposable?.dispose()
     }
 
-    override fun onCleared() {
-        apiDisposable?.dispose()
-        rxBusDisposable?.dispose()
-        dbDisposable.dispose()
-        super.onCleared()
+    fun onRefresh() {
+        dbDisposable.add(databaseManager.getAllMovies())
+    }
+
+    fun shareMovie(movieId: Long) {
+        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = null
+    }
+
+    fun addToWatchLater(movieId: Long) {
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
+        movie?.let {
+            it.isInWatchLater = !it.isInWatchLater
+            it.lastTimeUpdated = System.currentTimeMillis()
+            dbDisposable.add(databaseManager.update(it))
+        }
+    }
+
+    fun addToFavorites(movieId: Long) {
+        val movie = _movies.value?.firstOrNull { it.id == movieId }
+        movie?.let {
+            it.isFavorite = !it.isFavorite
+            it.lastTimeUpdated = System.currentTimeMillis()
+            dbDisposable.add(databaseManager.update(it))
+        }
+    }
+
+    fun onPopularClick() {
+        if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+            _selectedCategory.value = MoviesCategory.POPULAR
+            onRefresh()
+        }
+    }
+
+    fun onTopRatedClick() {
+        if (_selectedCategory.value == MoviesCategory.POPULAR) {
+            _selectedCategory.value = MoviesCategory.TOP_RATED
+            onRefresh()
+        }
     }
 
     fun handleOnActivityResult(resultIntent: Intent) {

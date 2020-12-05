@@ -3,6 +3,7 @@ package com.avs.moviefinder.di
 import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.network.MoviesApi
+import com.avs.moviefinder.utils.HTTP_TIMEOUT_IN_SECONDS
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
@@ -37,9 +38,9 @@ class NetworkModule {
     fun getOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .connectTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(HTTP_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(HTTP_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+            .connectTimeout(HTTP_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
         }
