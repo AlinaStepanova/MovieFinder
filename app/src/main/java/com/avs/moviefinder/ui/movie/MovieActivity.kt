@@ -78,6 +78,42 @@ class MovieActivity : DaggerAppCompatActivity() {
         binding.fabWatched.setOnClickListener { movieViewModel.addToWatchLater() }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_movie, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            R.id.action_share -> {
+                movieViewModel.shareMovie()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onBackPressed() {
+        val isMovieUpdated = movieViewModel.isInitialMovieUpdated()
+        if (isMovieUpdated) {
+            val resultIntent = intent
+            resultIntent.putExtra(IS_MOVIE_UPDATED_EXTRA, isMovieUpdated)
+            resultIntent.putExtra(MOVIE_EXTRA_TAG, movieViewModel.movie.value)
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
+        super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        Picasso.get().cancelRequest(target)
+        super.onDestroy()
+    }
+
     private fun formatRuntime(it: Movie) {
         val runtime = formatRuntime(it.runtime)
         if (runtime.isEmpty()) {
@@ -96,23 +132,6 @@ class MovieActivity : DaggerAppCompatActivity() {
         } else {
             binding.tvMovieRating.text = rating
         }
-    }
-
-    override fun onDestroy() {
-        Picasso.get().cancelRequest(target)
-        super.onDestroy()
-    }
-
-    override fun onBackPressed() {
-        val isMovieUpdated = movieViewModel.isInitialMovieUpdated()
-        if (isMovieUpdated) {
-            val resultIntent = intent
-            resultIntent.putExtra(IS_MOVIE_UPDATED_EXTRA, isMovieUpdated)
-            resultIntent.putExtra(MOVIE_EXTRA_TAG, movieViewModel.movie.value)
-            setResult(RESULT_OK, resultIntent)
-            finish()
-        }
-        super.onBackPressed()
     }
 
     private fun setTagline(it: Movie) {
@@ -181,25 +200,6 @@ class MovieActivity : DaggerAppCompatActivity() {
                 resources.getString(R.string.share_via_text)
             )
         )
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_movie, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            R.id.action_share -> {
-                movieViewModel.shareMovie()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun getPrimaryDarkColor() =
