@@ -65,8 +65,8 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvMovieYear.text = it.releaseDate?.let { date -> formatDate(date) }
                 formatRating(it)
                 formatRuntime(it)
+                formatCountries(it)
                 binding.tvGenres.text = it.genres?.let { genres -> formatGenres(genres) }
-                binding.tvCountries.text = it.contries?.let { countries -> formatCountries(countries) }
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
                 it.posterPath?.let { it1 -> loadImage(it1) }
@@ -115,8 +115,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun formatRuntime(it: Movie) {
-        val runtime = formatRuntime(it.runtime)
+    private fun formatRuntime(movie: Movie) {
+        val runtime = formatRuntime(movie.runtime)
         if (runtime.isEmpty()) {
             binding.ivHourglass.visibility = View.GONE
             binding.tvRuntime.visibility = View.GONE
@@ -125,8 +125,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun formatRating(it: Movie) {
-        val rating = it.rating?.let { rating -> formatRating(rating) }
+    private fun formatRating(movie: Movie) {
+        val rating = movie.rating?.let { rating -> formatRating(rating) }
         if (rating == "0") {
             binding.tvMovieRating.visibility = View.GONE
             binding.ivStar.visibility = View.GONE
@@ -135,11 +135,21 @@ class MovieActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun setTagline(it: Movie) {
-        if (it.tagline.isNullOrEmpty()) {
+    private fun formatCountries(movie: Movie) {
+        val countries = movie.contries?.let { it -> formatCountries(it) }
+        if (countries.isNullOrEmpty()) {
+            binding.ivLocation.visibility = View.GONE
+            binding.tvCountries.visibility = View.GONE
+        } else {
+            binding.tvCountries.text = countries
+        }
+    }
+
+    private fun setTagline(movie: Movie) {
+        if (movie.tagline.isNullOrEmpty()) {
             binding.tvTagline.visibility = View.GONE
         } else {
-            binding.tvTagline.text = it.tagline
+            binding.tvTagline.text = movie.tagline
         }
     }
 

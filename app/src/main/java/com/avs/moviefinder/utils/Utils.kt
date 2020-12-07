@@ -11,6 +11,7 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 const val MINUTES_IN_HOUR = 60
@@ -66,7 +67,13 @@ fun formatGenres(genres: List<Genre>): String {
 }
 
 fun formatCountries(countries: List<Country>): String {
-    return countries.fold("") { names, country ->
+    val arrayList = ArrayList(countries)
+    val usa = arrayList.find { it.name == "United States of America" }
+    usa?.let {
+        arrayList.remove(usa)
+        arrayList.add(0, Country("USA"))
+    }
+    return arrayList.fold("") { names, country ->
         if (names.isEmpty()) country.name ?: "" else names + ", " + country.name
     }
 }
