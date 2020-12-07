@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Database(entities = [Movie::class], version = 1, exportSchema = false)
-@TypeConverters(GenresConverter::class)
+@TypeConverters(GenresConverter::class, CountriesConverter::class)
 abstract class MovieDatabase : RoomDatabase() {
 
     abstract val movieDatabaseDao: MovieDatabaseDao

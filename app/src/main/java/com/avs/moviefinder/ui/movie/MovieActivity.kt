@@ -66,6 +66,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRating(it)
                 formatRuntime(it)
                 binding.tvGenres.text = it.genres?.let { genres -> formatGenres(genres) }
+                binding.tvCountries.text = it.contries?.let { countries -> formatCountries(countries) }
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
                 it.posterPath?.let { it1 -> loadImage(it1) }

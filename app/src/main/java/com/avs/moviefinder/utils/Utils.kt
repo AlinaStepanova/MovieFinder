@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
 import java.math.BigDecimal
 import java.text.DateFormat
@@ -61,6 +62,12 @@ fun formatRating(number: String): String {
 fun formatGenres(genres: List<Genre>): String {
     return genres.fold("") { names, genre ->
         if (names.isEmpty()) genre.name ?: "" else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
+    }
+}
+
+fun formatCountries(countries: List<Country>): String {
+    return countries.fold("") { names, country ->
+        if (names.isEmpty()) country.name ?: "" else names + ", " + country.name
     }
 }
 

@@ -156,7 +156,6 @@
 
                 <ImageView
                     android:id="@+id/ivLocation"
-                    android:visibility="gone"
                     android:layout_width="@dimen/margin_16dp"
                     android:layout_height="@dimen/margin_16dp"
                     android:layout_marginStart="16dp"
@@ -168,7 +167,6 @@
 
                 <TextView
                     android:id="@+id/tvCountries"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"

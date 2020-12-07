@@ -35,6 +35,8 @@ data class Movie(
     var voteCount: Int = 0,
     @SerializedName("genres")
     var genres: List<Genre>? = ArrayList(),
+    @SerializedName("production_countries")
+    var contries: List<Country>? = ArrayList(),
     var isFavorite: Boolean = false,
     var isInWatchLater: Boolean = false,
     var lastTimeUpdated: Long = System.currentTimeMillis(),
@@ -55,6 +57,7 @@ data class Movie(
         parcel.readString(),
         parcel.readInt(),
         parcel.createTypedArrayList(Genre),
+        parcel.createTypedArrayList(Country),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readLong()
@@ -76,6 +79,7 @@ data class Movie(
         parcel.writeString(homepage)
         parcel.writeInt(voteCount)
         parcel.writeTypedList(genres)
+        parcel.writeTypedList(contries)
         parcel.writeByte(if (isFavorite) 1 else 0)
         parcel.writeByte(if (isInWatchLater) 1 else 0)
         parcel.writeLong(lastTimeUpdated)
