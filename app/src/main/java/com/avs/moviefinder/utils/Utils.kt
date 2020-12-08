@@ -3,6 +3,10 @@ package com.avs.moviefinder.utils
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.text.Html
+import android.text.Html.fromHtml
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
@@ -107,4 +111,8 @@ fun getShareIntent(context: Context, movieLink: String): Intent {
 
 fun dpToPx(dp: Int): Float {
     return (dp * Resources.getSystem().displayMetrics.density)
+}
+
+fun buildImbdHyperLink(id: String): Spanned {
+    return HtmlCompat.fromHtml("<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -52,6 +53,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         movieViewModel.openMovieDetails(intent.extras?.getParcelable(MOVIE_EXTRA_TAG))
         binding.ivPoster.tag = target
+        binding.tvImdb.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) =
                 setAppBarColor(state)
@@ -66,6 +68,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRating(it)
                 formatRuntime(it)
                 formatCountries(it)
+                binding.tvImdb.text = it.imdbId?.let { imdb -> buildImbdHyperLink(imdb) }
                 binding.tvGenres.text = it.genres?.let { genres -> formatGenres(genres) }
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
@@ -138,6 +141,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     private fun formatCountries(movie: Movie) {
         val countries = movie.contries?.let { it -> formatCountries(it) }
         if (countries.isNullOrEmpty()) {
+            //todo make icons invisible at page startup
             binding.ivLocation.visibility = View.GONE
             binding.tvCountries.visibility = View.GONE
         } else {
