@@ -116,3 +116,7 @@ fun dpToPx(dp: Int): Float {
 fun buildImbdHyperLink(id: String): Spanned {
     return HtmlCompat.fromHtml("<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
+
+fun buildHomepageHyperLink(homepage: String): Spanned {
+    return HtmlCompat.fromHtml("<a href=\"$homepage\">Homepage</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
