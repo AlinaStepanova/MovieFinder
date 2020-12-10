@@ -70,7 +70,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRuntime(it)
                 formatCountries(it)
                 if (!it.homepage.isNullOrEmpty()) binding.tvHomepage.text = buildHomepageHyperLink(it.homepage!!)
-                if (!it.imdbId.isNullOrEmpty()) binding.tvImdb.text = buildImbdHyperLink(it.homepage!!)
+                if (!it.imdbId.isNullOrEmpty()) binding.tvImdb.text = buildImbdHyperLink(it.imdbId!!)
                 binding.tvGenres.text = it.genres?.let { genres -> formatGenres(genres) }
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
