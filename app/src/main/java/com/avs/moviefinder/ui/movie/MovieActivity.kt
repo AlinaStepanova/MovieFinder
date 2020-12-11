@@ -64,7 +64,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.toolbar.title = it.title
                 setTagline(it)
                 binding.tvOverview.text = it.overview
-                binding.tvMovieYear.text = it.releaseDate?.let { date -> formatDate(date) }
+                formatReleaseDate(it)
                 formatRating(it)
                 formatRuntime(it)
                 formatCountries(it)
@@ -119,50 +119,56 @@ class MovieActivity : DaggerAppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun formatReleaseDate(movie: Movie) {
+        val runtime = movie.releaseDate?.let { date -> formatDate(date) }
+        binding.ivCalendar.visibility = View.VISIBLE
+        if (runtime.isNullOrEmpty()) {
+            binding.tvMovieYear.text = getString(R.string.unknown_text)
+            binding.tvMovieYear.visibility = View.VISIBLE
+        } else {
+            binding.tvMovieYear.text = runtime
+            binding.tvMovieYear.visibility = View.VISIBLE
+        }
+    }
+
     private fun formatRuntime(movie: Movie) {
         val runtime = formatRuntime(movie.runtime)
-        if (runtime.isEmpty()) {
-            binding.ivHourglass.visibility = View.GONE
-            binding.tvRuntime.visibility = View.GONE
-        } else {
+        if (runtime.isNotEmpty()) {
+            binding.ivHourglass.visibility = View.VISIBLE
+            binding.tvRuntime.visibility = View.VISIBLE
             binding.tvRuntime.text = runtime
         }
     }
 
     private fun formatRating(movie: Movie) {
         val rating = movie.rating?.let { rating -> formatRating(rating) }
-        if (rating == "0") {
-            binding.tvMovieRating.visibility = View.GONE
-            binding.ivStar.visibility = View.GONE
-        } else {
+        if (rating != "0") {
             binding.tvMovieRating.text = rating
+            binding.tvMovieRating.visibility = View.VISIBLE
+            binding.ivStar.visibility = View.VISIBLE
         }
     }
 
     private fun formatGenres(movie: Movie) {
         val genres = movie.genres?.let { genres -> formatGenres(genres) }
-        if (genres.isNullOrEmpty()) {
-            binding.tvGenres.visibility = View.GONE
-        } else {
+        if (!genres.isNullOrEmpty()) {
+            binding.tvGenres.visibility = View.VISIBLE
             binding.tvGenres.text = genres
         }
     }
 
     private fun formatCountries(movie: Movie) {
         val countries = movie.contries?.let { it -> formatCountries(it) }
-        if (countries.isNullOrEmpty()) {
-            //todo make icons invisible at page startup
-            binding.ivLocation.visibility = View.GONE
-            binding.tvCountries.visibility = View.GONE
-        } else {
+        if (!countries.isNullOrEmpty()) {
+            binding.ivLocation.visibility = View.VISIBLE
+            binding.tvCountries.visibility = View.VISIBLE
             binding.tvCountries.text = countries
         }
     }
 
     private fun setTagline(movie: Movie) {
-        if (movie.tagline.isNullOrEmpty()) {
-            binding.tvTagline.visibility = View.GONE
-        } else {
+        if (!movie.tagline.isNullOrEmpty()) {
+            binding.tvTagline.visibility = View.VISIBLE
             binding.tvTagline.text = movie.tagline
         }
     }

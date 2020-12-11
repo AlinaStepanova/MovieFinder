@@ -21,7 +21,13 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
-        text = item.releaseDate?.let { date -> formatDate(date) }
+        text = context.getString(R.string.unknown_text)
+        val date = item.releaseDate?.let { date -> formatDate(date) }
+        text = if (date.isNullOrEmpty()) {
+            context.getString(R.string.unknown_text)
+        } else {
+            date
+        }
     }
 }
 
