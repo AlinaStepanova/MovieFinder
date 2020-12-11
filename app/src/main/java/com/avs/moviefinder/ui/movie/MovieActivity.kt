@@ -27,7 +27,6 @@ import com.squareup.picasso.Target
 import dagger.android.support.DaggerAppCompatActivity
 import jp.wasabeef.picasso.transformations.CropTransformation
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class MovieActivity : DaggerAppCompatActivity() {
 
@@ -36,7 +35,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     lateinit var movieViewModel: MovieViewModel
 
     lateinit var binding: ActivityMovieBinding
-    var statusBarColor by Delegates.notNull<Int>()
+    var statusBarColor : Int = 0
 
     private val target = initTarget()
 
@@ -69,9 +68,9 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRating(it)
                 formatRuntime(it)
                 formatCountries(it)
+                formatGenres(it)
                 if (!it.homepage.isNullOrEmpty()) binding.tvHomepage.text = buildHomepageHyperLink(it.homepage!!)
                 if (!it.imdbId.isNullOrEmpty()) binding.tvImdb.text = buildImbdHyperLink(it.imdbId!!)
-                binding.tvGenres.text = it.genres?.let { genres -> formatGenres(genres) }
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
                 it.posterPath?.let { poster -> loadImage(poster) }
@@ -137,6 +136,15 @@ class MovieActivity : DaggerAppCompatActivity() {
             binding.ivStar.visibility = View.GONE
         } else {
             binding.tvMovieRating.text = rating
+        }
+    }
+
+    private fun formatGenres(movie: Movie) {
+        val genres = movie.genres?.let { genres -> formatGenres(genres) }
+        if (genres.isNullOrEmpty()) {
+            binding.tvGenres.visibility = View.GONE
+        } else {
+            binding.tvGenres.text = genres
         }
     }
 
