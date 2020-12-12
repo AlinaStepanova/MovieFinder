@@ -113,10 +113,16 @@ fun dpToPx(dp: Int): Float {
     return (dp * Resources.getSystem().displayMetrics.density)
 }
 
-fun buildImbdHyperLink(id: String): Spanned {
-    return HtmlCompat.fromHtml("<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-}
-
-fun buildHomepageHyperLink(homepage: String): Spanned {
-    return HtmlCompat.fromHtml("<a href=\"$homepage\">Homepage</a>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+fun buildLinks(id: String?, homepage: String?): Spanned? {
+    val imdb = "<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>"
+    val homepageLink = "<a href=\"$homepage\">Homepage</a>"
+    return if (!id.isNullOrEmpty() && !homepage.isNullOrEmpty()) {
+        HtmlCompat.fromHtml("$imdb $CIRCLE_SEPARATOR_CHARACTER $homepageLink", HtmlCompat.FROM_HTML_MODE_LEGACY)
+    } else if (id.isNullOrEmpty() && !homepage.isNullOrEmpty()) {
+        HtmlCompat.fromHtml(homepageLink, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    } else if (!id.isNullOrEmpty() && homepage.isNullOrEmpty()){
+        HtmlCompat.fromHtml(imdb, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    } else {
+       null
+    }
 }

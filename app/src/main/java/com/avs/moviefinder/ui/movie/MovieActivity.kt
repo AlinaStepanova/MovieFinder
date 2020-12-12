@@ -52,8 +52,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         movieViewModel.openMovieDetails(intent.extras?.getParcelable(MOVIE_EXTRA_TAG))
         binding.ivPoster.tag = target
-        binding.tvImdb.movementMethod = LinkMovementMethod.getInstance()
-        binding.tvHomepage.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) =
                 setAppBarColor(state)
@@ -69,8 +68,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRuntime(it)
                 formatCountries(it)
                 formatGenres(it)
-                if (!it.homepage.isNullOrEmpty()) binding.tvHomepage.text = buildHomepageHyperLink(it.homepage!!)
-                if (!it.imdbId.isNullOrEmpty()) binding.tvImdb.text = buildImbdHyperLink(it.imdbId!!)
+                binding.tvLinks.text = buildLinks(it.imdbId, it.homepage)
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
                 it.posterPath?.let { poster -> loadImage(poster) }

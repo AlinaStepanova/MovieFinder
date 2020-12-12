@@ -231,7 +231,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvGenres" />
 
                 <TextView
-                    android:id="@+id/tvImdb"
+                    android:id="@+id/tvLinks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
@@ -240,18 +240,6 @@
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
-
-                <TextView
-                    android:id="@+id/tvHomepage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="@dimen/margin_18dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_size_movie_details"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvImdb"
                     app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
