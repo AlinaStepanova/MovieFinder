@@ -63,7 +63,8 @@ class HomeFragment : BaseFragment() {
             ) { movieId -> homeViewModel.addToWatchLater(movieId) },
             CategoryClickListener(
                 { homeViewModel.onPopularClick() },
-                { homeViewModel.onTopRatedClick() }
+                { homeViewModel.onTopRatedClick() },
+                { homeViewModel.onNowPlayingClick() }
             )
         )
         binding.rvFindRecyclerView.adapter = adapter

@@ -71,8 +71,10 @@ class FindAdapter(
 
 class CategoryClickListener(
     val popularClickListener: () -> Unit,
-    val topRatedClickListener: () -> Unit
+    val topRatedClickListener: () -> Unit,
+    val nowPlayingClickListener: () -> Unit
 ) {
     fun popularClick() = popularClickListener()
     fun topRatedClick() = topRatedClickListener()
+    fun nowPlayingClick() = nowPlayingClickListener()
 }

@@ -181,15 +181,22 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onPopularClick() {
-        if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
+        if (_selectedCategory.value != MoviesCategory.POPULAR) {
             _selectedCategory.value = MoviesCategory.POPULAR
             onRefresh()
         }
     }
 
     fun onTopRatedClick() {
-        if (_selectedCategory.value == MoviesCategory.POPULAR) {
+        if (_selectedCategory.value != MoviesCategory.TOP_RATED) {
             _selectedCategory.value = MoviesCategory.TOP_RATED
+            onRefresh()
+        }
+    }
+
+    fun onNowPlayingClick() {
+        if (_selectedCategory.value != MoviesCategory.NOW_PLAYING) {
+            _selectedCategory.value = MoviesCategory.NOW_PLAYING
             onRefresh()
         }
     }
