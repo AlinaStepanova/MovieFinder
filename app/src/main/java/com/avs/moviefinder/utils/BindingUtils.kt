@@ -124,6 +124,15 @@ fun TextView.setTopRatedCategoryAppearance(selectedCategory: MoviesCategory) {
     }
 }
 
+@BindingAdapter("nowPlayingCategory")
+fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
+    if (selectedCategory == MoviesCategory.NOW_PLAYING) {
+        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    } else {
+        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+    }
+}
+
 private fun TextView.setTextState(backgroundId: Int, textColorId: Int) {
     background = ContextCompat.getDrawable(context, backgroundId)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
