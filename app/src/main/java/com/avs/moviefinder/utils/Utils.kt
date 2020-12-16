@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.text.Html
 import android.text.Html.fromHtml
 import android.text.Spanned
+import android.util.Log
 import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
@@ -34,6 +35,34 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
         e.printStackTrace()
     }
     return formattedDate
+}
+
+fun buildMowPlayingUrl(): String {
+    val currentDate = getCurrentDate()
+    val monthAgoDate = get3WeeksAgoDate()
+    return "3/discover/movie?api_key=$API_KEY&primary_release_date.gte=$monthAgoDate&primary_release_date.lte=$currentDate&sort_by=popularity.desc"
+}
+
+fun getCurrentDate(): String {
+    val currentDate = Calendar.getInstance()
+    return formatNowPlayingDate(currentDate)
+}
+
+fun get3WeeksAgoDate(): String {
+    val currentDate = Calendar.getInstance()
+    currentDate.add(Calendar.WEEK_OF_YEAR, -3)
+    return formatNowPlayingDate(currentDate)
+}
+
+fun formatNowPlayingDate(currentDate: Calendar) : String {
+    val day = currentDate.get(Calendar.DAY_OF_MONTH)
+    var dayString = day.toString()
+    if (day < 10) dayString = "0$day"
+    val month = currentDate.get(Calendar.MONTH) + 1
+    var monthString = month.toString()
+    if (month < 10) monthString = "0$month"
+    val year = currentDate.get(Calendar.YEAR)
+    return "$year-$monthString-$dayString"
 }
 
 fun round(value: String, decimalPlace: Int): Double {

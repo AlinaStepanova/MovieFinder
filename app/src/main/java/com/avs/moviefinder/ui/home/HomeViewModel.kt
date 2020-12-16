@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui.home
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +11,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesAPIFilter
 import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.utils.BASE_URL
-import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
-import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
@@ -77,7 +74,7 @@ class HomeViewModel @Inject constructor(
                     ErrorType.NO_RESULTS else _errorType.value = null
                 val movies = event.movies
                 combineServerAndDatabaseData(movies)
-                if (movies.first.id != 0L) {
+                if (!movies.isNullOrEmpty() && movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
                 _movies.value = movies
@@ -134,6 +131,9 @@ class HomeViewModel @Inject constructor(
         } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
             _selectedCategory.value = MoviesCategory.TOP_RATED
             getTopRatedMovies()
+        } else if (_selectedCategory.value == MoviesCategory.NOW_PLAYING) {
+            _selectedCategory.value = MoviesCategory.NOW_PLAYING
+            getNowPlayingMovies()
         }
     }
 
@@ -145,6 +145,14 @@ class HomeViewModel @Inject constructor(
     private fun getTopRatedMovies() {
         disposeValues()
         apiDisposable = serverApi.getTopRatedMovies()
+    }
+
+    private fun getNowPlayingMovies() {
+        disposeValues()
+        val url = buildMowPlayingUrl()
+        if (url.isNotEmpty()) {
+            apiDisposable = serverApi.getNowPlayingMovies(url)
+        }
     }
 
     private fun disposeValues() {

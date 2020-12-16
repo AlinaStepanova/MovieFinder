@@ -45,6 +45,14 @@ class ServerApi @Inject constructor(
             .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
+    fun getNowPlayingMovies(url: String): Disposable {
+        return moviesApi
+            .getNowPlayingMovies(url)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ rxBus.send(it) }, { handleError(it) })
+    }
+
     fun getMovieByTitle(title: String): Disposable {
         return moviesApi
             .getMovieByName(title)
