@@ -70,8 +70,10 @@ class HomeViewModel @Inject constructor(
             is MoviesAPIFilter -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (event.movies.isEmpty()) _errorType.value =
-                    ErrorType.NO_RESULTS else _errorType.value = null
+                if (event.movies.isEmpty()) {
+                    _errorType.value = ErrorType.NO_RESULTS
+                    changeSelectedCategoryAfterError()
+                } else _errorType.value = null
                 val movies = event.movies
                 combineServerAndDatabaseData(movies)
                 if (!movies.isNullOrEmpty() && movies.first.id != 0L) {
@@ -96,6 +98,21 @@ class HomeViewModel @Inject constructor(
                 _isProgressVisible.value = false
                 _isLoading.value = false
                 _errorType.value = ErrorType.NETWORK
+                changeSelectedCategoryAfterError()
+            }
+        }
+    }
+
+    private fun changeSelectedCategoryAfterError() {
+        when (_selectedCategory.value) {
+            MoviesCategory.POPULAR -> {
+                _selectedCategory.value = MoviesCategory.TOP_RATED
+            }
+            MoviesCategory.TOP_RATED -> {
+                _selectedCategory.value = MoviesCategory.NOW_PLAYING
+            }
+            else -> {
+                _selectedCategory.value = MoviesCategory.POPULAR
             }
         }
     }
