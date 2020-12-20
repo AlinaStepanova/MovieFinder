@@ -149,6 +149,7 @@ class HomeViewModel @Inject constructor(
 
     private fun disposeValues() {
         _isProgressVisible.value = true
+        _errorType.value = null
         _movies.value = LinkedList()
         apiDisposable?.dispose()
     }
