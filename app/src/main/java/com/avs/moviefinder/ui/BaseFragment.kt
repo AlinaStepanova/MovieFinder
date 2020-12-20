@@ -18,6 +18,7 @@ open class BaseFragment : DaggerFragment() {
 
     protected lateinit var fragmentContext: Context
     private var actionSnackbar: Snackbar? = null
+    private var messageSnackbar: Snackbar? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,11 +27,13 @@ open class BaseFragment : DaggerFragment() {
 
     override fun onResume() {
         actionSnackbar?.dismiss()
+        messageSnackbar?.dismiss()
         super.onResume()
     }
 
     override fun onPause() {
         actionSnackbar?.dismiss()
+        messageSnackbar?.dismiss()
         super.onPause()
     }
 
@@ -51,14 +54,17 @@ open class BaseFragment : DaggerFragment() {
 
     fun showSnackBar(message: String) {
         val activity = (activity as MainActivity)
-        val snackBar = Snackbar.make(
+        messageSnackbar?.dismiss()
+        messageSnackbar = Snackbar.make(
             activity.binding.navHostFragment, message,
             Snackbar.LENGTH_LONG
         )
-        snackBar.setBackgroundTint(Color.WHITE)
-        snackBar.setTextColor(Color.BLACK)
-        snackBar.anchorView = activity.binding.navView
-        snackBar.show()
+        messageSnackbar?.let { snackbar ->
+            snackbar.setBackgroundTint(Color.WHITE)
+            snackbar.setTextColor(Color.BLACK)
+            snackbar.anchorView = activity.binding.navView
+            snackbar.show()
+        }
     }
 
     fun showSnackBarWithAction(message: String, call: () -> Unit) {

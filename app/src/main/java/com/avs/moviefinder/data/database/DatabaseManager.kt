@@ -57,8 +57,15 @@ class DatabaseManager @Inject constructor(
             .subscribe({ }, { handleError(it) })
     }
 
-    fun getById(id: Long): Single<Movie?> {
+    fun getMovieByIdAsSingle(id: Long): Single<Movie?> {
         return dataSource.get(id)
+    }
+
+    fun getMovieById(id: Long): Disposable {
+        return dataSource.get(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ it?.let { movie -> rxBus.send(movie) } }, { handleError(it) })
     }
 
     fun getAllFavorites(): Disposable {

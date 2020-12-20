@@ -97,12 +97,11 @@ class MovieViewModel @Inject constructor(
             apiDisposable?.dispose()
             apiDisposable = Single.zip(
                 serverApi.callMovieById(movie.id),
-                databaseManager.getById(movie.id)
+                databaseManager.getMovieByIdAsSingle(movie.id)
             ) { apiMovie, dbMovie -> combineTwoMovies(apiMovie, dbMovie) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { compositeDisposable.add(serverApi.getMovieById(movie.id)) }
-                //.retry(1)
+                .doOnError { compositeDisposable.add(databaseManager.getMovieById(movie.id)) }
                 .subscribe({ compositeDisposable.add(databaseManager.update(extrasMovie)) }, {})
         }
     }
