@@ -90,7 +90,9 @@ class FindDetailViewModel @Inject constructor(
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                _errorType.value = ErrorType.NETWORK
+                if (movies.value.isNullOrEmpty()) {
+                    _errorType.value = ErrorType.NETWORK
+                }
             }
             is Query -> {
                 onQuerySubmitted(event.query)

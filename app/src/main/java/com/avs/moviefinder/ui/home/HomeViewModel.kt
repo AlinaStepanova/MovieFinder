@@ -97,8 +97,11 @@ class HomeViewModel @Inject constructor(
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                _errorType.value = ErrorType.NETWORK
-                changeSelectedCategoryAfterError()
+                if (movies.value.isNullOrEmpty()) {
+                    _errorType.value = ErrorType.NETWORK
+                }
+                //todo think for a better solution, this can be misleading
+                //changeSelectedCategoryAfterError()
             }
         }
     }
