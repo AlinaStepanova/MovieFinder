@@ -22,7 +22,8 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         ViewModelsModule::class,
         ContextModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        BroadcastModule::class
     ]
 )
 interface AppComponent : AndroidInjector<DaggerApplication> {
