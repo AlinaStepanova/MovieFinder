@@ -230,6 +230,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun reactOnNetworkChangeState(isActive: Boolean) {
+        if (isActive && _errorType.value == ErrorType.NETWORK) {
+            onRefresh()
+        }
+    }
+
     fun handleOnActivityResult(resultIntent: Intent) {
         val isMovieUpdated = resultIntent.getBooleanExtra(IS_MOVIE_UPDATED_EXTRA, false)
         if (isMovieUpdated) {
