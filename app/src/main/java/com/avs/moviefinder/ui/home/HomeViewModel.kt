@@ -100,8 +100,6 @@ class HomeViewModel @Inject constructor(
                 if (movies.value.isNullOrEmpty()) {
                     _errorType.value = ErrorType.NETWORK
                 }
-                //todo think for a better solution, this can be misleading
-                //changeSelectedCategoryAfterError()
             }
         }
     }
