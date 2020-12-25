@@ -11,5 +11,5 @@ abstract class ActivityBindingModule {
     abstract fun bindMainActivity(): MainActivity
 
     @ContributesAndroidInjector
-    abstract fun bindScrollingActivity(): MovieActivity
+    abstract fun bindMovieActivity(): MovieActivity
 }

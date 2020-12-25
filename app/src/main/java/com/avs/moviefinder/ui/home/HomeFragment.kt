@@ -1,11 +1,9 @@
 package com.avs.moviefinder.ui.home
 
-import ConnectionLiveData
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +19,7 @@ import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
+import com.avs.moviefinder.utils.ConnectionLiveData
 import javax.inject.Inject
 
 
@@ -28,6 +27,8 @@ class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var connectionLiveData: ConnectionLiveData
     lateinit var homeViewModel: HomeViewModel
 
     private lateinit var binding: FragmentHomeBinding
@@ -95,8 +96,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
-        val connectionLiveData = context?.let { ConnectionLiveData(it) }
-        connectionLiveData?.observe(viewLifecycleOwner, {
+        connectionLiveData.observe(viewLifecycleOwner, {
             homeViewModel.reactOnNetworkChangeState(it)
         })
         return root

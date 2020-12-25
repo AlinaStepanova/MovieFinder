@@ -1,3 +1,4 @@
+package com.avs.moviefinder.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
@@ -13,11 +14,14 @@ import android.net.NetworkRequest
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ConnectionLiveData(val context: Context) : LiveData<Boolean>(){
+@Singleton
+class ConnectionLiveData @Inject constructor(val context: Context?) : LiveData<Boolean>(){
 
     var  intentFilter = IntentFilter(CONNECTIVITY_ACTION)
-    private var  connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+    private var  connectivityManager = context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private lateinit var networkCallback : NetworkCallback
 
     init {
@@ -36,7 +40,7 @@ class ConnectionLiveData(val context: Context) : LiveData<Boolean>(){
                 connectivityManager.registerNetworkCallback(builder.build(), networkCallback)
             }
             else -> {
-                context.registerReceiver(networkReceiver, intentFilter)
+                context?.registerReceiver(networkReceiver, intentFilter)
             }
         }
     }
@@ -46,7 +50,7 @@ class ConnectionLiveData(val context: Context) : LiveData<Boolean>(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             connectivityManager.unregisterNetworkCallback(networkCallback)
         } else{
-            context.unregisterReceiver(networkReceiver)
+            context?.unregisterReceiver(networkReceiver)
         }
     }
 
