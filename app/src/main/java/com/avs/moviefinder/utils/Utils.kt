@@ -40,7 +40,7 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
 fun buildMowPlayingUrl(): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
-    return "3/discover/movie?api_key=$API_KEY&primary_release_date.gte=$monthAgoDate&primary_release_date.lte=$currentDate&sort_by=popularity.desc"
+    return "3/discover/movie?api_key=$API_KEY&primary_release_date.gte=$monthAgoDate&primary_release_date.lte=$currentDate&sort_by=popularity.desc&with_release_type=2|3"
 }
 
 fun getCurrentDate(): String {
