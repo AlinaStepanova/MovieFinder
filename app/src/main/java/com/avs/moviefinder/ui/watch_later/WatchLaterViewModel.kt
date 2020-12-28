@@ -44,6 +44,8 @@ class WatchLaterViewModel @Inject constructor(
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
+        _isProgressVisible.value = true
+        dbDisposable.add(databaseManager.getWatchLaterList())
     }
 
     private fun handleDBResponse(event: Any) {
@@ -75,11 +77,6 @@ class WatchLaterViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun fetchWatchLaterList() {
-        _isProgressVisible.value = true
-        dbDisposable.add(databaseManager.getWatchLaterList())
     }
 
     override fun onCleared() {

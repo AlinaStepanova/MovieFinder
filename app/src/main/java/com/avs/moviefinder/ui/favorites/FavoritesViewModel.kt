@@ -44,6 +44,8 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
+        _isProgressVisible.value = true
+        dbDisposable.add(databaseManager.getAllFavorites())
     }
 
     override fun onCleared() {
@@ -97,11 +99,6 @@ class FavoritesViewModel @Inject constructor(
         _isInserted.value = null
         _updateMovieIndex.value = null
         removedMovie = null
-    }
-
-    fun fetchFavoriteMovies() {
-        _isProgressVisible.value = true
-        dbDisposable.add(databaseManager.getAllFavorites())
     }
 
     fun undoRemovingMovie() {
