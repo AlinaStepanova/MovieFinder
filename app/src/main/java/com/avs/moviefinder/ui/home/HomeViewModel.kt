@@ -16,6 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
+import java.util.LinkedList as LinkedList
 
 class HomeViewModel @Inject constructor(
     private val serverApi: ServerApi,
@@ -72,11 +73,10 @@ class HomeViewModel @Inject constructor(
                 _isLoading.value = false
                 if (event.movies.isEmpty()) {
                     _errorType.value = ErrorType.NO_RESULTS
-                    changeSelectedCategoryAfterError()
                 } else _errorType.value = null
                 val movies = event.movies
                 combineServerAndDatabaseData(movies)
-                if (!movies.isNullOrEmpty() && movies.first.id != 0L) {
+                if (movies.isEmpty() || movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
                 _movies.value = movies
@@ -97,23 +97,8 @@ class HomeViewModel @Inject constructor(
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (movies.value.isNullOrEmpty()) {
-                    _errorType.value = ErrorType.NETWORK
-                }
-            }
-        }
-    }
-
-    private fun changeSelectedCategoryAfterError() {
-        when (_selectedCategory.value) {
-            MoviesCategory.POPULAR -> {
-                _selectedCategory.value = MoviesCategory.TOP_RATED
-            }
-            MoviesCategory.TOP_RATED -> {
-                _selectedCategory.value = MoviesCategory.NOW_PLAYING
-            }
-            else -> {
-                _selectedCategory.value = MoviesCategory.POPULAR
+                _movies.value = LinkedList()
+                _errorType.value = ErrorType.NETWORK
             }
         }
     }
@@ -174,9 +159,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun disposeValues() {
-        _isProgressVisible.value = true
         _errorType.value = null
-        _movies.value = LinkedList()
         apiDisposable?.dispose()
     }
 

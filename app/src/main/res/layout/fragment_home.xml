@@ -64,7 +64,7 @@
             android:id="@+id/tvErrorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_72dp"
+            android:layout_marginTop="@dimen/dimen_86dp"
             android:text="@string/no_results_text"
             android:textColor="@color/mainGrey"
             android:textSize="@dimen/text_size_movie_details"
