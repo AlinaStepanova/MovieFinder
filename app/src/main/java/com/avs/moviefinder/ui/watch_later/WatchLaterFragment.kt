@@ -77,6 +77,7 @@ class WatchLaterFragment : BaseFragment() {
             }
         })
         binding.rvWatchLaterRecyclerView.adapter = adapter
+        watchLaterViewModel.getWatchLaterMovies()
         return root
     }
 }

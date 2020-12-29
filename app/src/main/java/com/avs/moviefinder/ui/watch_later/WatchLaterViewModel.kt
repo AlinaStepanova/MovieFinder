@@ -45,7 +45,7 @@ class WatchLaterViewModel @Inject constructor(
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
         _isProgressVisible.value = true
-        dbDisposable.add(databaseManager.getWatchLaterList())
+        getWatchLaterMovies()
     }
 
     private fun handleDBResponse(event: Any) {
@@ -99,6 +99,10 @@ class WatchLaterViewModel @Inject constructor(
         _isInserted.value = null
         _updateMovieIndex.value = null
         removedMovie = null
+    }
+
+    fun getWatchLaterMovies() {
+        dbDisposable.add(databaseManager.getWatchLaterList())
     }
 
     fun undoRemovingMovie() {

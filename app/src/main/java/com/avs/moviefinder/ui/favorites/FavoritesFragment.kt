@@ -77,6 +77,7 @@ class FavoritesFragment : BaseFragment() {
             }
         })
         binding.rvFindRecyclerView.adapter = adapter
+        favoritesViewModel.getFavorites()
         return root
     }
 }

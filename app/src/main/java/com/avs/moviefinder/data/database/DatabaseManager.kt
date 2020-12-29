@@ -61,13 +61,6 @@ class DatabaseManager @Inject constructor(
         return dataSource.get(id)
     }
 
-    fun getMovieById(id: Long): Disposable {
-        return dataSource.get(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { movie -> rxBus.send(movie) } }, { handleError(it) })
-    }
-
     fun getAllFavorites(): Disposable {
         return dataSource.getFavoritesList()
             .subscribeOn(Schedulers.io())
@@ -91,7 +84,7 @@ class DatabaseManager @Inject constructor(
             if (error != null) {
                 rxBus.send(error)
             }
-            Log.d(this.javaClass.simpleName, error.toString())
+            Log.e(this.javaClass.simpleName, error.toString())
         }
     }
 }
