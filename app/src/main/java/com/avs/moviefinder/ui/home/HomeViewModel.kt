@@ -103,6 +103,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    // todo put this logic into the Repository
     private fun combineServerAndDatabaseData(fetchedMovies: LinkedList<Movie>) {
         _moviesDB.value?.let { localMovies ->
             if (localMovies.isEmpty()) {

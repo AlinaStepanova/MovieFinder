@@ -74,6 +74,7 @@ class HomeFragment : BaseFragment() {
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         homeViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
+                //todo think how not to update movies if they are already in the list
                 adapter.submitList(it)
             }
         })
