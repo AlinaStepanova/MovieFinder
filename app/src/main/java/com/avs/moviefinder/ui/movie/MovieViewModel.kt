@@ -30,7 +30,8 @@ class MovieViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
     private var extrasMovie = Movie()
-    private var initialMovie = Movie()
+    private var isInitiallyFavorite = false
+    private var isInitiallyInWatchList = false
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -58,6 +59,26 @@ class MovieViewModel @Inject constructor(
         dbMovie?.let {
             extrasMovie.isInWatchLater = it.isInWatchLater
             extrasMovie.isFavorite = it.isFavorite
+        }
+    }
+
+    fun openMovieDetails(movie: Movie?) {
+        if (movie != null) {
+            extrasMovie = movie
+            isInitiallyFavorite = movie.isFavorite
+            isInitiallyInWatchList = movie.isInWatchLater
+            apiDisposable?.dispose()
+            apiDisposable = Single.zip(
+                serverApi.callMovieById(movie.id).onErrorReturn { extrasMovie },
+                databaseManager.getMovieByIdAsSingle(movie.id)
+                    .doOnError { compositeDisposable.add(serverApi.getMovieById(movie.id)) }
+            ) { apiMovie, dbMovie -> combineTwoMovies(apiMovie, dbMovie) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    extrasMovie.lastTimeUpdated = System.currentTimeMillis()
+                    compositeDisposable.add(databaseManager.insertMovie(extrasMovie))
+                }, {_movie.value = extrasMovie})
         }
     }
 
@@ -90,24 +111,8 @@ class MovieViewModel @Inject constructor(
         _shareBody.value = null
     }
 
-    fun openMovieDetails(movie: Movie?) {
-        if (movie != null) {
-            extrasMovie = movie
-            initialMovie = movie
-            apiDisposable?.dispose()
-            apiDisposable = Single.zip(
-                serverApi.callMovieById(movie.id).onErrorReturn { extrasMovie },
-                databaseManager.getMovieByIdAsSingle(movie.id)
-                    .doOnError { compositeDisposable.add(serverApi.getMovieById(movie.id)) }
-            ) { apiMovie, dbMovie -> combineTwoMovies(apiMovie, dbMovie) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ compositeDisposable.add(databaseManager.update(extrasMovie)) }, {})
-        }
-    }
-
     fun isInitialMovieUpdated(): Boolean {
-        return _movie.value?.isFavorite != initialMovie.isFavorite
-                || _movie.value?.isInWatchLater != initialMovie.isInWatchLater
+        return _movie.value?.isFavorite != isInitiallyFavorite
+                || _movie.value?.isInWatchLater != isInitiallyInWatchList
     }
 }

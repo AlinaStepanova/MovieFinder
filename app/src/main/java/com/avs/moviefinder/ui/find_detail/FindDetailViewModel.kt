@@ -18,7 +18,7 @@ import java.util.*
 import javax.inject.Inject
 
 class FindDetailViewModel @Inject constructor(
-    private val rxBus: RxBus,
+    rxBus: RxBus,
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager
 ) : ViewModel() {
