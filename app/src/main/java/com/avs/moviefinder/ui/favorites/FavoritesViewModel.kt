@@ -124,8 +124,11 @@ class FavoritesViewModel @Inject constructor(
     fun addToWatchLater(movieId: Long) {
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
-            movie.isInWatchLater = !movie.isInWatchLater
-            it.lastTimeUpdated = System.currentTimeMillis()
+            val isInWatchLater = !it.isInWatchLater
+            it.isInWatchLater = isInWatchLater
+            if (isInWatchLater) {
+                it.lastTimeUpdated = System.currentTimeMillis()
+            }
             dbDisposable.add(databaseManager.update(movie))
         }
     }
@@ -133,7 +136,11 @@ class FavoritesViewModel @Inject constructor(
     fun addFavorites(movieId: Long) {
         val movie = _movies.value?.firstOrNull { it.id == movieId }
         movie?.let {
-            movie.isFavorite = !movie.isFavorite
+            val isFavorite = !it.isFavorite
+            it.isFavorite = isFavorite
+            if (isFavorite) {
+                it.lastTimeUpdated = System.currentTimeMillis()
+            }
             dbDisposable.add(databaseManager.update(movie))
         }
     }
