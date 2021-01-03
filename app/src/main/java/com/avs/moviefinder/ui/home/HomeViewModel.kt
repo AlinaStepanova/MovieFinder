@@ -130,13 +130,10 @@ class HomeViewModel @Inject constructor(
 
     private fun makeAPICall() {
         if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
-            _selectedCategory.value = MoviesCategory.POPULAR
             getPopularMovies()
         } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
-            _selectedCategory.value = MoviesCategory.TOP_RATED
             getTopRatedMovies()
         } else if (_selectedCategory.value == MoviesCategory.NOW_PLAYING) {
-            _selectedCategory.value = MoviesCategory.NOW_PLAYING
             getNowPlayingMovies()
         }
     }
@@ -224,6 +221,7 @@ class HomeViewModel @Inject constructor(
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
                 // todo think if the existing logic can be reused
+                updatedMovie.lastTimeUpdated = System.currentTimeMillis()
                 dbDisposable.add(databaseManager.update(updatedMovie))
             }
         }

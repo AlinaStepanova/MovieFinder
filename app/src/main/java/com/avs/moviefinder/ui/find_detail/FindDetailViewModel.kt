@@ -161,6 +161,7 @@ class FindDetailViewModel @Inject constructor(
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
                 // todo think if the existing logic can be reused
+                updatedMovie.lastTimeUpdated = System.currentTimeMillis()
                 dbDisposable.add(databaseManager.update(updatedMovie))
             }
         }

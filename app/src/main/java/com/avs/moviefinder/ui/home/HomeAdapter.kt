@@ -46,6 +46,7 @@ class FindAdapter(
 
     fun setSelectedCategory(selectedCategory: MoviesCategory) {
         this.selectedCategory = selectedCategory
+        notifyItemChanged(0)
     }
 
     class ViewHolder private constructor(private val binding: ItemHeaderBinding) :

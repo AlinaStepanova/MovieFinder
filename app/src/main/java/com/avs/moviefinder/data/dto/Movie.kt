@@ -39,7 +39,7 @@ data class Movie(
     var contries: List<Country>? = ArrayList(),
     var isFavorite: Boolean = false,
     var isInWatchLater: Boolean = false,
-    var lastTimeUpdated: Long = System.currentTimeMillis(),
+    var lastTimeUpdated: Long = 0,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
