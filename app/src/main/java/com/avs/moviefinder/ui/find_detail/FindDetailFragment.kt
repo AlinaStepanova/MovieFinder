@@ -20,6 +20,7 @@ import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.utils.ConnectionLiveData
 import javax.inject.Inject
 
 val FIND_DETAIL_FRAGMENT_TAG = FindDetailFragment::class.simpleName
@@ -28,6 +29,8 @@ class FindDetailFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var connectionLiveData: ConnectionLiveData
     lateinit var findDetailViewModel: FindDetailViewModel
 
     private lateinit var binding: FragmentFindDetailBinding
@@ -87,7 +90,20 @@ class FindDetailFragment : BaseFragment() {
         findDetailViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
+        connectionLiveData.observe(viewLifecycleOwner, {
+            findDetailViewModel.reactOnNetworkChangeState(it)
+        })
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        findDetailViewModel.subscribeToEvents()
+    }
+
+    override fun onPause() {
+        findDetailViewModel.unsubscribeFromEvents()
+        super.onPause()
     }
 
     private fun startMovieActivityForResult(movie: Movie) {

@@ -18,7 +18,7 @@ import java.util.*
 import javax.inject.Inject
 
 class FindDetailViewModel @Inject constructor(
-    rxBus: RxBus,
+    private val rxBus: RxBus,
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager
 ) : ViewModel() {
@@ -48,11 +48,10 @@ class FindDetailViewModel @Inject constructor(
     init {
         _isProgressVisible.value = true
         _errorType.value = null
-        rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
     }
 
     override fun onCleared() {
-        rxBusDisposable?.dispose()
+        unsubscribeFromEvents()
         apiDisposable?.dispose()
         dbDisposable.clear()
         dbDisposable.dispose()
@@ -90,9 +89,8 @@ class FindDetailViewModel @Inject constructor(
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (movies.value.isNullOrEmpty()) {
-                    _errorType.value = ErrorType.NETWORK
-                }
+                _movies.value = LinkedList()
+                _errorType.value = ErrorType.NETWORK
             }
             is Query -> {
                 onQuerySubmitted(event.query)
@@ -120,6 +118,21 @@ class FindDetailViewModel @Inject constructor(
     private fun deleteMovieFromDB(movie: Movie) {
         if (!movie.isInWatchLater && !movie.isFavorite) {
             dbDisposable.add(databaseManager.delete(movie))
+        }
+    }
+
+    fun subscribeToEvents() {
+        unsubscribeFromEvents()
+        rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
+    }
+
+    fun unsubscribeFromEvents() {
+        rxBusDisposable?.dispose()
+    }
+
+    fun reactOnNetworkChangeState(isActive: Boolean) {
+        if (isActive && _errorType.value == ErrorType.NETWORK) {
+            getQueryByTitle(_query.value)
         }
     }
 
@@ -161,7 +174,6 @@ class FindDetailViewModel @Inject constructor(
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
                 // todo think if the existing logic can be reused
-                updatedMovie.lastTimeUpdated = System.currentTimeMillis()
                 dbDisposable.add(databaseManager.update(updatedMovie))
             }
         }

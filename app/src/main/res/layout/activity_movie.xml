@@ -174,7 +174,7 @@
 
                 <TextView
                     android:id="@+id/tvCountries"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
@@ -185,6 +185,7 @@
                     android:textSize="@dimen/text_size_extra_info"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivLocation"
                     app:layout_constraintTop_toTopOf="@+id/ivLocation" />
 
