@@ -166,7 +166,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun shareMovie(movieId: Long) {
-        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = buildShareLink(movieId)
         _shareBody.value = null
     }
 
@@ -175,7 +175,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isInWatchLater = !it.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.update(it))
+            dbDisposable.add(databaseManager.insertMovie(it))
         }
     }
 
@@ -184,7 +184,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isFavorite = !it.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.update(it))
+            dbDisposable.add(databaseManager.insertMovie(it))
         }
     }
 
@@ -220,7 +220,6 @@ class HomeViewModel @Inject constructor(
         if (isMovieUpdated) {
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
-                // todo think if the existing logic can be reused
                 updatedMovie.lastTimeUpdated = System.currentTimeMillis()
                 dbDisposable.add(databaseManager.update(updatedMovie))
             }

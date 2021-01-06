@@ -12,6 +12,7 @@ import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
@@ -137,7 +138,7 @@ class FindDetailViewModel @Inject constructor(
     }
 
     fun shareMovie(movieId: Long) {
-        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = buildShareLink(movieId)
         _shareBody.value = null
     }
 
@@ -173,7 +174,6 @@ class FindDetailViewModel @Inject constructor(
         if (isMovieUpdated) {
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
-                // todo think if the existing logic can be reused
                 dbDisposable.add(databaseManager.update(updatedMovie))
             }
         }

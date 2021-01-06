@@ -9,6 +9,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.LONG_DURATION_MS
+import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -117,7 +118,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun shareMovie(movieId: Long) {
-        _shareBody.value = BASE_URL + "movie/" + movieId + "/"
+        _shareBody.value = buildShareLink(movieId)
         _shareBody.value = null
     }
 

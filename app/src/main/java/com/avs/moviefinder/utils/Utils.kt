@@ -155,3 +155,5 @@ fun buildLinks(id: String?, homepage: String?): Spanned? {
        null
     }
 }
+
+fun buildShareLink(movieId: Long) : String = BASE_URL + "movie/" + movieId + "/"
