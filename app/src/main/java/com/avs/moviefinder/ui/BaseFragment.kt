@@ -12,7 +12,7 @@ import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 
-val MOVIE_EXTRA_TAG = Movie::class.java.simpleName
+val MOVIE_EXTRA_TAG: String = Movie::class.java.simpleName
 
 open class BaseFragment : DaggerFragment() {
 
@@ -79,7 +79,12 @@ open class BaseFragment : DaggerFragment() {
             snackbar.setTextColor(Color.BLACK)
             snackbar.setAction(R.string.snack_bar_action_name) { call.invoke() }
             context?.let {
-                snackbar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+                snackbar.setActionTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorAccent
+                    )
+                )
             }
             snackbar.anchorView = activity.binding.navView
             snackbar.show()

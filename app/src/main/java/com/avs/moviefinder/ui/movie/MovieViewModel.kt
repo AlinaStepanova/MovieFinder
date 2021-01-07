@@ -55,7 +55,11 @@ class MovieViewModel @Inject constructor(
 
     private fun combineTwoMovies(apiMovie: Movie?, dbMovie: Movie?) {
         apiMovie?.let {
-            extrasMovie = it
+            if (!it.imdbId.isNullOrEmpty()) extrasMovie.imdbId = it.imdbId
+            if (!it.homepage.isNullOrEmpty()) extrasMovie.homepage = it.homepage
+            if (!it.genres.isNullOrEmpty()) extrasMovie.genres = it.genres
+            if (!it.tagline.isNullOrEmpty()) extrasMovie.tagline = it.tagline
+            if (it.runtime != 0) extrasMovie.runtime = it.runtime
         }
         dbMovie?.let {
             extrasMovie.isInWatchLater = it.isInWatchLater
@@ -77,8 +81,11 @@ class MovieViewModel @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    extrasMovie.lastTimeUpdated = System.currentTimeMillis()
-                    compositeDisposable.add(databaseManager.insertMovie(extrasMovie))
+                    if (extrasMovie.isFavorite || extrasMovie.isInWatchLater) {
+                        compositeDisposable.add(databaseManager.update(extrasMovie))
+                    } else {
+                        _movie.value = extrasMovie
+                    }
                 }, {_movie.value = extrasMovie})
         }
     }
