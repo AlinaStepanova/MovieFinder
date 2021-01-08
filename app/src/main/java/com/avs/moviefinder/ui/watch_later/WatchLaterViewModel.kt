@@ -108,8 +108,8 @@ class WatchLaterViewModel @Inject constructor(
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
-            _movies.value?.let {
-                it.add(_updateMovieIndex.value!!, removedMovie!!)
+            _movies.value?.let { movies ->
+                movies.add(_updateMovieIndex.value!!, removedMovie!!)
                 addToWatchLater(removedMovie!!.id)
                 _isInserted.value = true
                 disposeDeletingDependencies()
@@ -127,7 +127,7 @@ class WatchLaterViewModel @Inject constructor(
         movie?.let {
             val isInWatchLater = !it.isInWatchLater
             it.isInWatchLater = isInWatchLater
-            if (isInWatchLater) {
+            if (isInWatchLater && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
             dbDisposable.add(databaseManager.update(movie))

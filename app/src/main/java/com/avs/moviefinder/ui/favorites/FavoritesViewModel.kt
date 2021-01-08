@@ -108,8 +108,8 @@ class FavoritesViewModel @Inject constructor(
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
-            _movies.value?.let {
-                it.add(_updateMovieIndex.value!!, removedMovie!!)
+            _movies.value?.let { movies ->
+                movies.add(_updateMovieIndex.value!!, removedMovie!!)
                 addFavorites(removedMovie!!.id)
                 _isInserted.value = true
                 disposeDeletingDependencies()
@@ -139,7 +139,7 @@ class FavoritesViewModel @Inject constructor(
         movie?.let {
             val isFavorite = !it.isFavorite
             it.isFavorite = isFavorite
-            if (isFavorite) {
+            if (isFavorite && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
             dbDisposable.add(databaseManager.update(movie))
