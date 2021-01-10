@@ -156,7 +156,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     }
 
     private fun formatCountries(movie: Movie) {
-        val countries = movie.contries?.let { it -> formatCountries(it) }
+        val countries = movie.countries?.let { it -> formatCountries(it) }
         if (!countries.isNullOrEmpty()) {
             binding.ivLocation.visibility = View.VISIBLE
             binding.tvCountries.visibility = View.VISIBLE

@@ -12,7 +12,7 @@ class MainViewModel constructor(
 ) : ViewModel() {
 
     companion object {
-        val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
+        const val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
     }
 
     private var apiDisposable: Disposable? = null
