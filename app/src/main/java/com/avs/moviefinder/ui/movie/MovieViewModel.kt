@@ -49,6 +49,7 @@ class MovieViewModel @Inject constructor(
         if (event is Movie) {
             _movie.value = event
         } else if (event is Throwable) {
+            _movie.value = extrasMovie
             Log.d(this::class.java.name, event.toString())
         }
     }
@@ -69,6 +70,8 @@ class MovieViewModel @Inject constructor(
 
     fun openMovieDetails(movie: Movie?) {
         if (movie != null) {
+            _movie.value?.posterPath = movie.posterPath
+            _movie.value?.title = movie.title
             extrasMovie = movie
             isInitiallyFavorite = movie.isFavorite
             isInitiallyInWatchList = movie.isInWatchLater
@@ -86,7 +89,7 @@ class MovieViewModel @Inject constructor(
                     } else {
                         _movie.value = extrasMovie
                     }
-                }, {_movie.value = extrasMovie})
+                }, {})
         }
     }
 

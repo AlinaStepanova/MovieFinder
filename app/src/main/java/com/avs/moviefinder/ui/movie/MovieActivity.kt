@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -50,7 +51,10 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        movieViewModel.openMovieDetails(intent.extras?.getParcelable(MOVIE_EXTRA_TAG))
+        val extrasMovie : Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
+        loadImage(extrasMovie?.posterPath ?: "")
+        binding.toolbar.title = extrasMovie?.title
+        movieViewModel.openMovieDetails(extrasMovie)
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
@@ -60,7 +64,6 @@ class MovieActivity : DaggerAppCompatActivity() {
         })
         movieViewModel.movie.observe(this, {
             it?.let {
-                binding.toolbar.title = it.title
                 setTagline(it)
                 binding.tvOverview.text = it.overview
                 formatReleaseDate(it)
@@ -71,7 +74,6 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvLinks.text = buildLinks(it.imdbId, it.homepage)
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
-                it.posterPath?.let { poster -> loadImage(poster) }
             }
         })
         movieViewModel.shareBody.observe(this, {
