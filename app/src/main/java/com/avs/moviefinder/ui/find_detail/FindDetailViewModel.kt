@@ -122,6 +122,13 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
+    fun onQuerySubmitted(query: String?) {
+        if (query != null) {
+            dbDisposable.add(databaseManager.getAllMovies())
+            _query.value = query
+        }
+    }
+
     fun subscribeToEvents() {
         unsubscribeFromEvents()
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
@@ -149,13 +156,6 @@ class FindDetailViewModel @Inject constructor(
             it.lastTimeUpdated = System.currentTimeMillis()
             dbDisposable.add(databaseManager.insertMovie(movie))
             deleteMovieFromDB(movie)
-        }
-    }
-
-    fun onQuerySubmitted(query: String?) {
-        if (query != null) {
-            dbDisposable.add(databaseManager.getAllMovies())
-            _query.value = query
         }
     }
 

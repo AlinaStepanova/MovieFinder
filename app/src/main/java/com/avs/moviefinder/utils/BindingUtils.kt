@@ -38,7 +38,19 @@ fun TextView.setRatingFormatted(item: Movie?) {
         if (rating == "0") {
             visibility = View.GONE
         } else {
+            visibility = View.VISIBLE
             text = rating
+        }
+    }
+}
+
+@BindingAdapter("ratingFormattedIcon")
+fun ImageView.setRatingFormatted(item: Movie?) {
+    item?.let {
+        visibility = View.VISIBLE
+        val rating = it.rating?.let { rating -> formatRating(rating) }
+        if (rating == "0") {
+            visibility = View.GONE
         }
     }
 }
@@ -49,16 +61,6 @@ fun ImageView.setFavoritesAppearance(item: Movie?) {
         val imageResource =
             if (item.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
         setImageResource(imageResource)
-    }
-}
-
-@BindingAdapter("ratingFormattedIcon")
-fun ImageView.setRatingFormatted(item: Movie?) {
-    item?.let {
-        val rating = it.rating?.let { rating -> formatRating(rating) }
-        if (rating == "0") {
-            visibility = View.GONE
-        }
     }
 }
 
