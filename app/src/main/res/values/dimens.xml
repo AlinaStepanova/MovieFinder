@@ -1,21 +1,14 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
     <dimen name="margin_14dp">14dp</dimen>
     <dimen name="margin_18dp">18dp</dimen>
     <dimen name="margin_12dp">12dp</dimen>
-    <dimen name="margin_24dp">24dp</dimen>
-    <dimen name="margin_32dp">32dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
 
 
-    <dimen name="text_size_20sp">20sp</dimen>
-    <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
-    <dimen name="text_size_26sp">26sp</dimen>
 
     <dimen name="image_find_movie_max_height">250dp</dimen>
     <dimen name="collapsing_layout_height">350dp</dimen>
@@ -25,10 +18,7 @@
     <dimen name="image_control_size">20dp</dimen>
     <dimen name="item_layout_margin">12dp</dimen>
     <dimen name="item_layout_margin_vertical">6dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="dimen_72dp">72dp</dimen>
     <dimen name="dimen_86dp">86dp</dimen>
 </resources>

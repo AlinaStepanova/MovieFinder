@@ -13,15 +13,6 @@
         <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
 
-    <style name="AppThemeActionBar" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarStyle">@style/CustomActionBar</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
-        <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
-    </style>
-
     <style name="CustomSearchView" parent="Widget.AppCompat.Light.SearchView">
         <item name="searchHintIcon">@null</item>
         <item name="queryBackground">@android:color/transparent</item>
@@ -58,10 +49,6 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="collapsingToolbarLayoutTitleColor" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">@color/colorPrimary</item>
