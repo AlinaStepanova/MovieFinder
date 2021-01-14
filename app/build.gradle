@@ -60,7 +60,7 @@ dependencies {
     //retrofit
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.7.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
 
     //dagger
@@ -72,10 +72,10 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     //android architecture components
-    def arch_components_version = "1.1.1"
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    def arch_components_version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$arch_components_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$arch_components_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$arch_components_version"
 
     //rxJava & rxAndroid
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'

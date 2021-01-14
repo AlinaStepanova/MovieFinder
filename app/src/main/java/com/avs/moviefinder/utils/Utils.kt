@@ -3,10 +3,7 @@ package com.avs.moviefinder.utils
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.text.Html
-import android.text.Html.fromHtml
 import android.text.Spanned
-import android.util.Log
 import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country

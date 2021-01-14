@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.utils.BASE_URL
-import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.LONG_DURATION_MS
+import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

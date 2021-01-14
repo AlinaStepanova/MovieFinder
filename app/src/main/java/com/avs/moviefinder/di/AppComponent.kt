@@ -1,7 +1,6 @@
 package com.avs.moviefinder.di
 
 import android.app.Application
-import android.content.Context
 import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.network.ServerApi
@@ -9,7 +8,6 @@ import com.avs.moviefinder.utils.ConnectionLiveData
 import com.avs.moviefinder.utils.RxBus
 import dagger.BindsInstance
 import dagger.Component
-import dagger.Provides
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import dagger.android.support.DaggerApplication

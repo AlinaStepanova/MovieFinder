@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ServerApi
-import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.Single

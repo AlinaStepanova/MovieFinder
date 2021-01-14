@@ -3,7 +3,6 @@ package com.avs.moviefinder.data.database
 import androidx.room.*
 import com.avs.moviefinder.data.dto.Movie
 import io.reactivex.Single
-import java.util.*
 import javax.inject.Singleton
 
 @Singleton

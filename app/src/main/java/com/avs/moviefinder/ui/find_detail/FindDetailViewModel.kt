@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
-import com.avs.moviefinder.data.dto.*
+import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesDBFilter
+import com.avs.moviefinder.data.dto.MoviesSearchFilter
+import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.utils.BASE_URL
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
