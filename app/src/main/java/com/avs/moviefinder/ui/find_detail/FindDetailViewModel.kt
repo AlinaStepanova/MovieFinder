@@ -44,6 +44,7 @@ class FindDetailViewModel @Inject constructor(
         get() = _updateMovieIndex
     private var _moviesDB = MutableLiveData<ArrayList<Movie>>()
     private var _query = MutableLiveData<String?>()
+    private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
     private val dbDisposable = CompositeDisposable()
@@ -124,10 +125,17 @@ class FindDetailViewModel @Inject constructor(
         }
     }
 
-    fun onQuerySubmitted(query: String?) {
+    private fun onQuerySubmitted(query: String?) {
         if (query != null) {
             dbDisposable.add(databaseManager.getAllMovies())
             _query.value = query
+        }
+    }
+
+    fun searchInitialQuery(query: String?) {
+        if (_initialQuery.value == null) {
+            _initialQuery.value = query
+            onQuerySubmitted(query)
         }
     }
 

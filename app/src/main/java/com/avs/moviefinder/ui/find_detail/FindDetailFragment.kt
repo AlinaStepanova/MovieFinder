@@ -12,9 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentFindDetailBinding
 import com.avs.moviefinder.di.ViewModelFactory
-import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
@@ -62,7 +62,7 @@ class FindDetailFragment : BaseFragment() {
         binding.findDetailViewModel = findDetailViewModel
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
-        findDetailViewModel.onQuerySubmitted(query)
+        findDetailViewModel.searchInitialQuery(query)
         val adapter = BaseMoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivityForResult(movie) },
