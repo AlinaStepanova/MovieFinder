@@ -10,8 +10,8 @@ Please, obtain your own API key in order to work with the source code.
 
 
 <p align="justify">
-  <img src="https://drive.google.com/uc?export=view&id=17nBXAfe3I5F-lW03K3kCp4LM5ofIkWTE" width="24%">
-  <img src="https://drive.google.com/uc?export=view&id=1JfdsLDJi-lI2d8NcIP2o22692vCvoFFV" width="24%">
-  <img src="https://drive.google.com/uc?export=view&id=1V9wVwTSxhhLYRhDdUJJsVkD7DD-WRLC5" width="24%">
-  <img src="https://drive.google.com/uc?export=view&id=1GnzxpN4s1XWk_gw2qTvuN61lR4UZmcz0" width="24%">
+  <img src="https://user-images.githubusercontent.com/23102335/104854463-8410b100-590f-11eb-92a0-1157cb55e8dc.png" width="24%">
+  <img src="https://user-images.githubusercontent.com/23102335/104854464-85da7480-590f-11eb-98be-5fd6712455f3.png" width="24%">
+  <img src="https://user-images.githubusercontent.com/23102335/104854466-870ba180-590f-11eb-98ab-367415fb3b08.png" width="24%">
+  <img src="https://user-images.githubusercontent.com/23102335/104854468-883cce80-590f-11eb-8bd6-b42f63a4060f.png" width="24%">
 </p>
