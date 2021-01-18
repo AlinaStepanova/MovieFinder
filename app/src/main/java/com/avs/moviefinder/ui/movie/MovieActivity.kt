@@ -50,6 +50,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        binding.shimmerViewContainer.startShimmerAnimation()
         val extrasMovie : Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
@@ -63,6 +64,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         })
         movieViewModel.movie.observe(this, {
             it?.let {
+                stopShimmerAnimation()
                 setTagline(it)
                 binding.tvOverview.text = it.overview
                 formatReleaseDate(it)
@@ -113,9 +115,19 @@ class MovieActivity : DaggerAppCompatActivity() {
         super.onBackPressed()
     }
 
+    override fun onStop() {
+        stopShimmerAnimation()
+        super.onStop()
+    }
+
     override fun onDestroy() {
         Picasso.get().cancelRequest(target)
         super.onDestroy()
+    }
+
+    private fun stopShimmerAnimation() {
+        binding.shimmerViewContainer.visibility = View.GONE
+        binding.shimmerViewContainer.stopShimmerAnimation()
     }
 
     private fun formatReleaseDate(movie: Movie) {
