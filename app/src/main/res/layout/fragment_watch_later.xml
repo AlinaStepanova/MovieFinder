@@ -15,6 +15,31 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
+        <ImageView
+            android:id="@+id/ivMovie"
+            android:layout_width="@dimen/image_find_movie_max_height"
+            android:layout_height="@dimen/image_find_movie_max_height"
+            android:layout_marginBottom="@dimen/design_bottom_navigation_height"
+            android:src="@drawable/ic_local_movies_grey"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="@dimen/dimen_64dp"
+            android:layout_height="@dimen/dimen_64dp"
+            android:layout_marginBottom="@dimen/design_bottom_navigation_height"
+            android:src="@drawable/ic_watch_later"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWatchLaterRecyclerView"
             android:layout_width="match_parent"
