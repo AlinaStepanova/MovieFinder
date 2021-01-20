@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
 
 class WatchLaterFragment : BaseFragment() {
@@ -51,6 +53,7 @@ class WatchLaterFragment : BaseFragment() {
             it?.let {
                 adapter.submitList(it)
             }
+            setIconsVisibility(it)
         })
         watchLaterViewModel.shareBody.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) shareMovie(it)
@@ -75,9 +78,15 @@ class WatchLaterFragment : BaseFragment() {
                     binding.rvWatchLaterRecyclerView.smoothScrollToPosition(index)
                 }
             }
+            setIconsVisibility(adapter.currentList)
         })
         binding.rvWatchLaterRecyclerView.adapter = adapter
         watchLaterViewModel.getWatchLaterMovies()
         return root
+    }
+
+    private fun setIconsVisibility(movies: List<Movie>) {
+        binding.ivMovieIcon.visibility = getIconVisibility(movies)
+        binding.ivWatchLaterIcon.visibility = getIconVisibility(movies)
     }
 }

@@ -16,7 +16,7 @@
         android:background="@color/white">
 
         <ImageView
-            android:id="@+id/ivMovie"
+            android:id="@+id/ivMovieIcon"
             android:layout_width="@dimen/image_find_movie_max_height"
             android:layout_height="@dimen/image_find_movie_max_height"
             android:layout_marginBottom="@dimen/design_bottom_navigation_height"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/ivFavorite"
+            android:id="@+id/ivFavoriteIcon"
             android:layout_width="@dimen/dimen_64dp"
             android:layout_height="@dimen/dimen_64dp"
             android:layout_marginBottom="@dimen/design_bottom_navigation_height"

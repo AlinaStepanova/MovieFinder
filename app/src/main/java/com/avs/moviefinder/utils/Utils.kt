@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.text.Spanned
+import android.view.View
 import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
+import com.avs.moviefinder.data.dto.Movie
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
@@ -154,3 +156,6 @@ fun buildLinks(id: String?, homepage: String?): Spanned? {
 }
 
 fun buildShareLink(movieId: Long) : String = BASE_URL + "movie/" + movieId + "/"
+
+fun getIconVisibility(movies: List<Movie>) =
+    if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
