@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_favorites"
         android:icon="@drawable/ic_favorite"
-        android:title="@string/favorites" />
+        android:title="@string/title_favorites" />
 
     <item
         android:id="@+id/navigation_watch_later"

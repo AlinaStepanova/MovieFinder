@@ -2,7 +2,7 @@
     <string name="app_name">MovieFinder</string>
     <string name="title_home">Home</string>
     <string name="title_watch_later">Watch later</string>
-    <string name="title_watched">Watched</string>
+    <string name="title_favorites">Favorites</string>
     <string name="network_error_occurred">A network error occurred</string>
     <string name="no_results_found">No results found</string>
     <string name="search_title">Search</string>
@@ -15,9 +15,8 @@
     <string name="share_text">Share</string>
     <string name="title_activity_movie">MovieActivity</string>
     <string name="snack_bar_action_name">UNDO</string>
-    <string name="deleted_favorite_snack_bar_text">Movie was deleted from favorites list</string>
-    <string name="deleted_watch_snack_bar_text">Movie was deleted from the watchlist</string>
+    <string name="deleted_favorite_snack_bar_text">Movie was deleted from your favorites list</string>
+    <string name="deleted_watch_snack_bar_text">Movie was deleted from your watchlist</string>
     <string name="unknown_text">Unknown</string>
     <string name="now_playing">Now Playing</string>
-    <string name="favorites">Favorites</string>
 </resources>

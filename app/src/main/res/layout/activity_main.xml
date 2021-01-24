@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
+                app:contentInsetStartWithNavigation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways">
 
             </androidx.appcompat.widget.Toolbar>
