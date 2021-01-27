@@ -8,6 +8,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.movie.MovieActivity
+import com.avs.moviefinder.utils.IconSnackbar
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
@@ -89,6 +90,15 @@ open class BaseFragment : DaggerFragment() {
             snackbar.anchorView = activity.binding.navView
             snackbar.show()
         }
-
     }
+
+    fun showConnectivitySnackBar(message: String) {
+        val activity = (activity as MainActivity)
+        IconSnackbar.make(
+            activity.binding.navHostFragment,
+            message,
+            Snackbar.LENGTH_LONG
+        ).show()
+    }
+
 }
