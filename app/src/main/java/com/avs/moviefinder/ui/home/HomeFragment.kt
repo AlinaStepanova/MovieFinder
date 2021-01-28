@@ -99,6 +99,11 @@ class HomeFragment : BaseFragment() {
         connectionLiveData.observe(viewLifecycleOwner, {
             homeViewModel.reactOnNetworkChangeState(it)
         })
+        homeViewModel.isBackOnline.observe(viewLifecycleOwner, {
+            it?.let {
+                showConnectivitySnackBar(getString(R.string.back_online_text))
+            }
+        })
         return root
     }
 

@@ -19,4 +19,5 @@
     <string name="deleted_watch_snack_bar_text">Movie was deleted from your watchlist</string>
     <string name="unknown_text">Unknown</string>
     <string name="now_playing">Now Playing</string>
+    <string name="back_online_text">Back online</string>
 </resources>

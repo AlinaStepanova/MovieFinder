@@ -11,6 +11,7 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.avs.moviefinder.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.ContentViewCallback
 
@@ -20,7 +21,7 @@ class IconSnackbarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), ContentViewCallback {
 
-    lateinit var message: TextView
+    var message: TextView
 
     init {
         View.inflate(context, R.layout.icon_snackbar, this)
@@ -48,7 +49,13 @@ class IconSnackbar(
 ) : BaseTransientBottomBar<IconSnackbar>(parent, content, content) {
 
     companion object {
-        fun make(viewGroup: ViewGroup, message: String, duration: Int): IconSnackbar {
+        fun make(
+            viewGroup: ViewGroup,
+            message: String,
+            duration: Int,
+            anchor: BottomNavigationView,
+            backgroundColor: Int
+        ): IconSnackbar {
             val customView = LayoutInflater.from(viewGroup.context).inflate(
                 R.layout.layout_icon_snackbar,
                 viewGroup,
@@ -57,7 +64,12 @@ class IconSnackbar(
 
             customView.message.text = message
 
-            return IconSnackbar(viewGroup, customView).setDuration(duration)
+            val snackbar = IconSnackbar(viewGroup, customView)
+            snackbar.view.setBackgroundColor(backgroundColor)
+
+            return snackbar
+                .setDuration(duration)
+                .setAnchorView(anchor)
         }
     }
 }

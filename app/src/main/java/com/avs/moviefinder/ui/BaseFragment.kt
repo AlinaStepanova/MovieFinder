@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
@@ -94,11 +95,22 @@ open class BaseFragment : DaggerFragment() {
 
     fun showConnectivitySnackBar(message: String) {
         val activity = (activity as MainActivity)
+        val color: Int = getBackgroundColor(R.color.green)
         IconSnackbar.make(
-            activity.binding.navHostFragment,
+            activity.binding.container,
             message,
-            Snackbar.LENGTH_LONG
+            Snackbar.LENGTH_LONG,
+            activity.binding.navView,
+            color
         ).show()
+    }
+
+    private fun getBackgroundColor(colorId: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            resources.getColor(colorId, fragmentContext.theme)
+        } else {
+            resources.getColor(colorId)
+        }
     }
 
 }

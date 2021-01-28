@@ -5,18 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.database.DatabaseManager
-import com.avs.moviefinder.data.network.ErrorType
-import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesAPIFilter
 import com.avs.moviefinder.data.dto.MoviesDBFilter
+import com.avs.moviefinder.data.network.ErrorType
+import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.utils.*
+import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
+import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.buildMowPlayingUrl
+import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
-import java.util.LinkedList as LinkedList
 
 class HomeViewModel @Inject constructor(
     private val serverApi: ServerApi,
@@ -49,6 +51,9 @@ class HomeViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
+    private var _isBackOnline = MutableLiveData<Boolean?>()
+    val isBackOnline: LiveData<Boolean?>
+        get() = _isBackOnline
 
     init {
         rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
@@ -212,6 +217,8 @@ class HomeViewModel @Inject constructor(
     fun reactOnNetworkChangeState(isActive: Boolean) {
         if (isActive && _errorType.value == ErrorType.NETWORK) {
             onRefresh()
+            _isBackOnline.value = true
+            _isBackOnline.value = null
         }
     }
 
