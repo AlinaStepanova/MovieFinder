@@ -1,7 +1,6 @@
 package com.avs.moviefinder.utils
 
 import android.content.res.Configuration
-import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -110,36 +109,27 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
 
 @BindingAdapter("popularCategory")
 fun TextView.setPopularCategoryAppearance(selectedCategory: MoviesCategory) {
-    if (selectedCategory == MoviesCategory.POPULAR) {
-        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    background = if (selectedCategory == MoviesCategory.POPULAR) {
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
     } else {
-        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
     }
 }
 
 @BindingAdapter("topRatedCategory")
 fun TextView.setTopRatedCategoryAppearance(selectedCategory: MoviesCategory) {
-    if (selectedCategory == MoviesCategory.TOP_RATED) {
-        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    background = if (selectedCategory == MoviesCategory.TOP_RATED) {
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
     } else {
-        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
     }
 }
 
 @BindingAdapter("nowPlayingCategory")
 fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
-    if (selectedCategory == MoviesCategory.NOW_PLAYING) {
-        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    background = if (selectedCategory == MoviesCategory.NOW_PLAYING) {
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
     } else {
-        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
-    }
-}
-
-private fun TextView.setTextState(backgroundId: Int, textColorId: Int) {
-    background = ContextCompat.getDrawable(context, backgroundId)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        setTextColor(resources.getColor(textColorId, context.theme))
-    } else {
-        setTextColor(resources.getColor(textColorId))
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
     }
 }
