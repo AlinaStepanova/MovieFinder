@@ -10,7 +10,6 @@ import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.home.MoviesCategory
-import com.google.android.material.imageview.ExperimentalImageView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.squareup.picasso.Picasso
@@ -74,7 +73,6 @@ fun ImageView.setWatchLaterAppearance(item: Movie?) {
 }
 
 @BindingAdapter("posterImage")
-@ExperimentalImageView
 fun ShapeableImageView.setPosterImage(item: Movie) {
     val widthRatio = 1F
     val pixels = dpToPx(16)
