@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -88,7 +89,8 @@
                 app:tint="@color/mainGrey"
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvMovieYear" />
+                app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvMovieYear"
@@ -116,7 +118,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                 app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
                 app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
-                app:ratingFormattedIcon="@{movie}"/>
+                app:ratingFormattedIcon="@{movie}"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tvMovieRating"
@@ -145,7 +148,8 @@
             android:src="@drawable/ic_favorite_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivWatchLaterIcon"
-            app:favoritesIcon="@{movie}" />
+            app:favoritesIcon="@{movie}"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/ivWatchLaterIcon"
@@ -156,7 +160,8 @@
             android:src="@drawable/ic_outline_watch_later"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivShareIcon"
-            app:watchLaterIcon="@{movie}"/>
+            app:watchLaterIcon="@{movie}"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/ivShareIcon"
@@ -167,7 +172,8 @@
             android:src="@drawable/ic_share"
             app:tint="@color/mainGrey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

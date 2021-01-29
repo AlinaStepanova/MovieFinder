@@ -132,7 +132,8 @@
                     android:src="@drawable/ic_calendar"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/mainGrey" />
+                    app:tint="@color/mainGrey"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvMovieYear"
@@ -160,7 +161,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
                     app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
                     app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
-                    app:tint="@color/mainGrey" />
+                    app:tint="@color/mainGrey"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvMovieRating"
@@ -188,7 +190,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tvMovieRating"
                     app:layout_constraintStart_toEndOf="@+id/tvMovieRating"
                     app:layout_constraintTop_toTopOf="@+id/tvMovieRating"
-                    app:tint="@color/mainGrey" />
+                    app:tint="@color/mainGrey"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvRuntime"
@@ -216,7 +219,8 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivCalendar"
-                    app:tint="@color/mainGrey" />
+                    app:tint="@color/mainGrey"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvCountries"
@@ -302,7 +306,8 @@
             app:fabSize="mini"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_favorite_border" />
+            app:srcCompat="@drawable/ic_favorite_border"
+            tools:ignore="ContentDescription" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabWatched"
@@ -314,7 +319,8 @@
             app:fabSize="mini"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_outline_watch_later" />
+            app:srcCompat="@drawable/ic_outline_watch_later"
+            tools:ignore="ContentDescription" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
