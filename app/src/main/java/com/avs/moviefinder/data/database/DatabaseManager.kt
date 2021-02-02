@@ -74,10 +74,6 @@ class DatabaseManager @Inject constructor(
             .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
     }
 
-    private fun readSuccessMessage(items: Any) {
-        Log.d(this.javaClass.simpleName, "Inserted successfully $items")
-    }
-
     private fun handleError(error: Throwable?) {
         if (BuildConfig.DEBUG) {
             if (error != null) {
