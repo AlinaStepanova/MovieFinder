@@ -4,6 +4,7 @@ import android.app.Application
 import com.avs.moviefinder.MovieFinderApplication
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.repository.HomeRepository
 import com.avs.moviefinder.utils.ConnectionLiveData
 import com.avs.moviefinder.utils.RxBus
 import dagger.BindsInstance
@@ -40,4 +41,5 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     fun databaseManager() : DatabaseManager
     fun rxBus() : RxBus
     fun connectionLiveData() : ConnectionLiveData
+    fun homeRepository() : HomeRepository
 }

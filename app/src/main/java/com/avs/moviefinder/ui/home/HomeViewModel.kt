@@ -4,12 +4,11 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesAPIFilter
 import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.data.network.ErrorType
-import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.repository.HomeRepository
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
@@ -21,9 +20,8 @@ import java.util.*
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val serverApi: ServerApi,
     rxBus: RxBus,
-    private val databaseManager: DatabaseManager
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<LinkedList<Movie>>()
@@ -43,8 +41,7 @@ class HomeViewModel @Inject constructor(
     val shareBody: LiveData<String?>
         get() = _shareBody
     private var apiDisposable: Disposable? = null
-    private var rxBusDisposable: Disposable? = null
-    private val dbDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
@@ -56,14 +53,16 @@ class HomeViewModel @Inject constructor(
         get() = _isBackOnline
 
     init {
-        rxBusDisposable = rxBus.events.subscribe { event -> handleServerResponse(event) }
-        dbDisposable.add(databaseManager.getAllMovies())
+        compositeDisposable.addAll(
+            rxBus.events.subscribe { event -> handleServerResponse(event) },
+            homeRepository.getAllMovies()
+        )
     }
 
     override fun onCleared() {
         apiDisposable?.dispose()
-        rxBusDisposable?.dispose()
-        dbDisposable.dispose()
+        compositeDisposable.dispose()
+        homeRepository.dispose()
         super.onCleared()
     }
 
@@ -76,11 +75,9 @@ class HomeViewModel @Inject constructor(
             is MoviesAPIFilter -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                if (event.movies.isEmpty()) {
-                    _errorType.value = ErrorType.NO_RESULTS
-                } else _errorType.value = null
+                _errorType.value = if (event.movies.isEmpty()) ErrorType.NO_RESULTS else null
                 val movies = event.movies
-                combineServerAndDatabaseData(movies)
+                homeRepository.combineServerAndDatabaseData(_moviesDB.value, movies)
                 if (movies.isEmpty() || movies.first.id != 0L) {
                     movies.addFirst(Movie())
                 }
@@ -108,31 +105,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    // todo put this logic into the Repository
-    private fun combineServerAndDatabaseData(fetchedMovies: LinkedList<Movie>) {
-        _moviesDB.value?.let { localMovies ->
-            if (localMovies.isEmpty()) {
-                dbDisposable.add(databaseManager.insertMovies(fetchedMovies.filter { it.id > 0 }))
-            } else {
-                localMovies.forEach { movie ->
-                    val isInFetchedList = fetchedMovies.contains(movie)
-                    if (!movie.isInWatchLater && !movie.isFavorite && !isInFetchedList) {
-                        dbDisposable.add(databaseManager.delete(movie))
-                    }
-                }
-                fetchedMovies.forEach { movie ->
-                    val insertedMovie = localMovies.firstOrNull { it.id == movie.id }
-                    if (insertedMovie != null) {
-                        movie.isInWatchLater = insertedMovie.isInWatchLater
-                        movie.isFavorite = insertedMovie.isFavorite
-                    } else if (movie.id != 0L) {
-                        dbDisposable.add(databaseManager.insertMovie(movie))
-                    }
-                }
-            }
-        }
-    }
-
     private fun makeAPICall() {
         if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
             getPopularMovies()
@@ -145,19 +117,19 @@ class HomeViewModel @Inject constructor(
 
     private fun getPopularMovies() {
         disposeValues()
-        apiDisposable = serverApi.getPopularMovies()
+        apiDisposable = homeRepository.getPopularMovies()
     }
 
     private fun getTopRatedMovies() {
         disposeValues()
-        apiDisposable = serverApi.getTopRatedMovies()
+        apiDisposable = homeRepository.getTopRatedMovies()
     }
 
     private fun getNowPlayingMovies() {
         disposeValues()
         val url = buildMowPlayingUrl()
         if (url.isNotEmpty()) {
-            apiDisposable = serverApi.getNowPlayingMovies(url)
+            apiDisposable = homeRepository.getNowPlayingMovies(url)
         }
     }
 
@@ -167,7 +139,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onRefresh() {
-        dbDisposable.add(databaseManager.getAllMovies())
+        compositeDisposable.add(homeRepository.getAllMovies())
     }
 
     fun shareMovie(movieId: Long) {
@@ -180,7 +152,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isInWatchLater = !it.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.insertMovie(it))
+            compositeDisposable.add(homeRepository.insertMovie(it))
         }
     }
 
@@ -189,7 +161,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isFavorite = !it.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.insertMovie(it))
+            compositeDisposable.add(homeRepository.insertMovie(it))
         }
     }
 
@@ -228,7 +200,7 @@ class HomeViewModel @Inject constructor(
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
                 updatedMovie.lastTimeUpdated = System.currentTimeMillis()
-                dbDisposable.add(databaseManager.update(updatedMovie))
+                compositeDisposable.add(homeRepository.updateMovie(updatedMovie))
             }
         }
     }
