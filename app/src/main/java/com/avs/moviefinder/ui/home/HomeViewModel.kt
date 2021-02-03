@@ -15,7 +15,6 @@ import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildMowPlayingUrl
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
 
@@ -40,9 +39,6 @@ class HomeViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var apiDisposable: Disposable? = null
-    private val compositeDisposable = CompositeDisposable()
-    private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
     private var _updateMovieIndex = MutableLiveData<Int?>()
@@ -51,6 +47,8 @@ class HomeViewModel @Inject constructor(
     private var _isBackOnline = MutableLiveData<Boolean?>()
     val isBackOnline: LiveData<Boolean?>
         get() = _isBackOnline
+    private val compositeDisposable = CompositeDisposable()
+    private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
     init {
         compositeDisposable.addAll(
@@ -60,7 +58,6 @@ class HomeViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        apiDisposable?.dispose()
         compositeDisposable.dispose()
         homeRepository.dispose()
         super.onCleared()
@@ -78,9 +75,7 @@ class HomeViewModel @Inject constructor(
                 _errorType.value = if (event.movies.isEmpty()) ErrorType.NO_RESULTS else null
                 val movies = event.movies
                 homeRepository.combineServerAndDatabaseData(_moviesDB.value, movies)
-                if (movies.isEmpty() || movies.first.id != 0L) {
-                    movies.addFirst(Movie())
-                }
+                if (movies.isEmpty() || movies.first.id != 0L) movies.addFirst(Movie())
                 _movies.value = movies
             }
             is Movie -> {
@@ -116,26 +111,21 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getPopularMovies() {
-        disposeValues()
-        apiDisposable = homeRepository.getPopularMovies()
+        _errorType.value = null
+        compositeDisposable.addAll(homeRepository.getPopularMovies())
     }
 
     private fun getTopRatedMovies() {
-        disposeValues()
-        apiDisposable = homeRepository.getTopRatedMovies()
+        _errorType.value = null
+        compositeDisposable.add(homeRepository.getTopRatedMovies())
     }
 
     private fun getNowPlayingMovies() {
-        disposeValues()
+        _errorType.value = null
         val url = buildMowPlayingUrl()
         if (url.isNotEmpty()) {
-            apiDisposable = homeRepository.getNowPlayingMovies(url)
+            compositeDisposable.add(homeRepository.getNowPlayingMovies(url))
         }
-    }
-
-    private fun disposeValues() {
-        _errorType.value = null
-        apiDisposable?.dispose()
     }
 
     fun onRefresh() {
