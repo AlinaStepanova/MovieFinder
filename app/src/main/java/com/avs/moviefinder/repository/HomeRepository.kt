@@ -30,30 +30,6 @@ class HomeRepository @Inject constructor(
         return databaseManager.delete(movie)
     }
 
-    fun getAllMovies(category: MoviesCategory?) {
-        compositeDisposable
-            .add(
-                databaseManager
-                    .getAllMoviesAsSingle()
-                    .subscribe({ localMovies ->
-                        moviesDB = localMovies as ArrayList<Movie>
-                        when (category) {
-                            MoviesCategory.POPULAR -> getPopularMovies()
-                            MoviesCategory.TOP_RATED -> getTopRatedMovies()
-                            MoviesCategory.NOW_PLAYING -> {
-                                val url = buildMowPlayingUrl()
-                                if (url.isNotEmpty()) {
-                                    getNowPlayingMovies(url)
-                                }
-                            }
-                            null -> {
-                                getPopularMovies()
-                            }
-                        }
-                    }, { rxBus.send(it) })
-            )
-    }
-
     private fun getPopularMovies() {
         compositeDisposable.add(
             serverApi.getPopularMoviesAsSingle()
@@ -116,6 +92,26 @@ class HomeRepository @Inject constructor(
             }
         }
         rxBus.send(MoviesFilterResult(fetchedMovies))
+    }
+
+    fun getAllMovies(category: MoviesCategory?) {
+        compositeDisposable
+            .add(
+                databaseManager
+                    .getAllMoviesAsSingle()
+                    .subscribe({ localMovies ->
+                        moviesDB = localMovies as ArrayList<Movie>
+                        when (category) {
+                            MoviesCategory.POPULAR -> getPopularMovies()
+                            MoviesCategory.TOP_RATED -> getTopRatedMovies()
+                            MoviesCategory.NOW_PLAYING -> {
+                                val url = buildMowPlayingUrl()
+                                if (url.isNotEmpty()) getNowPlayingMovies(url)
+                            }
+                            null -> getPopularMovies()
+                        }
+                    }, { rxBus.send(it) })
+            )
     }
 
     fun insertMovie(movie: Movie): Disposable {
