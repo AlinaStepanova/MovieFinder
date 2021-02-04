@@ -3,6 +3,7 @@ package com.avs.moviefinder.data.network
 import android.util.Log
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesAPIFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,12 +17,12 @@ class ServerApi @Inject constructor(
     private val rxBus: RxBus,
     private val moviesApi: MoviesApi
 ) {
-    fun getPopularMovies(): Disposable {
+
+    fun getPopularMoviesAsSingle(): Single<MoviesAPIFilter> {
         return moviesApi
             .getPopularMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
     fun getMovieById(id: Long): Disposable {
@@ -36,20 +37,18 @@ class ServerApi @Inject constructor(
         return moviesApi.getMovieById(id)
     }
 
-    fun getTopRatedMovies(): Disposable {
+    fun getTopRatedMovies(): Single<MoviesAPIFilter> {
         return moviesApi
             .getTopRatedMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
-    fun getNowPlayingMovies(url: String): Disposable {
+    fun getNowPlayingMovies(url: String): Single<MoviesAPIFilter> {
         return moviesApi
             .getNowPlayingMovies(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
     fun getMovieByTitle(title: String): Disposable {

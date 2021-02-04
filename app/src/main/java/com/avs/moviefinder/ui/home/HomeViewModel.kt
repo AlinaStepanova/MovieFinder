@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesAPIFilter
-import com.avs.moviefinder.data.dto.MoviesDBFilter
+import com.avs.moviefinder.data.dto.MoviesFilterResult
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.repository.HomeRepository
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
-import com.avs.moviefinder.utils.buildMowPlayingUrl
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
@@ -26,7 +24,6 @@ class HomeViewModel @Inject constructor(
     private var _movies = MutableLiveData<LinkedList<Movie>>()
     val movies: LiveData<LinkedList<Movie>>
         get() = _movies
-    private var _moviesDB = MutableLiveData<ArrayList<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -51,10 +48,8 @@ class HomeViewModel @Inject constructor(
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
     init {
-        compositeDisposable.addAll(
-            rxBus.events.subscribe { event -> handleServerResponse(event) },
-            homeRepository.getAllMovies()
-        )
+        compositeDisposable.add(rxBus.events.subscribe { event -> handleServerResponse(event) })
+        homeRepository.getAllMovies(_selectedCategory.value)
     }
 
     override fun onCleared() {
@@ -65,18 +60,12 @@ class HomeViewModel @Inject constructor(
 
     private fun handleServerResponse(event: Any?) {
         when (event) {
-            is MoviesDBFilter -> {
-                _moviesDB.value = event.movies as ArrayList<Movie>
-                makeAPICall()
-            }
-            is MoviesAPIFilter -> {
+            is MoviesFilterResult -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
                 _errorType.value = if (event.movies.isEmpty()) ErrorType.NO_RESULTS else null
-                val movies = event.movies
-                homeRepository.combineServerAndDatabaseData(_moviesDB.value, movies)
-                if (movies.isEmpty() || movies.first.id != 0L) movies.addFirst(Movie())
-                _movies.value = movies
+                if (event.movies.isEmpty() || event.movies.first.id != 0L) event.movies.addFirst(Movie())
+                _movies.value = event.movies
             }
             is Movie -> {
                 _movies.value?.let { list ->
@@ -100,36 +89,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun makeAPICall() {
-        if (_selectedCategory.value == MoviesCategory.POPULAR || _selectedCategory.value == null) {
-            getPopularMovies()
-        } else if (_selectedCategory.value == MoviesCategory.TOP_RATED) {
-            getTopRatedMovies()
-        } else if (_selectedCategory.value == MoviesCategory.NOW_PLAYING) {
-            getNowPlayingMovies()
-        }
-    }
-
-    private fun getPopularMovies() {
-        _errorType.value = null
-        compositeDisposable.addAll(homeRepository.getPopularMovies())
-    }
-
-    private fun getTopRatedMovies() {
-        _errorType.value = null
-        compositeDisposable.add(homeRepository.getTopRatedMovies())
-    }
-
-    private fun getNowPlayingMovies() {
-        _errorType.value = null
-        val url = buildMowPlayingUrl()
-        if (url.isNotEmpty()) {
-            compositeDisposable.add(homeRepository.getNowPlayingMovies(url))
-        }
-    }
-
     fun onRefresh() {
-        compositeDisposable.add(homeRepository.getAllMovies())
+        _errorType.value = null
+        homeRepository.getAllMovies(_selectedCategory.value)
     }
 
     fun shareMovie(movieId: Long) {

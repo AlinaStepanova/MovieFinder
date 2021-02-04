@@ -2,7 +2,11 @@ package com.avs.moviefinder.repository
 
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesFilterResult
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.ui.home.MoviesCategory
+import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.buildMowPlayingUrl
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
@@ -13,7 +17,9 @@ import javax.inject.Singleton
 class HomeRepository @Inject constructor(
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager,
+    private val rxBus: RxBus
 ) {
+    private var moviesDB = ArrayList<Movie>()
     private val compositeDisposable = CompositeDisposable()
 
     private fun insertMovies(movies: List<Movie>): Disposable {
@@ -24,35 +30,71 @@ class HomeRepository @Inject constructor(
         return databaseManager.delete(movie)
     }
 
-    fun getAllMovies(): Disposable {
-        return databaseManager.getAllMovies()
+    fun getAllMovies(category: MoviesCategory?) {
+        compositeDisposable
+            .add(
+                databaseManager
+                    .getAllMoviesAsSingle()
+                    .subscribe({ localMovies ->
+                        moviesDB = localMovies as ArrayList<Movie>
+                        when (category) {
+                            MoviesCategory.POPULAR -> getPopularMovies()
+                            MoviesCategory.TOP_RATED -> getTopRatedMovies()
+                            MoviesCategory.NOW_PLAYING -> {
+                                val url = buildMowPlayingUrl()
+                                if (url.isNotEmpty()) {
+                                    getNowPlayingMovies(url)
+                                }
+                            }
+                            null -> {
+                                getPopularMovies()
+                            }
+                        }
+                    }, { rxBus.send(it) })
+            )
     }
 
-    fun insertMovie(movie: Movie): Disposable {
-        return databaseManager.insertMovie(movie)
+    private fun getPopularMovies() {
+        compositeDisposable.add(
+            serverApi.getPopularMoviesAsSingle()
+                .subscribe({ fetchedMovies ->
+                    combineServerAndDatabaseData(
+                        moviesDB,
+                        fetchedMovies.movies
+                    )
+                }, { rxBus.send(it) })
+        )
     }
 
-    fun updateMovie(movie: Movie): Disposable {
-        return databaseManager.update(movie)
+    private fun getTopRatedMovies() {
+        compositeDisposable.add(
+            serverApi.getTopRatedMovies()
+                .subscribe({ fetchedMovies ->
+                    combineServerAndDatabaseData(
+                        moviesDB,
+                        fetchedMovies.movies
+                    )
+                }, { rxBus.send(it) })
+        )
     }
 
-    fun getPopularMovies(): Disposable {
-        return serverApi.getPopularMovies()
+    private fun getNowPlayingMovies(url: String) {
+        compositeDisposable.add(
+            serverApi.getNowPlayingMovies(url)
+                .subscribe({ fetchedMovies ->
+                    combineServerAndDatabaseData(
+                        moviesDB,
+                        fetchedMovies.movies
+                    )
+                }, { rxBus.send(it) })
+        )
     }
 
-    fun getTopRatedMovies(): Disposable {
-        return serverApi.getTopRatedMovies()
-    }
-
-    fun getNowPlayingMovies(url: String): Disposable {
-        return serverApi.getNowPlayingMovies(url)
-    }
-
-    fun combineServerAndDatabaseData(
-        moviesDB: ArrayList<Movie>?,
+    private fun combineServerAndDatabaseData(
+        moviesDB: ArrayList<Movie>,
         fetchedMovies: LinkedList<Movie>
     ) {
-        moviesDB?.let { localMovies ->
+        moviesDB.let { localMovies ->
             if (localMovies.isEmpty()) {
                 compositeDisposable.add(insertMovies(fetchedMovies))
             } else {
@@ -73,6 +115,15 @@ class HomeRepository @Inject constructor(
                 }
             }
         }
+        rxBus.send(MoviesFilterResult(fetchedMovies))
+    }
+
+    fun insertMovie(movie: Movie): Disposable {
+        return databaseManager.insertMovie(movie)
+    }
+
+    fun updateMovie(movie: Movie): Disposable {
+        return databaseManager.update(movie)
     }
 
     fun dispose() {

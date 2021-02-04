@@ -41,6 +41,12 @@ class DatabaseManager @Inject constructor(
             .subscribe({ rxBus.send(MoviesDBFilter(it)) }, { handleError(it) })
     }
 
+    fun getAllMoviesAsSingle(): Single<List<Movie>> {
+        return dataSource.getAllEntries()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun update(movie: Movie): Disposable {
         return dataSource.update(movie)
             .subscribeOn(Schedulers.io())
