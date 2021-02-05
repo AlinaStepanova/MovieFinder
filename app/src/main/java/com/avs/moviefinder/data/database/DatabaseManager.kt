@@ -5,7 +5,6 @@ import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesDBFilter
-import com.avs.moviefinder.data.dto.WatchList
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -73,11 +72,11 @@ class DatabaseManager @Inject constructor(
             .subscribe({ it?.let { favorites -> rxBus.send(FavoritesList(favorites)) } }, { handleError(it) })
     }
 
-    fun getWatchLaterList(): Disposable {
+    fun getWatchLaterList(): Single<List<Movie>?> {
         return dataSource.getWatchLaterList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
+            //.subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
     }
 
     private fun handleError(error: Throwable?) {

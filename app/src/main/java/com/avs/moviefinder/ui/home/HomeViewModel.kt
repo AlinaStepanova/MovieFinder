@@ -48,17 +48,17 @@ class HomeViewModel @Inject constructor(
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
     init {
-        compositeDisposable.add(rxBus.events.subscribe { event -> handleServerResponse(event) })
+        compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
         homeRepository.getAllMovies(_selectedCategory.value)
     }
 
     override fun onCleared() {
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
         homeRepository.dispose()
         super.onCleared()
     }
 
-    private fun handleServerResponse(event: Any?) {
+    private fun subscribeToEvents(event: Any?) {
         when (event) {
             is MoviesFilterResult -> {
                 _isProgressVisible.value = false

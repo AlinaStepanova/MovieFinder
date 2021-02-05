@@ -3,9 +3,9 @@ package com.avs.moviefinder.ui.watch_later
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.WatchList
+import com.avs.moviefinder.repository.WatchListRepository
 import com.avs.moviefinder.utils.LONG_DURATION_MS
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class WatchLaterViewModel @Inject constructor(
     rxBus: RxBus,
-    private val databaseManager: DatabaseManager
+    private val watchListRepository: WatchListRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<ArrayList<Movie>>()
@@ -38,22 +38,21 @@ class WatchLaterViewModel @Inject constructor(
     val isInserted: LiveData<Boolean?>
         get() = _isInserted
     private var removedMovie: Movie? = null
-    private val dbDisposable = CompositeDisposable()
-    private var rxBusDisposable: Disposable? = null
+    private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
     init {
-        rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
+        compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
         _isProgressVisible.value = true
         getWatchLaterMovies()
     }
 
-    private fun handleDBResponse(event: Any) {
+    private fun subscribeToEvents(event: Any) {
         when (event) {
             is WatchList -> {
                 _isProgressVisible.value = false
                 if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = ArrayList(event.movies.sortedByDescending { it.lastTimeUpdated })
+                    _movies.value = ArrayList(event.movies)
                 }
             }
             is Movie -> {
@@ -80,8 +79,8 @@ class WatchLaterViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        dbDisposable.dispose()
-        rxBusDisposable?.dispose()
+        compositeDisposable.clear()
+        watchListRepository.dispose()
         timer?.dispose()
         super.onCleared()
     }
@@ -101,9 +100,7 @@ class WatchLaterViewModel @Inject constructor(
         removedMovie = null
     }
 
-    fun getWatchLaterMovies() {
-        dbDisposable.add(databaseManager.getWatchLaterList())
-    }
+    fun getWatchLaterMovies() = watchListRepository.getWatchList()
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
@@ -129,7 +126,7 @@ class WatchLaterViewModel @Inject constructor(
             if (isInWatchLater && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            dbDisposable.add(databaseManager.update(movie))
+            watchListRepository.updateMovie(movie)
         }
     }
 
@@ -141,7 +138,7 @@ class WatchLaterViewModel @Inject constructor(
             if (isFavorite) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            dbDisposable.add(databaseManager.update(movie))
+            watchListRepository.updateMovie(movie)
         }
     }
 }
