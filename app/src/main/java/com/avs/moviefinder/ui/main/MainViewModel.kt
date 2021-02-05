@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.utils.RxBus
-import io.reactivex.disposables.Disposable
 
 class MainViewModel constructor(
     private val rxBus: RxBus,
@@ -13,13 +12,6 @@ class MainViewModel constructor(
 
     companion object {
         const val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
-    }
-
-    private var apiDisposable: Disposable? = null
-
-    override fun onCleared() {
-        apiDisposable?.dispose()
-        super.onCleared()
     }
 
     fun onQueryTextSubmit(newText: String) {
