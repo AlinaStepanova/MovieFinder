@@ -3,9 +3,9 @@ package com.avs.moviefinder.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.repository.FavoritesRepository
 import com.avs.moviefinder.utils.LONG_DURATION_MS
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
     rxBus: RxBus,
-    private val databaseManager: DatabaseManager
+    private val favoritesRepository: FavoritesRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<ArrayList<Movie>>()
@@ -101,9 +101,7 @@ class FavoritesViewModel @Inject constructor(
         removedMovie = null
     }
 
-    fun getFavorites() {
-        dbDisposable.add(databaseManager.getAllFavorites())
-    }
+    fun getFavorites() = favoritesRepository.getFavorites()
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
@@ -129,7 +127,7 @@ class FavoritesViewModel @Inject constructor(
             if (isInWatchLater) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            dbDisposable.add(databaseManager.update(movie))
+            favoritesRepository.updateMovie(movie)
         }
     }
 
@@ -141,7 +139,7 @@ class FavoritesViewModel @Inject constructor(
             if (isFavorite && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            dbDisposable.add(databaseManager.update(movie))
+            favoritesRepository.updateMovie(movie)
         }
     }
 
