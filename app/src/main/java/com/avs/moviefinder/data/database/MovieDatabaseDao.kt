@@ -21,7 +21,7 @@ interface MovieDatabaseDao {
     @Query("SELECT * from movie_table WHERE id = :id")
     fun get(id: Long): Single<Movie?>
 
-    @Query("SELECT * from movie_table WHERE isFavorite = 1")
+    @Query("SELECT * from movie_table WHERE isFavorite = 1 ORDER BY lastTimeUpdated DESC")
     fun getFavoritesList(): Single<List<Movie>?>
 
     @Query("SELECT * from movie_table WHERE isInWatchLater = 1 ORDER BY lastTimeUpdated DESC")

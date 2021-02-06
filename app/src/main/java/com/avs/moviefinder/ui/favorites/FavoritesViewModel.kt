@@ -43,7 +43,7 @@ class FavoritesViewModel @Inject constructor(
     private var timer: Disposable? = null
 
     init {
-        rxBusDisposable = rxBus.events.subscribe { event -> handleDBResponse(event) }
+        rxBusDisposable = rxBus.events.subscribe { event -> subscribeToEvents(event) }
         _isProgressVisible.value = true
         getFavorites()
     }
@@ -55,12 +55,12 @@ class FavoritesViewModel @Inject constructor(
         super.onCleared()
     }
 
-    private fun handleDBResponse(event: Any) {
+    private fun subscribeToEvents(event: Any) {
         when (event) {
             is FavoritesList -> {
                 _isProgressVisible.value = false
                 if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = ArrayList(event.movies.sortedByDescending { it.lastTimeUpdated })
+                    _movies.value = ArrayList(event.movies)
                 }
             }
             is Movie -> {
@@ -79,7 +79,7 @@ class FavoritesViewModel @Inject constructor(
                             } else {
                                 list[updatedMovieIndex] = event
                             }
-                        } // todo add new movie to the list
+                        }
                     }
                 }
             }
