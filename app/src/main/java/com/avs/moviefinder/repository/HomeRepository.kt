@@ -8,7 +8,6 @@ import com.avs.moviefinder.ui.home.MoviesCategory
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildMowPlayingUrl
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,12 +21,12 @@ class HomeRepository @Inject constructor(
     private var moviesDB = ArrayList<Movie>()
     private val compositeDisposable = CompositeDisposable()
 
-    private fun insertMovies(movies: List<Movie>): Disposable {
-        return databaseManager.insertMovies(movies.filter { it.id > 0 })
+    private fun insertMovies(movies: List<Movie>) {
+        compositeDisposable.add(databaseManager.insertMovies(movies.filter { it.id > 0 }))
     }
 
-    private fun deleteMovie(movie: Movie): Disposable {
-        return databaseManager.delete(movie)
+    private fun deleteMovie(movie: Movie) {
+        compositeDisposable.add(databaseManager.delete(movie))
     }
 
     private fun getPopularMovies() {
@@ -72,12 +71,12 @@ class HomeRepository @Inject constructor(
     ) {
         moviesDB.let { localMovies ->
             if (localMovies.isEmpty()) {
-                compositeDisposable.add(insertMovies(fetchedMovies))
+                insertMovies(fetchedMovies)
             } else {
                 localMovies.forEach { movie ->
                     val isInFetchedList = fetchedMovies.contains(movie)
                     if (!movie.isInWatchLater && !movie.isFavorite && !isInFetchedList) {
-                        compositeDisposable.add(deleteMovie(movie))
+                        deleteMovie(movie)
                     }
                 }
                 fetchedMovies.forEach { movie ->
@@ -86,7 +85,7 @@ class HomeRepository @Inject constructor(
                         movie.isInWatchLater = insertedMovie.isInWatchLater
                         movie.isFavorite = insertedMovie.isFavorite
                     } else if (movie.id != 0L) {
-                        compositeDisposable.add(insertMovie(movie))
+                        insertMovie(movie)
                     }
                 }
             }
@@ -114,15 +113,10 @@ class HomeRepository @Inject constructor(
             )
     }
 
-    fun insertMovie(movie: Movie): Disposable {
-        return databaseManager.insertMovie(movie)
-    }
+    fun insertMovie(movie: Movie) = compositeDisposable.add(databaseManager.insertMovie(movie))
 
-    fun updateMovie(movie: Movie): Disposable {
-        return databaseManager.update(movie)
-    }
+    fun updateMovie(movie: Movie) = compositeDisposable.add(databaseManager.update(movie))
 
-    fun dispose() {
-        compositeDisposable.dispose()
-    }
+    fun dispose() = compositeDisposable.dispose()
+
 }

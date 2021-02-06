@@ -51,6 +51,7 @@ class FavoritesViewModel @Inject constructor(
     override fun onCleared() {
         dbDisposable.dispose()
         rxBusDisposable?.dispose()
+        favoritesRepository.dispose()
         timer?.dispose()
         super.onCleared()
     }

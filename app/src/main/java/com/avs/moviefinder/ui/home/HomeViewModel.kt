@@ -104,7 +104,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isInWatchLater = !it.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
-            compositeDisposable.add(homeRepository.insertMovie(it))
+            homeRepository.insertMovie(it)
         }
     }
 
@@ -113,7 +113,7 @@ class HomeViewModel @Inject constructor(
         movie?.let {
             it.isFavorite = !it.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
-            compositeDisposable.add(homeRepository.insertMovie(it))
+            homeRepository.insertMovie(it)
         }
     }
 
@@ -152,7 +152,7 @@ class HomeViewModel @Inject constructor(
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
                 updatedMovie.lastTimeUpdated = System.currentTimeMillis()
-                compositeDisposable.add(homeRepository.updateMovie(updatedMovie))
+                homeRepository.updateMovie(updatedMovie)
             }
         }
     }
