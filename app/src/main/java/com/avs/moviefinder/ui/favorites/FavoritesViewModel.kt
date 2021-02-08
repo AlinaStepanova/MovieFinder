@@ -38,19 +38,17 @@ class FavoritesViewModel @Inject constructor(
     val isInserted: LiveData<Boolean?>
         get() = _isInserted
     private var removedMovie: Movie? = null
-    private val dbDisposable = CompositeDisposable()
-    private var rxBusDisposable: Disposable? = null
+    private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
     init {
-        rxBusDisposable = rxBus.events.subscribe { event -> subscribeToEvents(event) }
+        compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
         _isProgressVisible.value = true
         getFavorites()
     }
 
     override fun onCleared() {
-        dbDisposable.dispose()
-        rxBusDisposable?.dispose()
+        compositeDisposable.dispose()
         favoritesRepository.dispose()
         timer?.dispose()
         super.onCleared()
