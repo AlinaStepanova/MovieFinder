@@ -117,6 +117,6 @@ class HomeRepository @Inject constructor(
 
     fun updateMovie(movie: Movie) = compositeDisposable.add(databaseManager.update(movie))
 
-    fun dispose() = compositeDisposable.dispose()
+    fun clear() = compositeDisposable.clear()
 
 }

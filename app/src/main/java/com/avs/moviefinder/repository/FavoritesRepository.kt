@@ -21,7 +21,5 @@ class FavoritesRepository @Inject constructor(
         compositeDisposable.add(databaseManager.update(movie))
     }
 
-    fun dispose() {
-        compositeDisposable.dispose()
-    }
+    fun clear() = compositeDisposable.clear()
 }

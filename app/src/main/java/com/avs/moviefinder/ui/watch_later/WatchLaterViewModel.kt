@@ -80,7 +80,7 @@ class WatchLaterViewModel @Inject constructor(
 
     override fun onCleared() {
         compositeDisposable.clear()
-        watchListRepository.dispose()
+        watchListRepository.clear()
         timer?.dispose()
         super.onCleared()
     }

@@ -49,7 +49,7 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onCleared() {
         compositeDisposable.dispose()
-        favoritesRepository.dispose()
+        favoritesRepository.clear()
         timer?.dispose()
         super.onCleared()
     }

@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
 
     override fun onCleared() {
         compositeDisposable.clear()
-        homeRepository.dispose()
+        homeRepository.clear()
         super.onCleared()
     }
 
