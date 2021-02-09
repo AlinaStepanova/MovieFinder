@@ -4,18 +4,16 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.repository.FindDetailsRepository
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
@@ -23,7 +21,7 @@ import javax.inject.Inject
 class FindDetailViewModel @Inject constructor(
     private val rxBus: RxBus,
     private val serverApi: ServerApi,
-    private val databaseManager: DatabaseManager
+    private val findDetailsRepository: FindDetailsRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<LinkedList<Movie>>()
@@ -42,12 +40,10 @@ class FindDetailViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
-    private var _moviesDB = MutableLiveData<ArrayList<Movie>>()
     private var _query = MutableLiveData<String?>()
     private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
     private var apiDisposable: Disposable? = null
-    private val dbDisposable = CompositeDisposable()
 
     init {
         _isProgressVisible.value = true
@@ -57,8 +53,7 @@ class FindDetailViewModel @Inject constructor(
     override fun onCleared() {
         unsubscribeFromEvents()
         apiDisposable?.dispose()
-        dbDisposable.clear()
-        dbDisposable.dispose()
+        findDetailsRepository.clear()
         super.onCleared()
     }
 
@@ -69,9 +64,7 @@ class FindDetailViewModel @Inject constructor(
                 _isLoading.value = false
                 if (event.movies.isEmpty()) _errorType.value =
                     ErrorType.NO_RESULTS else _errorType.value = null
-                val movies = event.movies
-                combineServerAndDatabaseData(movies)
-                _movies.value = movies
+                _movies.value = event.movies
             }
             is Movie -> {
                 _movies.value?.let { list ->
@@ -86,10 +79,6 @@ class FindDetailViewModel @Inject constructor(
                     }
                 }
             }
-            is MoviesDBFilter -> {
-                _moviesDB.value = event.movies as ArrayList<Movie>
-                getQueryByTitle(_query.value)
-            }
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
@@ -98,16 +87,6 @@ class FindDetailViewModel @Inject constructor(
             }
             is Query -> {
                 onQuerySubmitted(event.query)
-            }
-        }
-    }
-
-    private fun combineServerAndDatabaseData(movies: LinkedList<Movie>) {
-        movies.forEach { movie ->
-            val insertedMovie = _moviesDB.value!!.firstOrNull { it.id == movie.id }
-            if (insertedMovie != null) {
-                movie.isInWatchLater = insertedMovie.isInWatchLater
-                movie.isFavorite = insertedMovie.isFavorite
             }
         }
     }
@@ -121,13 +100,13 @@ class FindDetailViewModel @Inject constructor(
 
     private fun deleteMovieFromDB(movie: Movie) {
         if (!movie.isInWatchLater && !movie.isFavorite) {
-            dbDisposable.add(databaseManager.delete(movie))
+            findDetailsRepository.deleteMovie(movie)
         }
     }
 
     private fun onQuerySubmitted(query: String?) {
         if (query != null) {
-            dbDisposable.add(databaseManager.getAllMovies())
+            findDetailsRepository.getSubmittedQuery(query)
             _query.value = query
         }
     }
@@ -164,7 +143,7 @@ class FindDetailViewModel @Inject constructor(
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.insertMovie(movie))
+            findDetailsRepository.insertMovie(movie)
             deleteMovieFromDB(movie)
         }
     }
@@ -174,7 +153,7 @@ class FindDetailViewModel @Inject constructor(
         movie?.let {
             movie.isFavorite = !movie.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
-            dbDisposable.add(databaseManager.insertMovie(movie))
+            findDetailsRepository.insertMovie(movie)
             deleteMovieFromDB(movie)
         }
     }
@@ -184,7 +163,7 @@ class FindDetailViewModel @Inject constructor(
         if (isMovieUpdated) {
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
-                dbDisposable.add(databaseManager.update(updatedMovie))
+                findDetailsRepository.updateMovie(updatedMovie)
             }
         }
     }

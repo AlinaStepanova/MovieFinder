@@ -2,9 +2,11 @@ package com.avs.moviefinder.repository
 
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +18,33 @@ class FindDetailsRepository @Inject constructor(
 ) {
     private val compositeDisposable = CompositeDisposable()
 
-    private fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
+    fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
+
+    fun getSubmittedQuery(query: String) {
+        compositeDisposable
+            .add(databaseManager.getAllMoviesAsSingle()
+            .subscribe({ dbMovies ->
+                       compositeDisposable
+                           .add(serverApi.getMovieByTitleAsSingle(query)
+                           .subscribe({searchedMovies ->
+                               combineServerAndDatabaseData(searchedMovies.movies, dbMovies)},
+                               {rxBus.send(it)}))
+            }, {rxBus.send(it)}))
+    }
+
+    private fun combineServerAndDatabaseData(
+        searchedMovies: LinkedList<Movie>,
+        dbMovies: List<Movie>
+    ) {
+        searchedMovies.forEach { movie ->
+            val insertedMovie = dbMovies.firstOrNull { it.id == movie.id }
+            if (insertedMovie != null) {
+                movie.isInWatchLater = insertedMovie.isInWatchLater
+                movie.isFavorite = insertedMovie.isFavorite
+            }
+        }
+        rxBus.send(MoviesSearchFilter(searchedMovies))
+    }
 
     fun insertMovie(movie: Movie) = compositeDisposable.add(databaseManager.insertMovie(movie))
 

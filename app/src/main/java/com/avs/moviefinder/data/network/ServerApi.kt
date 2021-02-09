@@ -4,6 +4,7 @@ import android.util.Log
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesAPIFilter
+import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,6 +58,13 @@ class ServerApi @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ rxBus.send(it) }, { handleError(it) })
+    }
+
+    fun getMovieByTitleAsSingle(title: String): Single<MoviesSearchFilter> {
+        return moviesApi
+            .getMovieByName(title)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun handleError(error: Throwable?) {
