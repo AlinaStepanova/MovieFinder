@@ -18,20 +18,6 @@ class FindDetailsRepository @Inject constructor(
 ) {
     private val compositeDisposable = CompositeDisposable()
 
-    fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
-
-    fun getSubmittedQuery(query: String) {
-        compositeDisposable
-            .add(databaseManager.getAllMoviesAsSingle()
-            .subscribe({ dbMovies ->
-                       compositeDisposable
-                           .add(serverApi.getMovieByTitleAsSingle(query)
-                           .subscribe({searchedMovies ->
-                               combineServerAndDatabaseData(searchedMovies.movies, dbMovies)},
-                               {rxBus.send(it)}))
-            }, {rxBus.send(it)}))
-    }
-
     private fun combineServerAndDatabaseData(
         searchedMovies: LinkedList<Movie>,
         dbMovies: List<Movie>
@@ -45,6 +31,23 @@ class FindDetailsRepository @Inject constructor(
         }
         rxBus.send(MoviesSearchFilter(searchedMovies))
     }
+
+    fun getSubmittedQuery(query: String) {
+        compositeDisposable.add(
+            databaseManager.getAllMoviesAsSingle().subscribe({ dbMovies ->
+                compositeDisposable.add(
+                    serverApi.getMovieByTitleAsSingle(query).subscribe({ searchedMovies ->
+                        combineServerAndDatabaseData(
+                            searchedMovies.movies,
+                            dbMovies
+                        )
+                    }, { error -> rxBus.send(error) })
+                )
+            }, { error -> rxBus.send(error) })
+        )
+    }
+
+    fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
 
     fun insertMovie(movie: Movie) = compositeDisposable.add(databaseManager.insertMovie(movie))
 

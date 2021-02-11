@@ -8,7 +8,6 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.data.network.ErrorType
-import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.repository.FindDetailsRepository
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
@@ -20,7 +19,6 @@ import javax.inject.Inject
 
 class FindDetailViewModel @Inject constructor(
     private val rxBus: RxBus,
-    private val serverApi: ServerApi,
     private val findDetailsRepository: FindDetailsRepository
 ) : ViewModel() {
 
@@ -43,7 +41,6 @@ class FindDetailViewModel @Inject constructor(
     private var _query = MutableLiveData<String?>()
     private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
-    private var apiDisposable: Disposable? = null
 
     init {
         _isProgressVisible.value = true
@@ -52,7 +49,6 @@ class FindDetailViewModel @Inject constructor(
 
     override fun onCleared() {
         unsubscribeFromEvents()
-        apiDisposable?.dispose()
         findDetailsRepository.clear()
         super.onCleared()
     }
@@ -79,28 +75,15 @@ class FindDetailViewModel @Inject constructor(
                     }
                 }
             }
+            is Query -> {
+                onQuerySubmitted(event.query)
+            }
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
                 _movies.value = LinkedList()
                 _errorType.value = ErrorType.NETWORK
             }
-            is Query -> {
-                onQuerySubmitted(event.query)
-            }
-        }
-    }
-
-    private fun getQueryByTitle(query: String?) {
-        apiDisposable?.dispose()
-        if (query != null) {
-            apiDisposable = serverApi.getMovieByTitle(query)
-        }
-    }
-
-    private fun deleteMovieFromDB(movie: Movie) {
-        if (!movie.isInWatchLater && !movie.isFavorite) {
-            findDetailsRepository.deleteMovie(movie)
         }
     }
 
@@ -108,6 +91,18 @@ class FindDetailViewModel @Inject constructor(
         if (query != null) {
             findDetailsRepository.getSubmittedQuery(query)
             _query.value = query
+        }
+    }
+
+    private fun getQueryByTitle(query: String?) {
+        if (query != null) {
+            findDetailsRepository.getSubmittedQuery(query)
+        }
+    }
+
+    private fun deleteMovieFromDB(movie: Movie) {
+        if (!movie.isInWatchLater && !movie.isFavorite) {
+            findDetailsRepository.deleteMovie(movie)
         }
     }
 
