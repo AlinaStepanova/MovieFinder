@@ -93,6 +93,11 @@ class FindDetailFragment : BaseFragment() {
         connectionLiveData.observe(viewLifecycleOwner, {
             findDetailViewModel.reactOnNetworkChangeState(it)
         })
+        findDetailViewModel.isBackOnline.observe(viewLifecycleOwner, {
+            it?.let {
+                showConnectivitySnackBar(getString(R.string.back_online_text))
+            }
+        })
         return root
     }
 

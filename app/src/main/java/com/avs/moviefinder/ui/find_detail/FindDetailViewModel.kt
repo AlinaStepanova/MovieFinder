@@ -38,6 +38,9 @@ class FindDetailViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
+    private var _isBackOnline = MutableLiveData<Boolean?>()
+    val isBackOnline: LiveData<Boolean?>
+        get() = _isBackOnline
     private var _query = MutableLiveData<String?>()
     private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
@@ -125,6 +128,8 @@ class FindDetailViewModel @Inject constructor(
     fun reactOnNetworkChangeState(isActive: Boolean) {
         if (isActive && _errorType.value == ErrorType.NETWORK) {
             getQueryByTitle(_query.value)
+            _isBackOnline.value = true
+            _isBackOnline.value = null
         }
     }
 
