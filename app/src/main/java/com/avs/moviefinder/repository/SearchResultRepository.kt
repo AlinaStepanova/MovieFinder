@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FindDetailsRepository @Inject constructor(
+class SearchResultRepository @Inject constructor(
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager,
     private val rxBus: RxBus

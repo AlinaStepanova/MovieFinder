@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.find_detail
+package com.avs.moviefinder.ui.search_result
 
 import android.app.Activity
 import android.content.Context
@@ -31,7 +31,7 @@ class FindDetailFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
     @Inject
     lateinit var connectionLiveData: ConnectionLiveData
-    lateinit var findDetailViewModel: FindDetailViewModel
+    lateinit var searchResultViewModel: SearchResultViewModel
 
     private lateinit var binding: FragmentFindDetailBinding
 
@@ -39,15 +39,15 @@ class FindDetailFragment : BaseFragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.let {
-                    findDetailViewModel.handleOnActivityResult(it)
+                    searchResultViewModel.handleOnActivityResult(it)
                 }
             }
         }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        findDetailViewModel =
-            ViewModelProvider(this, viewModelFactory).get(FindDetailViewModel::class.java)
+        searchResultViewModel =
+            ViewModelProvider(this, viewModelFactory).get(SearchResultViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -59,41 +59,41 @@ class FindDetailFragment : BaseFragment() {
             inflater, R.layout.fragment_find_detail, container, false
         )
         val root: View = binding.root
-        binding.findDetailViewModel = findDetailViewModel
+        binding.findDetailViewModel = searchResultViewModel
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
-        findDetailViewModel.searchInitialQuery(query)
+        searchResultViewModel.searchInitialQuery(query)
         val adapter = BaseMoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivityForResult(movie) },
-                { movieId -> findDetailViewModel.shareMovie(movieId) },
-                { movieId -> findDetailViewModel.addToFavorites(movieId) }
-            ) { movieId -> findDetailViewModel.addToWatchLater(movieId) }
+                { movieId -> searchResultViewModel.shareMovie(movieId) },
+                { movieId -> searchResultViewModel.addToFavorites(movieId) }
+            ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
         )
         binding.rvFindRecyclerView.adapter = adapter
-        findDetailViewModel.movies.observe(viewLifecycleOwner, {
+        searchResultViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        findDetailViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
+        searchResultViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.notifyItemChanged(it)
             }
         })
-        findDetailViewModel.shareBody.observe(viewLifecycleOwner, {
+        searchResultViewModel.shareBody.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) shareMovie(it)
         })
-        findDetailViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        searchResultViewModel.isProgressVisible.observe(viewLifecycleOwner, {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
-        findDetailViewModel.errorType.observe(viewLifecycleOwner, {
+        searchResultViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
         connectionLiveData.observe(viewLifecycleOwner, {
-            findDetailViewModel.reactOnNetworkChangeState(it)
+            searchResultViewModel.reactOnNetworkChangeState(it)
         })
-        findDetailViewModel.isBackOnline.observe(viewLifecycleOwner, {
+        searchResultViewModel.isBackOnline.observe(viewLifecycleOwner, {
             it?.let {
                 showConnectivitySnackBar(getString(R.string.back_online_text))
             }
@@ -103,11 +103,11 @@ class FindDetailFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        findDetailViewModel.subscribeToEvents()
+        searchResultViewModel.subscribeToEvents()
     }
 
     override fun onPause() {
-        findDetailViewModel.unsubscribeFromEvents()
+        searchResultViewModel.unsubscribeFromEvents()
         super.onPause()
     }
 

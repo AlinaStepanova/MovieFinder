@@ -1,4 +1,4 @@
-package com.avs.moviefinder.ui.find_detail
+package com.avs.moviefinder.ui.search_result
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
@@ -8,7 +8,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.data.network.ErrorType
-import com.avs.moviefinder.repository.FindDetailsRepository
+import com.avs.moviefinder.repository.SearchResultRepository
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
@@ -17,9 +17,9 @@ import io.reactivex.disposables.Disposable
 import java.util.*
 import javax.inject.Inject
 
-class FindDetailViewModel @Inject constructor(
+class SearchResultViewModel @Inject constructor(
     private val rxBus: RxBus,
-    private val findDetailsRepository: FindDetailsRepository
+    private val searchResultRepository: SearchResultRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<LinkedList<Movie>>()
@@ -52,7 +52,7 @@ class FindDetailViewModel @Inject constructor(
 
     override fun onCleared() {
         unsubscribeFromEvents()
-        findDetailsRepository.clear()
+        searchResultRepository.clear()
         super.onCleared()
     }
 
@@ -92,20 +92,20 @@ class FindDetailViewModel @Inject constructor(
 
     private fun onQuerySubmitted(query: String?) {
         if (query != null) {
-            findDetailsRepository.getSubmittedQuery(query)
+            searchResultRepository.getSubmittedQuery(query)
             _query.value = query
         }
     }
 
     private fun getQueryByTitle(query: String?) {
         if (query != null) {
-            findDetailsRepository.getSubmittedQuery(query)
+            searchResultRepository.getSubmittedQuery(query)
         }
     }
 
     private fun deleteMovieFromDB(movie: Movie) {
         if (!movie.isInWatchLater && !movie.isFavorite) {
-            findDetailsRepository.deleteMovie(movie)
+            searchResultRepository.deleteMovie(movie)
         }
     }
 
@@ -143,7 +143,7 @@ class FindDetailViewModel @Inject constructor(
         movie?.let {
             movie.isInWatchLater = !movie.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
-            findDetailsRepository.insertMovie(movie)
+            searchResultRepository.insertMovie(movie)
             deleteMovieFromDB(movie)
         }
     }
@@ -153,7 +153,7 @@ class FindDetailViewModel @Inject constructor(
         movie?.let {
             movie.isFavorite = !movie.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
-            findDetailsRepository.insertMovie(movie)
+            searchResultRepository.insertMovie(movie)
             deleteMovieFromDB(movie)
         }
     }
@@ -163,7 +163,7 @@ class FindDetailViewModel @Inject constructor(
         if (isMovieUpdated) {
             val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
             if (updatedMovie != null && updatedMovie.id > 0) {
-                findDetailsRepository.updateMovie(updatedMovie)
+                searchResultRepository.updateMovie(updatedMovie)
             }
         }
     }

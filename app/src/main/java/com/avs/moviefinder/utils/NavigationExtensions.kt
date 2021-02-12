@@ -27,8 +27,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.avs.moviefinder.R
-import com.avs.moviefinder.ui.find_detail.FIND_DETAIL_FRAGMENT_TAG
-import com.avs.moviefinder.ui.find_detail.FindDetailFragment
+import com.avs.moviefinder.ui.search_result.FIND_DETAIL_FRAGMENT_TAG
+import com.avs.moviefinder.ui.search_result.FindDetailFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

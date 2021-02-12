@@ -3,7 +3,7 @@ package com.avs.moviefinder.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.ui.favorites.FavoritesViewModel
-import com.avs.moviefinder.ui.find_detail.FindDetailViewModel
+import com.avs.moviefinder.ui.search_result.SearchResultViewModel
 import com.avs.moviefinder.ui.home.HomeViewModel
 import com.avs.moviefinder.ui.movie.MovieViewModel
 import com.avs.moviefinder.ui.watch_later.WatchLaterViewModel
@@ -40,6 +40,6 @@ abstract class ViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FindDetailViewModel::class)
-    internal abstract fun findDetailViewModel(findDetailViewModel: FindDetailViewModel): ViewModel
+    @ViewModelKey(SearchResultViewModel::class)
+    internal abstract fun findDetailViewModel(searchResultViewModel: SearchResultViewModel): ViewModel
 }

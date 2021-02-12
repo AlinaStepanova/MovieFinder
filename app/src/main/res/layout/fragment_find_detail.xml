@@ -7,7 +7,7 @@
 
         <variable
             name="findDetailViewModel"
-            type="com.avs.moviefinder.ui.find_detail.FindDetailViewModel" />
+            type="com.avs.moviefinder.ui.search_result.SearchResultViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
