@@ -36,7 +36,7 @@ class MovieRepository @Inject constructor(
     fun getMovieData(movie: Movie) {
         extrasMovie = movie
         compositeDisposable.add(Single.zip(
-            serverApi.callMovieById(movie.id)
+            serverApi.getMovieById(movie.id)
                 .onErrorReturn { extrasMovie },
             databaseManager.getMovieByIdAsSingle(movie.id)
                 .onErrorReturn { extrasMovie }

@@ -8,7 +8,6 @@ import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,15 +25,7 @@ class ServerApi @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getMovieById(id: Long): Disposable {
-        return moviesApi
-            .getMovieById(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
-    }
-
-    fun callMovieById(id: Long): Single<Movie> {
+    fun getMovieById(id: Long): Single<Movie> {
         return moviesApi.getMovieById(id)
     }
 
@@ -52,15 +43,7 @@ class ServerApi @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getMovieByTitle(title: String): Disposable {
-        return moviesApi
-            .getMovieByName(title)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
-    }
-
-    fun getMovieByTitleAsSingle(title: String): Single<MoviesSearchFilter> {
+    fun getMovieByTitle(title: String): Single<MoviesSearchFilter> {
         return moviesApi
             .getMovieByName(title)
             .subscribeOn(Schedulers.io())
