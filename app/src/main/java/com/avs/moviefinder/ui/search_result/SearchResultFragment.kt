@@ -121,10 +121,6 @@ class FindDetailFragment : BaseFragment() {
 
     private fun handleErrorEvent(it: ErrorType?) {
         when (it) {
-            null -> {
-                binding.ivError.visibility = View.INVISIBLE
-                binding.tvErrorText.visibility = View.INVISIBLE
-            }
             ErrorType.NETWORK -> {
                 binding.ivError.visibility = View.VISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE
@@ -136,6 +132,8 @@ class FindDetailFragment : BaseFragment() {
                 showSnackBar(resources.getString(R.string.no_results_found))
             }
             else -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
             }
         }
     }

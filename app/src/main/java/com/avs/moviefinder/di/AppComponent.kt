@@ -22,7 +22,6 @@ import javax.inject.Singleton
         ViewModelsModule::class,
         AndroidSupportInjectionModule::class,
         ActivityBindingModule::class,
-        ViewModelsModule::class,
         ContextModule::class,
         DatabaseModule::class
     ]
