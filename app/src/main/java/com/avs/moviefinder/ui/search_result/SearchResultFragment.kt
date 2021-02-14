@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ErrorType
-import com.avs.moviefinder.databinding.FragmentFindDetailBinding
+import com.avs.moviefinder.databinding.FragmentSearchResultBinding
 import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
@@ -23,9 +23,9 @@ import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.utils.ConnectionLiveData
 import javax.inject.Inject
 
-val FIND_DETAIL_FRAGMENT_TAG = FindDetailFragment::class.simpleName
+val SEARCH_RESULT_FRAGMENT_TAG = SearchResultFragment::class.simpleName
 
-class FindDetailFragment : BaseFragment() {
+class SearchResultFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -33,7 +33,7 @@ class FindDetailFragment : BaseFragment() {
     lateinit var connectionLiveData: ConnectionLiveData
     lateinit var searchResultViewModel: SearchResultViewModel
 
-    private var _binding: FragmentFindDetailBinding? = null
+    private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
 
     private val resultLauncher =
@@ -57,7 +57,7 @@ class FindDetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_find_detail, container, false
+            inflater, R.layout.fragment_search_result, container, false
         )
         val root: View = binding.root
         binding.findDetailViewModel = searchResultViewModel

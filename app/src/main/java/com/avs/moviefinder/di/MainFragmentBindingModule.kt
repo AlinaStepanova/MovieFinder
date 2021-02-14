@@ -1,6 +1,6 @@
 package com.avs.moviefinder.di
 
-import com.avs.moviefinder.ui.search_result.FindDetailFragment
+import com.avs.moviefinder.ui.search_result.SearchResultFragment
 import com.avs.moviefinder.ui.home.HomeFragment
 import com.avs.moviefinder.ui.watch_later.WatchLaterFragment
 import com.avs.moviefinder.ui.favorites.FavoritesFragment
@@ -14,7 +14,7 @@ abstract class MainFragmentBindingModule {
     abstract fun provideHomeFragment(): HomeFragment
 
     @ContributesAndroidInjector
-    abstract fun provideFindDetailFragment(): FindDetailFragment
+    abstract fun provideFindDetailFragment(): SearchResultFragment
 
     @ContributesAndroidInjector
     abstract fun provideWatchLaterFragment(): WatchLaterFragment
