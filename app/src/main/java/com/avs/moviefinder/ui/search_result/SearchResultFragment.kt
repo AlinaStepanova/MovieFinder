@@ -33,7 +33,8 @@ class FindDetailFragment : BaseFragment() {
     lateinit var connectionLiveData: ConnectionLiveData
     lateinit var searchResultViewModel: SearchResultViewModel
 
-    private lateinit var binding: FragmentFindDetailBinding
+    private var _binding: FragmentFindDetailBinding? = null
+    private val binding get() = _binding!!
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -55,7 +56,7 @@ class FindDetailFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_find_detail, container, false
         )
         val root: View = binding.root
@@ -109,6 +110,11 @@ class FindDetailFragment : BaseFragment() {
     override fun onPause() {
         searchResultViewModel.unsubscribeFromEvents()
         super.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun startMovieActivityForResult(movie: Movie) {

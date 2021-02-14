@@ -23,7 +23,8 @@ class WatchLaterFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var watchLaterViewModel: WatchLaterViewModel
 
-    private lateinit var binding: FragmentWatchLaterBinding
+    private var _binding: FragmentWatchLaterBinding? = null
+    private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,7 +37,7 @@ class WatchLaterFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_watch_later, container, false
         )
         val root: View = binding.root
@@ -83,6 +84,11 @@ class WatchLaterFragment : BaseFragment() {
         binding.rvWatchLaterRecyclerView.adapter = adapter
         watchLaterViewModel.getWatchLaterMovies()
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setIconsVisibility(movies: List<Movie>) {

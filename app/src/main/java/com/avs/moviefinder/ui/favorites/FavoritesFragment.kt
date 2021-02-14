@@ -23,7 +23,8 @@ class FavoritesFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var favoritesViewModel: FavoritesViewModel
 
-    private lateinit var binding: FragmentFavoritesBinding
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,7 +37,7 @@ class FavoritesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_favorites, container, false
         )
         val root: View = binding.root
@@ -83,6 +84,11 @@ class FavoritesFragment : BaseFragment() {
         binding.rvFindRecyclerView.adapter = adapter
         favoritesViewModel.getFavorites()
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setIconsVisibility(movies: List<Movie>) {

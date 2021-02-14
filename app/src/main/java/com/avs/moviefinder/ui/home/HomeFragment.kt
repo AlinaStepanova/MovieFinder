@@ -31,7 +31,8 @@ class HomeFragment : BaseFragment() {
     lateinit var connectionLiveData: ConnectionLiveData
     lateinit var homeViewModel: HomeViewModel
 
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -52,7 +53,7 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home, container, false
         )
         val root: View = binding.root
@@ -105,6 +106,11 @@ class HomeFragment : BaseFragment() {
             }
         })
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun startMovieActivityForResult(movie: Movie) {

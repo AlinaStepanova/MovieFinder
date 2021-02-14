@@ -96,4 +96,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 }
