@@ -21,8 +21,8 @@ const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 const val MINUTES_IN_HOUR = 60
 
 fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
-    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    val outputFormat: DateFormat = SimpleDateFormat(pattern, Locale.US)
+    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val outputFormat: DateFormat = SimpleDateFormat(pattern, Locale.getDefault())
     val date: Date?
     var formattedDate = dateToFormat
     try {
