@@ -10,6 +10,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.network.LocaleReceiver
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
@@ -36,10 +37,29 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     return formattedDate
 }
 
-fun buildMowPlayingUrl(): String {
+fun buildNowPlayingUrl(): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
-    return "3/discover/movie?api_key=$API_KEY&primary_release_date.gte=$monthAgoDate&primary_release_date.lte=$currentDate&sort_by=popularity.desc"
+    val locale = LocaleReceiver.locale
+    return "3/discover/movie?api_key=$API_KEY" +
+            "&primary_release_date.gte=$monthAgoDate" +
+            "&primary_release_date.lte=$currentDate" +
+            "&sort_by=popularity.desc" +
+            "&language=$locale"
+}
+
+fun buildPopularMoviesUrl(): String {
+    val locale = LocaleReceiver.locale
+    return "3/movie/popular?api_key=$API_KEY" +
+            "&include_adult=false" +
+            "&language=$locale"
+}
+
+fun buildTopRatedMoviesUrl(): String {
+    val locale = LocaleReceiver.locale
+    return "3/movie/top_rated?api_key=$API_KEY" +
+            "&include_adult=false" +
+            "&language=$locale"
 }
 
 fun getCurrentDate(): String {

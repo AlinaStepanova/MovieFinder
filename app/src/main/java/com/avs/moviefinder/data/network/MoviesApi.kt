@@ -15,11 +15,11 @@ import retrofit2.http.Url
  */
 interface MoviesApi {
 
-    @GET("3/movie/popular?api_key=$API_KEY&language=en-US&include_adult=false")
-    fun getPopularMovies(): Single<MoviesAPIFilter>
+    @GET
+    fun getPopularMovies(@Url url: String): Single<MoviesAPIFilter>
 
-    @GET("3/movie/top_rated?api_key=$API_KEY&language=en-US&include_adult=false")
-    fun getTopRatedMovies(): Single<MoviesAPIFilter>
+    @GET
+    fun getTopRatedMovies(@Url url: String): Single<MoviesAPIFilter>
 
     @GET
     fun getNowPlayingMovies(@Url url: String): Single<MoviesAPIFilter>

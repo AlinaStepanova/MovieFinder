@@ -6,7 +6,9 @@ import com.avs.moviefinder.data.dto.MoviesFilterResult
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.avs.moviefinder.utils.RxBus
-import com.avs.moviefinder.utils.buildMowPlayingUrl
+import com.avs.moviefinder.utils.buildNowPlayingUrl
+import com.avs.moviefinder.utils.buildPopularMoviesUrl
+import com.avs.moviefinder.utils.buildTopRatedMoviesUrl
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
@@ -28,8 +30,9 @@ class HomeRepository @Inject constructor(
     private fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
 
     private fun getPopularMovies() {
+        val url = buildPopularMoviesUrl()
         compositeDisposable.add(
-            serverApi.getPopularMoviesAsSingle().subscribe({ fetchedMovies ->
+            serverApi.getPopularMoviesAsSingle(url).subscribe({ fetchedMovies ->
                 combineServerAndDatabaseData(
                     moviesDB,
                     fetchedMovies.movies
@@ -39,8 +42,9 @@ class HomeRepository @Inject constructor(
     }
 
     private fun getTopRatedMovies() {
+        val url = buildTopRatedMoviesUrl()
         compositeDisposable.add(
-            serverApi.getTopRatedMovies().subscribe({ fetchedMovies ->
+            serverApi.getTopRatedMovies(url).subscribe({ fetchedMovies ->
                 combineServerAndDatabaseData(
                     moviesDB,
                     fetchedMovies.movies
@@ -96,7 +100,7 @@ class HomeRepository @Inject constructor(
                     MoviesCategory.POPULAR -> getPopularMovies()
                     MoviesCategory.TOP_RATED -> getTopRatedMovies()
                     MoviesCategory.NOW_PLAYING -> {
-                        val url = buildMowPlayingUrl()
+                        val url = buildNowPlayingUrl()
                         if (url.isNotEmpty()) getNowPlayingMovies(url)
                     }
                     null -> getPopularMovies()

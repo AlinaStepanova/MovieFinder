@@ -18,9 +18,9 @@ class ServerApi @Inject constructor(
     private val moviesApi: MoviesApi
 ) {
 
-    fun getPopularMoviesAsSingle(): Single<MoviesAPIFilter> {
+    fun getPopularMoviesAsSingle(url: String): Single<MoviesAPIFilter> {
         return moviesApi
-            .getPopularMovies()
+            .getPopularMovies(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -29,9 +29,9 @@ class ServerApi @Inject constructor(
         return moviesApi.getMovieById(id)
     }
 
-    fun getTopRatedMovies(): Single<MoviesAPIFilter> {
+    fun getTopRatedMovies(url: String): Single<MoviesAPIFilter> {
         return moviesApi
-            .getTopRatedMovies()
+            .getTopRatedMovies(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
