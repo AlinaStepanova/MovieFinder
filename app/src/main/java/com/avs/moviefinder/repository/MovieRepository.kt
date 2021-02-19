@@ -4,6 +4,7 @@ import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.buildMovieByIdUrl
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,7 +37,7 @@ class MovieRepository @Inject constructor(
     fun getMovieData(movie: Movie) {
         extrasMovie = movie
         compositeDisposable.add(Single.zip(
-            serverApi.getMovieById(movie.id)
+            serverApi.getMovieById(buildMovieByIdUrl(movie.id))
                 .onErrorReturn { extrasMovie },
             databaseManager.getMovieByIdAsSingle(movie.id)
                 .onErrorReturn { extrasMovie }

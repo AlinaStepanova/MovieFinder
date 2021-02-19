@@ -5,6 +5,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.buildMovieByNameUrl
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
@@ -36,12 +37,13 @@ class SearchResultRepository @Inject constructor(
         compositeDisposable.add(
             databaseManager.getAllMovies().subscribe({ dbMovies ->
                 compositeDisposable.add(
-                    serverApi.getMovieByTitle(query).subscribe({ searchedMovies ->
-                        combineServerAndDatabaseData(
-                            searchedMovies.movies,
-                            dbMovies
-                        )
-                    }, { error -> rxBus.send(error) })
+                    serverApi.getMovieByTitle(buildMovieByNameUrl(query))
+                        .subscribe({ searchedMovies ->
+                            combineServerAndDatabaseData(
+                                searchedMovies.movies,
+                                dbMovies
+                            )
+                        }, { error -> rxBus.send(error) })
                 )
             }, { error -> rxBus.send(error) })
         )

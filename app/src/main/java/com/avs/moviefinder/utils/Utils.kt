@@ -62,6 +62,19 @@ fun buildTopRatedMoviesUrl(): String {
             "&language=$locale"
 }
 
+fun buildMovieByIdUrl(id: Long): String {
+    val locale = LocaleReceiver.locale
+    return "3/movie/$id?api_key=$API_KEY&language=$locale"
+}
+
+fun buildMovieByNameUrl(movieTitle: String): String {
+    val locale = LocaleReceiver.locale
+    return "3/search/movie?api_key=$API_KEY&page=1" +
+            "&query=$movieTitle" +
+            "&include_adult=false" +
+            "&language=$locale"
+}
+
 fun getCurrentDate(): String {
     val currentDate = Calendar.getInstance()
     return formatNowPlayingDate(currentDate)
