@@ -35,7 +35,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     lateinit var movieViewModel: MovieViewModel
 
     lateinit var binding: ActivityMovieBinding
-    var statusBarColor : Int = 0
+    var statusBarColor: Int = 0
 
     private val target = initTarget()
 
@@ -51,7 +51,7 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         binding.shimmerViewContainer.startShimmerAnimation()
-        val extrasMovie : Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
+        val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
         movieViewModel.openMovieDetails(extrasMovie)
@@ -72,7 +72,8 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRuntime(it)
                 formatCountries(it)
                 formatGenres(it)
-                binding.tvLinks.text = buildLinks(it.imdbId, it.homepage)
+                binding.tvLinks.text =
+                    buildLinks(it.imdbId, it.homepage, resources.getString(R.string.homepage))
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
             }
@@ -143,7 +144,11 @@ class MovieActivity : DaggerAppCompatActivity() {
     }
 
     private fun formatRuntime(movie: Movie) {
-        val runtime = formatRuntime(movie.runtime)
+        val runtime = formatRuntime(
+            movie.runtime,
+            resources.getString(R.string.hours),
+            resources.getString(R.string.minutes)
+        )
         if (runtime.isNotEmpty()) {
             binding.ivHourglass.visibility = View.VISIBLE
             binding.tvRuntime.visibility = View.VISIBLE

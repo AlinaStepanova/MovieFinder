@@ -86,7 +86,7 @@ fun get3WeeksAgoDate(): String {
     return formatNowPlayingDate(currentDate)
 }
 
-fun formatNowPlayingDate(currentDate: Calendar) : String {
+fun formatNowPlayingDate(currentDate: Calendar): String {
     val day = currentDate.get(Calendar.DAY_OF_MONTH)
     var dayString = day.toString()
     if (day < 10) dayString = "0$day"
@@ -143,18 +143,18 @@ fun formatCountries(countries: List<Country>): String {
     }
 }
 
-fun formatRuntime(duration: Int): String {
+fun formatRuntime(duration: Int, hoursText: String, minutesText: String): String {
     var result: String
     if (duration == 0) {
         result = ""
     } else if (duration < MINUTES_IN_HOUR) {
-        result = duration.toString() + "m"
+        result = duration.toString() + minutesText
     } else {
         val hours = duration / MINUTES_IN_HOUR
-        result = "$hours" + "h"
+        result = "$hours" + hoursText
         val minutes = duration - hours * MINUTES_IN_HOUR
         if (minutes > 0) {
-            result += " $minutes" + "m"
+            result += " $minutes$minutesText"
         }
     }
     return result
@@ -174,21 +174,24 @@ fun dpToPx(dp: Int): Float {
     return (dp * Resources.getSystem().displayMetrics.density)
 }
 
-fun buildLinks(id: String?, homepage: String?): Spanned? {
+fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
     val imdb = "<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>"
-    val homepageLink = "<a href=\"$homepage\">Homepage</a>"
+    val homepageLink = "<a href=\"$homepage\">$homepageText</a>"
     return if (!id.isNullOrEmpty() && !homepage.isNullOrEmpty()) {
-        HtmlCompat.fromHtml("$imdb $CIRCLE_SEPARATOR_CHARACTER $homepageLink", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        HtmlCompat.fromHtml(
+            "$imdb $CIRCLE_SEPARATOR_CHARACTER $homepageLink",
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
     } else if (id.isNullOrEmpty() && !homepage.isNullOrEmpty()) {
         HtmlCompat.fromHtml(homepageLink, HtmlCompat.FROM_HTML_MODE_LEGACY)
-    } else if (!id.isNullOrEmpty() && homepage.isNullOrEmpty()){
+    } else if (!id.isNullOrEmpty() && homepage.isNullOrEmpty()) {
         HtmlCompat.fromHtml(imdb, HtmlCompat.FROM_HTML_MODE_LEGACY)
     } else {
-       null
+        null
     }
 }
 
-fun buildShareLink(movieId: Long) : String = BASE_URL + "movie/" + movieId + "/"
+fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 
 fun getIconVisibility(movies: List<Movie>) =
     if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
