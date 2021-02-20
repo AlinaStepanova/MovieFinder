@@ -97,6 +97,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
+        // todo put this into main activity in order to show on all fragments
         connectionLiveData.observe(viewLifecycleOwner, {
             homeViewModel.reactOnNetworkChangeState(it)
         })
