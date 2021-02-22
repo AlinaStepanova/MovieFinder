@@ -31,6 +31,7 @@ class MovieRepository @Inject constructor(
             if (!it.genres.isNullOrEmpty()) extrasMovie.genres = it.genres
             if (!it.tagline.isNullOrEmpty()) extrasMovie.tagline = it.tagline
             if (it.runtime != 0) extrasMovie.runtime = it.runtime
+            extrasMovie.countries = it.countries
         }
     }
 
