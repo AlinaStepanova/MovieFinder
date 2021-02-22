@@ -20,6 +20,9 @@ import kotlin.collections.ArrayList
 
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 const val MINUTES_IN_HOUR = 60
+const val USA = "USA"
+const val USA_FULL = "United States of America"
+const val IMDB = "https://www.imdb.com/"
 
 fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -126,6 +129,7 @@ fun formatRating(number: String): String {
 }
 
 fun formatGenres(genres: List<Genre>): String {
+    //genres.map { it.name?.capitalize(Locale.getDefault()) }
     return genres.fold("") { names, genre ->
         if (names.isEmpty()) genre.name ?: "" else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
     }
@@ -133,10 +137,10 @@ fun formatGenres(genres: List<Genre>): String {
 
 fun formatCountries(countries: List<Country>): String {
     val arrayList = ArrayList(countries)
-    val usa = arrayList.find { it.name == "United States of America" }
+    val usa = arrayList.find { it.name == USA_FULL }
     usa?.let {
         arrayList.remove(usa)
-        arrayList.add(0, Country("USA"))
+        arrayList.add(0, Country(USA))
     }
     return arrayList.fold("") { names, country ->
         if (names.isEmpty()) country.name ?: "" else names + ", " + country.name
@@ -175,7 +179,7 @@ fun dpToPx(dp: Int): Float {
 }
 
 fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
-    val imdb = "<a href=\"https://www.imdb.com/title/$id/\">IMDb</a>"
+    val imdb = "<a href=\"${IMDB}title/$id/\">IMDb</a>"
     val homepageLink = "<a href=\"$homepage\">$homepageText</a>"
     return if (!id.isNullOrEmpty() && !homepage.isNullOrEmpty()) {
         HtmlCompat.fromHtml(
