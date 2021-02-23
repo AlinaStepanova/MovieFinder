@@ -25,8 +25,8 @@ const val USA_FULL = "United States of America"
 const val IMDB = "https://www.imdb.com/"
 
 fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
-    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat: DateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", LocaleReceiver.locale)
+    val outputFormat: DateFormat = SimpleDateFormat(pattern, LocaleReceiver.locale)
     val date: Date?
     var formattedDate = dateToFormat
     try {
@@ -43,39 +43,39 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
 fun buildNowPlayingUrl(): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
-    val locale = LocaleReceiver.locale
+    val language = LocaleReceiver.language
     return "3/discover/movie?api_key=$API_KEY" +
             "&primary_release_date.gte=$monthAgoDate" +
             "&primary_release_date.lte=$currentDate" +
             "&sort_by=popularity.desc" +
-            "&language=$locale"
+            "&language=$language"
 }
 
 fun buildPopularMoviesUrl(): String {
-    val locale = LocaleReceiver.locale
+    val language = LocaleReceiver.language
     return "3/movie/popular?api_key=$API_KEY" +
             "&include_adult=false" +
-            "&language=$locale"
+            "&language=$language"
 }
 
 fun buildTopRatedMoviesUrl(): String {
-    val locale = LocaleReceiver.locale
+    val language = LocaleReceiver.language
     return "3/movie/top_rated?api_key=$API_KEY" +
             "&include_adult=false" +
-            "&language=$locale"
+            "&language=$language"
 }
 
 fun buildMovieByIdUrl(id: Long): String {
-    val locale = LocaleReceiver.locale
-    return "3/movie/$id?api_key=$API_KEY&language=$locale"
+    val language = LocaleReceiver.language
+    return "3/movie/$id?api_key=$API_KEY&language=$language"
 }
 
 fun buildMovieByNameUrl(movieTitle: String): String {
-    val locale = LocaleReceiver.locale
+    val language = LocaleReceiver.language
     return "3/search/movie?api_key=$API_KEY&page=1" +
             "&query=$movieTitle" +
             "&include_adult=false" +
-            "&language=$locale"
+            "&language=$language"
 }
 
 fun getCurrentDate(): String {
@@ -129,7 +129,6 @@ fun formatRating(number: String): String {
 }
 
 fun formatGenres(genres: List<Genre>): String {
-    //genres.map { it.name?.capitalize(Locale.getDefault()) }
     return genres.fold("") { names, genre ->
         if (names.isEmpty()) genre.name ?: "" else names + CIRCLE_SEPARATOR_CHARACTER + genre.name
     }

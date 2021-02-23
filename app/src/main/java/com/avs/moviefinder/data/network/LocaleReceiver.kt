@@ -8,13 +8,15 @@ import java.util.*
 class LocaleReceiver: DaggerBroadcastReceiver() {
 
     companion object {
-        var locale = Locale.getDefault().language.toString()
+        var locale: Locale = Locale.getDefault()
+        var language = locale.language.toString()
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         if (intent.action.equals(Intent.ACTION_LOCALE_CHANGED)) {
-            locale = Locale.getDefault().language.toString()
+            locale = Locale.getDefault()
+            language = locale.language.toString()
         }
     }
 }
