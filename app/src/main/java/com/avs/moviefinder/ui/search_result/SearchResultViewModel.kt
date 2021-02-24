@@ -78,9 +78,8 @@ class SearchResultViewModel @Inject constructor(
                     }
                 }
             }
-            is Query -> {
-                onQuerySubmitted(event.query)
-            }
+            is Query -> onQuerySubmitted(event.query)
+            is Locale -> getQueryByTitle(_query.value)
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false

@@ -80,6 +80,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+            is Locale -> onRefresh()
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false

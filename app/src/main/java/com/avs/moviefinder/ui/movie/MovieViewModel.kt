@@ -8,6 +8,7 @@ import com.avs.moviefinder.repository.MovieRepository
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.Disposable
+import java.util.*
 import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
@@ -35,8 +36,9 @@ class MovieViewModel @Inject constructor(
     }
 
     private fun subscribeToEvents(event: Any?) {
-        if (event is Movie) {
-            _movie.value = event
+        when (event) {
+            is Movie -> _movie.value = event
+            is Locale -> openMovieDetails(_movie.value)
         }
     }
 
