@@ -37,13 +37,19 @@ class MovieViewModel @Inject constructor(
 
     private fun subscribeToEvents(event: Any?) {
         when (event) {
-            is Movie -> _movie.value = event
+            is Movie -> {
+                if (_movie.value?.id == 0L || _movie.value?.id == null
+                    || _movie.value?.id == event.id) {
+                        _movie.value = event
+                }
+            }
             is Locale -> openMovieDetails(_movie.value)
         }
     }
 
     fun openMovieDetails(movie: Movie?) {
         movie?.let {
+            _movie.value?.id = it.id
             _movie.value?.posterPath = it.posterPath
             _movie.value?.title = it.title
             isInitiallyFavorite = it.isFavorite

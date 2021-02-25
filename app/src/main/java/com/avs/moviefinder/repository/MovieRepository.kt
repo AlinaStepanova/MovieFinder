@@ -30,8 +30,9 @@ class MovieRepository @Inject constructor(
             if (!it.homepage.isNullOrEmpty()) extrasMovie.homepage = it.homepage
             if (!it.genres.isNullOrEmpty()) extrasMovie.genres = it.genres
             if (!it.tagline.isNullOrEmpty()) extrasMovie.tagline = it.tagline
+            if (!it.overview.isNullOrEmpty()) extrasMovie.overview = it.overview
             if (it.runtime != 0) extrasMovie.runtime = it.runtime
-            extrasMovie.countries = it.countries
+            if (!it.title.isNullOrEmpty()) extrasMovie.title = it.title
         }
     }
 
