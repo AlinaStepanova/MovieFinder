@@ -14,6 +14,7 @@ import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
 
@@ -69,10 +70,13 @@ class FavoritesFragment : BaseFragment() {
         })
         favoritesViewModel.isInserted.observe(viewLifecycleOwner, {
             it?.let {
-                if (!it) favoritesViewModel.updateMovieIndex.value?.let { index ->
+                if (!it.first) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        getString(R.string.deleted_favorite_snack_bar_text)
+                        buildUndoSnackBarMessage(
+                            it.second,
+                            getString(R.string.deleted_favorite_snack_bar_text)
+                        )
                     ) { favoritesViewModel.undoRemovingMovie() }
                 } else favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)

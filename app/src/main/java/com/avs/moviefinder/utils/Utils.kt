@@ -199,6 +199,6 @@ fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 fun getIconVisibility(movies: List<Movie>) =
     if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
 
-fun buildUndoStackBarMessage(title: String, text: String): String {
+fun buildUndoSnackBarMessage(title: String, text: String): String {
     return "\"$title\" $text"
 }
