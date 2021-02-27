@@ -14,6 +14,7 @@ import com.avs.moviefinder.di.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.utils.buildUndoStackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
 
@@ -69,10 +70,13 @@ class WatchLaterFragment : BaseFragment() {
         })
         watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
             it?.let {
-                if (!it) watchLaterViewModel.updateMovieIndex.value?.let { index ->
+                if (!it.first) watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        getString(R.string.deleted_watch_snack_bar_text)
+                        buildUndoStackBarMessage(
+                            it.second,
+                            getString(R.string.deleted_watch_snack_bar_text)
+                        )
                     ) { watchLaterViewModel.undoRemovingMovie() }
                 } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)

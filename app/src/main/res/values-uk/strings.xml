@@ -16,7 +16,7 @@
     <string name="share_text">Поділитися</string>
     <string name="snack_bar_action_name">Скасувати</string>
     <string name="deleted_favorite_snack_bar_text">Фільм видалено зі списку \"Улюблене\"</string>
-    <string name="deleted_watch_snack_bar_text">Фільм видалено зі списку \"Переглянути пізніше\"</string>
+    <string name="deleted_watch_snack_bar_text">видалено зі списку \"Переглянути пізніше\"</string>
     <string name="unknown_text">Невідомо</string>
     <string name="now_playing">Зараз в кіно</string>
     <string name="back_online_text">Знову в мережі</string>

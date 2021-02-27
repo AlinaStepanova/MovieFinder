@@ -34,8 +34,8 @@ class WatchLaterViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
-    private var _isInserted = MutableLiveData<Boolean?>()
-    val isInserted: LiveData<Boolean?>
+    private var _isInserted = MutableLiveData<Pair<Boolean, String>?>()
+    val isInserted: LiveData<Pair<Boolean, String>?>
         get() = _isInserted
     private var removedMovie: Movie? = null
     private val compositeDisposable = CompositeDisposable()
@@ -58,13 +58,13 @@ class WatchLaterViewModel @Inject constructor(
             is Movie -> {
                 _movies.value?.let { list ->
                     val fetchedMovie = _movies.value?.firstOrNull { it.id == event.id }
-                    fetchedMovie?.let {
+                    fetchedMovie?.let { movie ->
                         disposeDeletingDependencies()
-                        val updatedMovieIndex = list.indexOf(it)
+                        val updatedMovieIndex = list.indexOf(movie)
                         if (updatedMovieIndex != -1) {
                             _updateMovieIndex.value = updatedMovieIndex
                             if (!event.isInWatchLater) {
-                                _isInserted.value = false
+                                _isInserted.value = Pair(false, movie.title ?: "")
                                 removedMovie = list[updatedMovieIndex]
                                 list.removeAt(updatedMovieIndex)
                                 startCountdown()
@@ -107,7 +107,7 @@ class WatchLaterViewModel @Inject constructor(
             _movies.value?.let { movies ->
                 movies.add(_updateMovieIndex.value!!, removedMovie!!)
                 addToWatchLater(removedMovie!!.id)
-                _isInserted.value = true
+                _isInserted.value = Pair(true, "")
                 disposeDeletingDependencies()
             }
         }

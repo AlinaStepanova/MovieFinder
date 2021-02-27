@@ -16,7 +16,7 @@
     <string name="title_activity_movie" translatable="false">MovieActivity</string>
     <string name="snack_bar_action_name">UNDO</string>
     <string name="deleted_favorite_snack_bar_text">Movie was deleted from your favorites list</string>
-    <string name="deleted_watch_snack_bar_text">Movie was deleted from your watchlist</string>
+    <string name="deleted_watch_snack_bar_text">was deleted from your watchlist</string>
     <string name="unknown_text">Unknown</string>
     <string name="now_playing">Now Playing</string>
     <string name="back_online_text">Back online</string>
