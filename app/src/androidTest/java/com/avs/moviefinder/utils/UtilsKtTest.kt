@@ -5,6 +5,7 @@ import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
+import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -78,6 +79,22 @@ internal class UtilsKtTest {
 
     @Test
     fun buildLinksTest() {
+        val id = "tt6475714"
+        val homepage = "https://www.monsterhunter.movie"
+        val homepageText = context.getString(R.string.homepage)
+        assertEquals(buildLinks(null, null, homepageText), null)
+
+        val fullLink = buildLinks(id, homepage, homepageText)
+        assertNotNull(fullLink)
+        assertTrue(fullLink!!.isNotBlank())
+        assertTrue(fullLink.contains(CIRCLE_SEPARATOR_CHARACTER))
+        assertThat(fullLink.count { ch -> ch == ' ' }, `is`(2))
+
+        val imdbLink = buildLinks(id, null, homepageText)
+        assertNotNull(imdbLink)
+        assertTrue(imdbLink!!.isNotBlank())
+        assertFalse(imdbLink.contains(CIRCLE_SEPARATOR_CHARACTER))
+        assertThat(imdbLink.count { ch -> ch == ' ' }, `is`(0))
     }
 
     @Test
