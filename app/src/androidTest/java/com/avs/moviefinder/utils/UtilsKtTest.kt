@@ -1,6 +1,7 @@
 package com.avs.moviefinder.utils
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import com.avs.moviefinder.R
@@ -71,10 +72,18 @@ internal class UtilsKtTest {
 
     @Test
     fun getShareIntentTest() {
+        val intent = getShareIntent(context, "https://www.monsterhunter.movie")
+        assertNotNull(intent)
+        assertEquals(intent.action, Intent.ACTION_SEND)
+        assertEquals(intent.type, SHARE_INTENT_TYPE)
     }
 
     @Test
     fun dpToPxTest() {
+        val dpValue = 16
+        val pixels = dpToPx(dpValue)
+        assertNotNull(pixels)
+        assertTrue(pixels >= dpValue)
     }
 
     @Test
