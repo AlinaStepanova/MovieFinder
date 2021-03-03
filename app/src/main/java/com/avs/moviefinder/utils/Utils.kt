@@ -148,7 +148,7 @@ fun formatCountries(countries: List<Country>): String {
 
 fun formatRuntime(duration: Int, hoursText: String, minutesText: String): String {
     var result: String
-    if (duration == 0) {
+    if (duration <= 0) {
         result = ""
     } else if (duration < MINUTES_IN_HOUR) {
         result = duration.toString() + minutesText

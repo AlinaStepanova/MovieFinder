@@ -68,6 +68,17 @@ internal class UtilsKtTest {
 
     @Test
     fun formatRuntimeTest() {
+        val hoursText = context.getString(R.string.hours)
+        val minutesText = context.getString(R.string.minutes)
+        assertTrue(formatRuntime(-1, hoursText, minutesText).isEmpty())
+        assertTrue(formatRuntime(0, hoursText, minutesText).isEmpty())
+        assertNotNull(formatRuntime(1, hoursText, minutesText))
+        assertThat(formatRuntime(59, hoursText, minutesText), `is`("59m"))
+        assertThat(formatRuntime(60, hoursText, minutesText), `is`("1h"))
+        assertThat(formatRuntime(61, hoursText, minutesText), `is`("1h 1m"))
+        assertThat(formatRuntime(119, hoursText, minutesText), `is`("1h 59m"))
+        assertThat(formatRuntime(120, hoursText, minutesText), `is`("2h"))
+        assertThat(formatRuntime(150, hoursText, minutesText), `is`("2h 30m"))
     }
 
     @Test
