@@ -114,7 +114,7 @@ fun formatRating(number: String): String {
     if (number.contains("-")) {
         return ""
     }
-    var result = round(number, 2).toString()
+    var result = round(number.trim(), 2).toString()
     if (result.contains('.') && result.endsWith('0')) {
         var i = result.length - 1
         while (result[i] == '0') {

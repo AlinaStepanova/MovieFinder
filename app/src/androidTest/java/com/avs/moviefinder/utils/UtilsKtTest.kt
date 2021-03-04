@@ -54,10 +54,37 @@ internal class UtilsKtTest {
 
     @Test
     fun roundTest() {
+        val delta = 0.0001
+        assertEquals(round("", 2), 0.0, delta)
+        assertEquals(round("2", 2), 2.0, delta)
+        assertEquals(round("2.", 2), 2.0, delta)
+        assertEquals(round("2.0", 2), 2.0, delta)
+        assertEquals(round("2.01", 2), 2.01, delta)
+        assertEquals(round("2.01111", 2), 2.01, delta)
+        assertEquals(round("2.019", 2), 2.02, delta)
+        assertEquals(round("2.098", 2), 2.1, delta)
+        assertEquals(round("2.088", 2), 2.09, delta)
+        assertEquals(round("2.088", 1), 2.1, delta)
+        assertEquals(round("2.3", 10), 2.3, delta)
+        assertEquals(round("2.999", 2), 3.0, delta)
     }
 
     @Test
     fun formatRatingTest() {
+        assertEquals(formatRating(""), "0")
+        assertEquals(formatRating(","), "0")
+        assertEquals(formatRating(" "), "0")
+        assertEquals(formatRating("-"), "")
+        assertEquals(formatRating("0"), "0")
+        assertEquals(formatRating("5"), "5")
+        assertEquals(formatRating("5."), "5")
+        assertEquals(formatRating("5.0"), "5")
+        assertEquals(formatRating("5.09"), "5.09")
+        assertEquals(formatRating("5.099"), "5.1")
+        assertEquals(formatRating("5.025"), "5.03")
+        assertEquals(formatRating("5.99"), "5.99")
+        assertEquals(formatRating("5.999"), "6")
+        assertEquals(formatRating("5.2  "), "5.2")
     }
 
     @Test
