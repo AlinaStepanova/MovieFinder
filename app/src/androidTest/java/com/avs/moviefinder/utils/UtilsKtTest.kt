@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.View
 import androidx.test.core.app.ApplicationProvider
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Country
+import com.avs.moviefinder.data.dto.Genre
 import com.avs.moviefinder.data.dto.Movie
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
@@ -60,10 +62,31 @@ internal class UtilsKtTest {
 
     @Test
     fun formatGenresTest() {
+        val genres = ArrayList<Genre>()
+        assertNotNull(formatGenres(genres))
+        assertTrue(formatGenres(genres).isEmpty())
+        genres.add(Genre("Drama"))
+        assertEquals(formatGenres(genres), "Drama")
+        genres.add(Genre("Thriller"))
+        assertEquals(formatGenres(genres), "Drama" + CIRCLE_SEPARATOR_CHARACTER + "Thriller")
+        genres.add(Genre("Horror"))
+        assertEquals(
+            formatGenres(genres),
+            "Drama" + CIRCLE_SEPARATOR_CHARACTER + "Thriller" + CIRCLE_SEPARATOR_CHARACTER + "Horror"
+        )
     }
 
     @Test
     fun formatCountriesTest() {
+        val countries = ArrayList<Country>()
+        assertNotNull(formatCountries(countries))
+        assertTrue(formatCountries(countries).isEmpty())
+        countries.add(Country("Spain"))
+        assertEquals(formatCountries(countries), "Spain")
+        countries.add(Country("India"))
+        assertEquals(formatCountries(countries), "Spain" + ", " + "India")
+        countries.add(Country(USA_FULL))
+        assertEquals(formatCountries(countries), "$USA, Spain, India")
     }
 
     @Test
