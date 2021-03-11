@@ -11,6 +11,8 @@ import com.avs.moviefinder.data.dto.Movie
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.*
+import kotlin.collections.ArrayList
 
 internal class UtilsKtTest {
 
@@ -42,14 +44,31 @@ internal class UtilsKtTest {
 
     @Test
     fun getCurrentDateTest() {
+        assertNotNull(getCurrentDate())
+        assertTrue(getCurrentDate().isNotBlank())
     }
 
     @Test
     fun get3WeeksAgoDateTest() {
+        val currentDate = Calendar.getInstance()
+        currentDate.add(Calendar.WEEK_OF_YEAR, -3)
+        val threeWeeksAgoDate = get3WeeksAgoDate()
+        assertNotNull(threeWeeksAgoDate)
+        assertTrue(threeWeeksAgoDate.isNotBlank())
+        assertEquals(threeWeeksAgoDate, formatNowPlayingDate(currentDate))
     }
 
     @Test
     fun formatNowPlayingDateTest() {
+        val date = Calendar.getInstance()
+        assertNotNull(formatNowPlayingDate(date))
+        assertTrue(formatNowPlayingDate(date).isNotBlank())
+        date.set(2021, 5, 12)
+        assertEquals(formatNowPlayingDate(date), "2021-06-12")
+        date.set(2020, 10, 7)
+        assertEquals(formatNowPlayingDate(date), "2020-11-07")
+        date.set(2020, 0, 25)
+        assertEquals(formatNowPlayingDate(date), "2020-01-25")
     }
 
     @Test
