@@ -3,6 +3,7 @@ package com.avs.moviefinder.utils
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.webkit.URLUtil
 import androidx.test.core.app.ApplicationProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
@@ -28,18 +29,38 @@ internal class UtilsKtTest {
 
     @Test
     fun buildPopularMoviesUrlTest() {
+        val url = buildPopularMoviesUrl()
+        assertTrue(URLUtil.isValidUrl(BASE_URL + url))
+        assertTrue(url.isNotBlank())
+        assertNotNull(url)
     }
 
     @Test
     fun buildTopRatedMoviesUrlTest() {
+        val url = buildTopRatedMoviesUrl()
+        assertTrue(URLUtil.isValidUrl(BASE_URL + url))
+        assertTrue(url.isNotBlank())
+        assertNotNull(url)
     }
 
     @Test
     fun buildMovieByIdUrlTest() {
+        val id = 1234L
+        val url = buildMovieByIdUrl(id)
+        assertTrue(URLUtil.isValidUrl(BASE_URL + url))
+        assertTrue(url.isNotBlank())
+        assertTrue(url.contains(id.toString()))
+        assertNotNull(url)
     }
 
     @Test
     fun buildMovieByNameUrlTest() {
+        val title = "Movie title"
+        val url = buildMovieByNameUrl(title)
+        assertTrue(URLUtil.isValidUrl(BASE_URL + url))
+        assertTrue(url.contains(title))
+        assertTrue(url.isNotBlank())
+        assertNotNull(url)
     }
 
     @Test
