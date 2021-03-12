@@ -173,9 +173,7 @@ fun getShareIntent(context: Context, movieLink: String): Intent {
     return sharingIntent
 }
 
-fun dpToPx(dp: Int): Float {
-    return (dp * Resources.getSystem().displayMetrics.density)
-}
+fun dpToPx(dp: Int): Float = dp * Resources.getSystem().displayMetrics.density
 
 fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
     val imdb = "<a href=\"${IMDB}title/$id/\">IMDb</a>"
@@ -199,6 +197,4 @@ fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 fun getIconVisibility(movies: List<Movie>) =
     if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
 
-fun buildUndoSnackBarMessage(title: String, text: String): String {
-    return "\"$title\" $text"
-}
+fun buildUndoSnackBarMessage(title: String, text: String): String = "\"$title\" $text"
