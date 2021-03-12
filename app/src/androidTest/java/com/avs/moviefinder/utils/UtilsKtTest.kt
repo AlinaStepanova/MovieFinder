@@ -15,7 +15,7 @@ import org.junit.Test
 import java.util.*
 import kotlin.collections.ArrayList
 
-internal class UtilsKtTest {
+class UtilsKtTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
@@ -29,6 +29,7 @@ internal class UtilsKtTest {
         assertEquals(formatDate("1989 12 12"), "1989 12 12")
         assertEquals(formatDate("20th Jun 1999"), "20th Jun 1999")
         assertEquals(formatDate("unknown"), "unknown")
+        assertEquals(formatDate("null"), "null")
     }
 
     @Test
@@ -123,6 +124,7 @@ internal class UtilsKtTest {
         assertEquals(round("2.088", 1), 2.1, delta)
         assertEquals(round("2.3", 10), 2.3, delta)
         assertEquals(round("2.999", 2), 3.0, delta)
+        assertEquals(round("0.999", 2), 1.0, delta)
     }
 
     @Test
@@ -141,6 +143,7 @@ internal class UtilsKtTest {
         assertEquals(formatRating("5.99"), "5.99")
         assertEquals(formatRating("5.999"), "6")
         assertEquals(formatRating("5.2  "), "5.2")
+        assertEquals(formatRating("0.999"), "1")
     }
 
     @Test
@@ -179,6 +182,7 @@ internal class UtilsKtTest {
         assertTrue(formatRuntime(-1, hoursText, minutesText).isEmpty())
         assertTrue(formatRuntime(0, hoursText, minutesText).isEmpty())
         assertNotNull(formatRuntime(1, hoursText, minutesText))
+        assertThat(formatRuntime(5, hoursText, minutesText), `is`("5m"))
         assertThat(formatRuntime(59, hoursText, minutesText), `is`("59m"))
         assertThat(formatRuntime(60, hoursText, minutesText), `is`("1h"))
         assertThat(formatRuntime(61, hoursText, minutesText), `is`("1h 1m"))
