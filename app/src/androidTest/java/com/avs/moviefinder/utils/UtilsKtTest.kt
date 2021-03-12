@@ -21,10 +21,26 @@ internal class UtilsKtTest {
 
     @Test
     fun formatDateTest() {
+        assertEquals(formatDate(""), "")
+        assertEquals(formatDate(" "), " ")
+        assertEquals(formatDate("2020-01-20"), "Jan 20, 2020")
+        assertEquals(formatDate("1999-05-01"), "May 01, 1999")
+        assertEquals(formatDate("1989-12-12"), "Dec 12, 1989")
+        assertEquals(formatDate("1989 12 12"), "1989 12 12")
+        assertEquals(formatDate("20th Jun 1999"), "20th Jun 1999")
+        assertEquals(formatDate("unknown"), "unknown")
     }
 
     @Test
     fun buildNowPlayingUrlTest() {
+        val url = buildNowPlayingUrl()
+        val currentDate = getCurrentDate()
+        val monthAgoDate = get3WeeksAgoDate()
+        assertTrue(url.contains(currentDate))
+        assertTrue(url.contains(monthAgoDate))
+        assertTrue(URLUtil.isValidUrl(BASE_URL + url))
+        assertTrue(url.isNotBlank())
+        assertNotNull(url)
     }
 
     @Test
