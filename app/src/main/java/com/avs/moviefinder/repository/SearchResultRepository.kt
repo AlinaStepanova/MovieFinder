@@ -33,6 +33,8 @@ class SearchResultRepository @Inject constructor(
         rxBus.send(MoviesSearchFilter(searchedMovies))
     }
 
+    private fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
+
     fun getSubmittedQuery(query: String) {
         compositeDisposable.add(
             databaseManager.getAllMovies().subscribe({ dbMovies ->
@@ -49,9 +51,12 @@ class SearchResultRepository @Inject constructor(
         )
     }
 
-    fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
-
-    fun insertMovie(movie: Movie) = compositeDisposable.add(databaseManager.insertMovie(movie))
+    fun insertMovie(movie: Movie) {
+        compositeDisposable.add(databaseManager.insertMovie(movie))
+        if (!movie.isInWatchLater && !movie.isFavorite) {
+            deleteMovie(movie)
+        }
+    }
 
     fun updateMovie(movie: Movie) = compositeDisposable.add(databaseManager.update(movie))
 

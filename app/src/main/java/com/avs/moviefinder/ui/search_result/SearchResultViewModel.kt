@@ -102,12 +102,6 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
-    private fun deleteMovieFromDB(movie: Movie) {
-        if (!movie.isInWatchLater && !movie.isFavorite) {
-            searchResultRepository.deleteMovie(movie)
-        }
-    }
-
     fun searchInitialQuery(query: String?) {
         if (_initialQuery.value == null) {
             _initialQuery.value = query
@@ -143,7 +137,6 @@ class SearchResultViewModel @Inject constructor(
             movie.isInWatchLater = !movie.isInWatchLater
             it.lastTimeUpdated = System.currentTimeMillis()
             searchResultRepository.insertMovie(movie)
-            deleteMovieFromDB(movie)
         }
     }
 
@@ -153,7 +146,6 @@ class SearchResultViewModel @Inject constructor(
             movie.isFavorite = !movie.isFavorite
             it.lastTimeUpdated = System.currentTimeMillis()
             searchResultRepository.insertMovie(movie)
-            deleteMovieFromDB(movie)
         }
     }
 
