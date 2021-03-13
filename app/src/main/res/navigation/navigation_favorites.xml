@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_favorites"
-    app:startDestination="@+id/navigation_favorites">
+    app:startDestination="@+id/navigation_favorites_fragment">
 
     <fragment
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/navigation_favorites_fragment"
         android:name="com.avs.moviefinder.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
