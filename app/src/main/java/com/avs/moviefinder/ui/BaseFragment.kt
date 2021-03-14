@@ -9,7 +9,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
 import com.avs.moviefinder.ui.movie.MovieActivity
-import com.avs.moviefinder.utils.IconSnackbar
+import com.avs.moviefinder.utils.ConnectivitySnackbar
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
@@ -96,7 +96,7 @@ open class BaseFragment : DaggerFragment() {
     fun showConnectivitySnackBar(message: String) {
         val activity = (activity as MainActivity)
         val color: Int = getBackgroundColor(R.color.green)
-        IconSnackbar.make(
+        ConnectivitySnackbar.make(
             activity.binding.container,
             message,
             Snackbar.LENGTH_LONG,
