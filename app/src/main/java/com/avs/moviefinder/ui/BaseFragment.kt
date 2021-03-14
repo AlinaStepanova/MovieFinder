@@ -95,7 +95,7 @@ open class BaseFragment : DaggerFragment() {
 
     fun showConnectivitySnackBar(message: String) {
         val activity = (activity as MainActivity)
-        val color: Int = getBackgroundColor(R.color.green)
+        val color: Int = getConnectivitySnackBarColor()
         ConnectivitySnackbar.make(
             activity.binding.container,
             message,
@@ -105,11 +105,11 @@ open class BaseFragment : DaggerFragment() {
         ).show()
     }
 
-    private fun getBackgroundColor(colorId: Int): Int {
+    private fun getConnectivitySnackBarColor(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            resources.getColor(colorId, fragmentContext.theme)
+            resources.getColor(R.color.green, fragmentContext.theme)
         } else {
-            resources.getColor(colorId)
+            resources.getColor(R.color.green)
         }
     }
 
