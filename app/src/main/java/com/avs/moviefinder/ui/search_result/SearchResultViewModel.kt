@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.data.dto.ConnectivityRestored
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.dto.Query
@@ -38,9 +39,6 @@ class SearchResultViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
-    private var _isBackOnline = MutableLiveData<Boolean?>()
-    val isBackOnline: LiveData<Boolean?>
-        get() = _isBackOnline
     private var _query = MutableLiveData<String?>()
     private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
@@ -80,6 +78,9 @@ class SearchResultViewModel @Inject constructor(
             }
             is Query -> onQuerySubmitted(event.query)
             is Locale -> getQueryByTitle(_query.value)
+            is ConnectivityRestored -> {
+                if (_errorType.value == ErrorType.NETWORK) getQueryByTitle(_query.value)
+            }
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
@@ -116,14 +117,6 @@ class SearchResultViewModel @Inject constructor(
 
     fun unsubscribeFromEvents() {
         rxBusDisposable?.dispose()
-    }
-
-    fun reactOnNetworkChangeState(isActive: Boolean) {
-        if (isActive && _errorType.value == ErrorType.NETWORK) {
-            getQueryByTitle(_query.value)
-            _isBackOnline.value = true
-            _isBackOnline.value = null
-        }
     }
 
     fun shareMovie(movieId: Long) {

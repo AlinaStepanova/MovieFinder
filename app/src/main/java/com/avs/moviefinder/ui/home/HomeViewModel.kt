@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.data.dto.ConnectivityRestored
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesFilterResult
 import com.avs.moviefinder.data.network.ErrorType
@@ -41,9 +42,6 @@ class HomeViewModel @Inject constructor(
     private var _updateMovieIndex = MutableLiveData<Int?>()
     val updateMovieIndex: LiveData<Int?>
         get() = _updateMovieIndex
-    private var _isBackOnline = MutableLiveData<Boolean?>()
-    val isBackOnline: LiveData<Boolean?>
-        get() = _isBackOnline
     private val compositeDisposable = CompositeDisposable()
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
@@ -81,6 +79,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is Locale -> onRefresh()
+            is ConnectivityRestored -> {
+                if (_errorType.value == ErrorType.NETWORK) onRefresh()
+            }
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
@@ -136,14 +137,6 @@ class HomeViewModel @Inject constructor(
         if (_selectedCategory.value != MoviesCategory.NOW_PLAYING) {
             _selectedCategory.value = MoviesCategory.NOW_PLAYING
             onRefresh()
-        }
-    }
-
-    fun reactOnNetworkChangeState(isActive: Boolean) {
-        if (isActive && _errorType.value == ErrorType.NETWORK) {
-            onRefresh()
-            _isBackOnline.value = true
-            _isBackOnline.value = null
         }
     }
 

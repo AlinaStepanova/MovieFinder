@@ -20,7 +20,6 @@ import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.utils.ConnectionLiveData
 import javax.inject.Inject
 
 val SEARCH_RESULT_FRAGMENT_TAG = SearchResultFragment::class.simpleName
@@ -29,8 +28,6 @@ class SearchResultFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    @Inject
-    lateinit var connectionLiveData: ConnectionLiveData
     lateinit var searchResultViewModel: SearchResultViewModel
 
     private var _binding: FragmentSearchResultBinding? = null
@@ -90,14 +87,6 @@ class SearchResultFragment : BaseFragment() {
         })
         searchResultViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
-        })
-        connectionLiveData.observe(viewLifecycleOwner, {
-            searchResultViewModel.reactOnNetworkChangeState(it)
-        })
-        searchResultViewModel.isBackOnline.observe(viewLifecycleOwner, {
-            it?.let {
-                showConnectivitySnackBar(getString(R.string.back_online_text))
-            }
         })
         return root
     }

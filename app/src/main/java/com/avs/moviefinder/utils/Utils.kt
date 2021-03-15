@@ -3,6 +3,7 @@ package com.avs.moviefinder.utils
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.os.Build
 import android.text.Spanned
 import android.view.View
 import androidx.core.text.HtmlCompat
@@ -198,3 +199,11 @@ fun getIconVisibility(movies: List<Movie>) =
     if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
 
 fun buildUndoSnackBarMessage(title: String, text: String): String = "\"$title\" $text"
+
+fun getColorFromResources(context: Context, colorId: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        context.resources.getColor(colorId, context.theme)
+    } else {
+        context.resources.getColor(colorId)
+    }
+}

@@ -12,9 +12,8 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.GenericSavedStateViewModelFactory
 import com.avs.moviefinder.di.MainViewModelFactory
-import com.avs.moviefinder.utils.openFindDetailFragment
-import com.avs.moviefinder.utils.popFindDetailFragment
-import com.avs.moviefinder.utils.setupWithNavController
+import com.avs.moviefinder.utils.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -22,6 +21,9 @@ import javax.inject.Inject
 class MainActivity : DaggerAppCompatActivity() {
 
     private var currentNavController: LiveData<NavController>? = null
+
+    @Inject
+    lateinit var connectionLiveData: ConnectionLiveData
 
     @Inject
     lateinit var mainViewModelFactory: MainViewModelFactory
@@ -44,6 +46,14 @@ class MainActivity : DaggerAppCompatActivity() {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
+        connectionLiveData.observe(this, {
+            mainViewModel.reactOnNetworkChangeState(it)
+        })
+        mainViewModel.isBackOnline.observe(this, { isOnline ->
+            isOnline?.let {
+                if (isOnline) showConnectivitySnackBar(getString(R.string.back_online_text))
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -129,5 +139,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
+    }
+
+    private fun showConnectivitySnackBar(message: String) {
+        val color: Int = getColorFromResources(this, R.color.green)
+        ConnectivitySnackbar.make(
+            binding.container,
+            message,
+            Snackbar.LENGTH_LONG,
+            binding.navView,
+            color
+        ).show()
     }
 }
