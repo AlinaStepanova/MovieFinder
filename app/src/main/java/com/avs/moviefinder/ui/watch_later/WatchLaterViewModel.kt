@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.WatchList
-import com.avs.moviefinder.repository.WatchListRepository
+import com.avs.moviefinder.repository.SavedListsRepository
 import com.avs.moviefinder.utils.LONG_DURATION_MS
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class WatchLaterViewModel @Inject constructor(
     rxBus: RxBus,
-    private val watchListRepository: WatchListRepository
+    private val repository: SavedListsRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<ArrayList<Movie>>()
@@ -80,7 +80,7 @@ class WatchLaterViewModel @Inject constructor(
 
     override fun onCleared() {
         compositeDisposable.clear()
-        watchListRepository.clear()
+        repository.clear()
         timer?.dispose()
         super.onCleared()
     }
@@ -100,7 +100,7 @@ class WatchLaterViewModel @Inject constructor(
         removedMovie = null
     }
 
-    fun getWatchLaterMovies() = watchListRepository.getWatchList()
+    fun getWatchLaterMovies() = repository.getWatchList()
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
@@ -126,7 +126,7 @@ class WatchLaterViewModel @Inject constructor(
             if (isInWatchLater && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            watchListRepository.updateMovie(movie)
+            repository.updateMovie(movie)
         }
     }
 
@@ -138,7 +138,7 @@ class WatchLaterViewModel @Inject constructor(
             if (isFavorite) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            watchListRepository.updateMovie(movie)
+            repository.updateMovie(movie)
         }
     }
 }

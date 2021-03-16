@@ -7,11 +7,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchListRepository @Inject constructor(
+class SavedListsRepository @Inject constructor(
     private val databaseManager: DatabaseManager
 ) {
 
     private val compositeDisposable = CompositeDisposable()
+
+    fun getFavoritesList() {
+        compositeDisposable.add(databaseManager.getAllFavorites())
+    }
 
     fun getWatchList() {
         compositeDisposable.add(databaseManager.getWatchLaterList())

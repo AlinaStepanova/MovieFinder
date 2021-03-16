@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.repository.FavoritesRepository
+import com.avs.moviefinder.repository.SavedListsRepository
 import com.avs.moviefinder.utils.LONG_DURATION_MS
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor(
     rxBus: RxBus,
-    private val favoritesRepository: FavoritesRepository
+    private val repository: SavedListsRepository
 ) : ViewModel() {
 
     private var _movies = MutableLiveData<ArrayList<Movie>>()
@@ -49,7 +49,7 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onCleared() {
         compositeDisposable.dispose()
-        favoritesRepository.clear()
+        repository.clear()
         timer?.dispose()
         super.onCleared()
     }
@@ -100,7 +100,7 @@ class FavoritesViewModel @Inject constructor(
         removedMovie = null
     }
 
-    fun getFavorites() = favoritesRepository.getFavorites()
+    fun getFavorites() = repository.getFavoritesList()
 
     fun undoRemovingMovie() {
         if (removedMovie != null && _updateMovieIndex.value != null) {
@@ -126,7 +126,7 @@ class FavoritesViewModel @Inject constructor(
             if (isInWatchLater) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            favoritesRepository.updateMovie(movie)
+            repository.updateMovie(movie)
         }
     }
 
@@ -138,7 +138,7 @@ class FavoritesViewModel @Inject constructor(
             if (isFavorite && removedMovie == null) {
                 it.lastTimeUpdated = System.currentTimeMillis()
             }
-            favoritesRepository.updateMovie(movie)
+            repository.updateMovie(movie)
         }
     }
 
