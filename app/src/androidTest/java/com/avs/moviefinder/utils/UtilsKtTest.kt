@@ -2,6 +2,7 @@ package com.avs.moviefinder.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.view.View
 import android.webkit.URLUtil
 import androidx.test.core.app.ApplicationProvider
@@ -254,5 +255,13 @@ class UtilsKtTest {
         assertTrue(message.isNotEmpty())
         val bracesNumber = message.count { ch -> ch == '\"' }
         assertTrue(bracesNumber >= 2)
+    }
+
+    @Test(expected = Resources.NotFoundException::class)
+    fun buildGetColorFromResources() {
+        getColorFromResources(context, -1)
+        val color = getColorFromResources(context, R.color.green)
+        assertNotNull(color)
+        assertTrue(color > 0)
     }
 }
