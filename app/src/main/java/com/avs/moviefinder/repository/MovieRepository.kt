@@ -33,6 +33,7 @@ class MovieRepository @Inject constructor(
             if (!it.overview.isNullOrEmpty()) extrasMovie.overview = it.overview
             if (it.runtime != 0) extrasMovie.runtime = it.runtime
             if (!it.title.isNullOrEmpty()) extrasMovie.title = it.title
+            if (!it.posterPath.isNullOrEmpty()) extrasMovie.posterPath = it.posterPath
         }
     }
 

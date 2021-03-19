@@ -48,13 +48,13 @@ class MovieViewModel @Inject constructor(
     }
 
     fun openMovieDetails(movie: Movie?) {
-        movie?.let {
-            _movie.value?.id = it.id
-            _movie.value?.posterPath = it.posterPath
-            _movie.value?.title = it.title
-            isInitiallyFavorite = it.isFavorite
-            isInitiallyInWatchList = it.isInWatchLater
-            movieRepository.getMovieData(it)
+        if (movie != null) {
+            _movie.value?.id = movie.id
+            _movie.value?.posterPath = movie.posterPath
+            _movie.value?.title = movie.title
+            isInitiallyFavorite = movie.isFavorite
+            isInitiallyInWatchList = movie.isInWatchLater
+            movieRepository.getMovieData(movie)
         }
     }
 
