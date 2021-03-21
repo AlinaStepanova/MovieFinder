@@ -12,9 +12,7 @@ import com.avs.moviefinder.utils.buildTopRatedMoviesUrl
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class HomeRepository @Inject constructor(
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager,

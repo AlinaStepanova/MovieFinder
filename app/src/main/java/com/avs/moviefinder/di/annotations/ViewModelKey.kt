@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.annotations
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

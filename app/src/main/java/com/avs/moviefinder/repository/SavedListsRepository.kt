@@ -4,9 +4,7 @@ import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class SavedListsRepository @Inject constructor(
     private val databaseManager: DatabaseManager
 ) {

@@ -9,9 +9,7 @@ import com.avs.moviefinder.utils.buildMovieByNameUrl
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class SearchResultRepository @Inject constructor(
     private val serverApi: ServerApi,
     private val databaseManager: DatabaseManager,
