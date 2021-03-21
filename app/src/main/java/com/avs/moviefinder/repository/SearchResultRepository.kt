@@ -1,21 +1,17 @@
 package com.avs.moviefinder.repository
 
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesSearchFilter
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildMovieByNameUrl
-import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
 
 class SearchResultRepository @Inject constructor(
     private val serverApi: ServerApi,
-    private val databaseManager: DatabaseManager,
     private val rxBus: RxBus
-) {
-    private val compositeDisposable = CompositeDisposable()
+): BaseRepository() {
 
     private fun combineServerAndDatabaseData(
         searchedMovies: LinkedList<Movie>,
@@ -30,8 +26,6 @@ class SearchResultRepository @Inject constructor(
         }
         rxBus.send(MoviesSearchFilter(searchedMovies))
     }
-
-    private fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
 
     fun getSubmittedQuery(query: String) {
         compositeDisposable.add(
@@ -49,14 +43,10 @@ class SearchResultRepository @Inject constructor(
         )
     }
 
-    fun insertMovie(movie: Movie) {
+    override fun insertMovie(movie: Movie) {
         compositeDisposable.add(databaseManager.insertMovie(movie))
         if (!movie.isInWatchLater && !movie.isFavorite) {
             deleteMovie(movie)
         }
     }
-
-    fun updateMovie(movie: Movie) = compositeDisposable.add(databaseManager.update(movie))
-
-    fun clear() = compositeDisposable.clear()
 }

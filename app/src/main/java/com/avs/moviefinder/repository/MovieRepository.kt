@@ -1,22 +1,18 @@
 package com.avs.moviefinder.repository
 
-import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildMovieByIdUrl
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
     private val serverApi: ServerApi,
-    private val databaseManager: DatabaseManager,
     private val rxBus: RxBus
-) {
-    private val compositeDisposable = CompositeDisposable()
+) : BaseRepository() {
     private var extrasMovie = Movie()
 
     private fun combineTwoMovies(apiMovie: Movie?, dbMovie: Movie?) {
@@ -54,8 +50,4 @@ class MovieRepository @Inject constructor(
             }, {})
         )
     }
-
-    fun insertMovie(movie: Movie) = compositeDisposable.add(databaseManager.insertMovie(movie))
-
-    fun clear() = compositeDisposable.clear()
 }
