@@ -2,10 +2,11 @@ package com.avs.moviefinder.repository
 
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.data.dto.Movie
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseRepository {
+open class BaseRepository {
 
     @Inject
     protected lateinit var databaseManager: DatabaseManager
@@ -21,4 +22,8 @@ abstract class BaseRepository {
     fun deleteMovie(movie: Movie) = compositeDisposable.add(databaseManager.delete(movie))
 
     fun clear() = compositeDisposable.clear()
+
+    fun getAllMovies(): Single<List<Movie>> {
+        return databaseManager.getAllMovies()
+    }
 }
