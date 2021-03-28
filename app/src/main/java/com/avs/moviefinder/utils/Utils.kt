@@ -209,11 +209,12 @@ fun getColorFromResources(context: Context, colorId: Int): Int {
 }
 
 fun isMovieLastUpdated2DaysAgo(lastTimeUpdated: Long): Boolean {
-    val threeDaysAgoDate = Calendar.getInstance()
-    threeDaysAgoDate.add(Calendar.DAY_OF_MONTH, -2)
+    val twoDaysAgoDate = Calendar.getInstance()
+    twoDaysAgoDate.add(Calendar.DAY_OF_MONTH, -2)
 
     val movieLastUpdatedDate = Calendar.getInstance()
+    movieLastUpdatedDate.clear()
     movieLastUpdatedDate.timeInMillis = lastTimeUpdated
 
-    return (movieLastUpdatedDate.before(threeDaysAgoDate))
+    return (movieLastUpdatedDate.before(twoDaysAgoDate))
 }
