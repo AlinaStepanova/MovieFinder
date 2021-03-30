@@ -23,11 +23,7 @@ fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
         text = context.getString(R.string.unknown_text)
         val date = item.releaseDate?.let { date -> formatDate(date) }
-        text = if (date.isNullOrEmpty()) {
-            context.getString(R.string.unknown_text)
-        } else {
-            date
-        }
+        text = if (date.isNullOrEmpty()) context.getString(R.string.unknown_text) else date
     }
 }
 

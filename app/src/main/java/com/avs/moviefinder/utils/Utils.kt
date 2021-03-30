@@ -24,9 +24,10 @@ const val MINUTES_IN_HOUR = 60
 const val USA = "USA"
 const val USA_FULL = "United States of America"
 const val IMDB = "https://www.imdb.com/"
+const val SERVER_DATE_FORMAT = "yyyy-MM-dd"
 
 fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
-    val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", LocaleReceiver.locale)
+    val inputFormat: DateFormat = SimpleDateFormat(SERVER_DATE_FORMAT, LocaleReceiver.locale)
     val outputFormat: DateFormat = SimpleDateFormat(pattern, LocaleReceiver.locale)
     val date: Date?
     var formattedDate = dateToFormat
