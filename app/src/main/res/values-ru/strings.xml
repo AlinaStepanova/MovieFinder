@@ -15,8 +15,8 @@
     <string name="share_via_text">Отправить по</string>
     <string name="share_text">Поделиться</string>
     <string name="snack_bar_action_name">Отменить</string>
-    <string name="deleted_favorite_snack_bar_text">удален из списка \"Избранное\"</string>
-    <string name="deleted_watch_snack_bar_text">удален из списка \"Посмотреть позже\"</string>
+    <string name="deleted_favorite_snack_bar_text">удалено из списка \"Избранное\"</string>
+    <string name="deleted_watch_snack_bar_text">удалено из списка \"Посмотреть позже\"</string>
     <string name="now_playing">Сейчас в кино</string>
     <string name="back_online_text">Снова в сети</string>
     <string name="homepage">Сайт</string>
