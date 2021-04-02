@@ -19,15 +19,15 @@ class MovieRepository @Inject constructor(
         if (dbMovie != null) {
             extrasMovie = dbMovie
         }
-        apiMovie?.let {
-            if (!it.imdbId.isNullOrEmpty()) extrasMovie.imdbId = it.imdbId
-            if (!it.homepage.isNullOrEmpty()) extrasMovie.homepage = it.homepage
-            if (!it.genres.isNullOrEmpty()) extrasMovie.genres = it.genres
-            if (!it.tagline.isNullOrEmpty()) extrasMovie.tagline = it.tagline
-            if (!it.overview.isNullOrEmpty()) extrasMovie.overview = it.overview
-            if (it.runtime != 0) extrasMovie.runtime = it.runtime
-            if (!it.title.isNullOrEmpty()) extrasMovie.title = it.title
-            if (!it.posterPath.isNullOrEmpty()) extrasMovie.posterPath = it.posterPath
+        apiMovie?.run {
+            if (!imdbId.isNullOrEmpty()) extrasMovie.imdbId = imdbId
+            if (!homepage.isNullOrEmpty()) extrasMovie.homepage = homepage
+            if (!genres.isNullOrEmpty()) extrasMovie.genres = genres
+            if (!tagline.isNullOrEmpty()) extrasMovie.tagline = tagline
+            if (!overview.isNullOrEmpty()) extrasMovie.overview = overview
+            if (runtime != 0) extrasMovie.runtime = runtime
+            if (!title.isNullOrEmpty()) extrasMovie.title = title
+            if (!posterPath.isNullOrEmpty()) extrasMovie.posterPath = posterPath
         }
     }
 
