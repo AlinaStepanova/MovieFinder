@@ -87,7 +87,7 @@ class HomeRepository @Inject constructor(
 
     fun getAllMovies(category: MoviesCategory?) {
         compositeDisposable.add(
-            databaseManager.getAllMovies().subscribe({ localMovies ->
+            getAllMovies().subscribe({ localMovies ->
                 moviesDB = localMovies as ArrayList<Movie>
                 when (category) {
                     MoviesCategory.POPULAR -> getPopularMovies()

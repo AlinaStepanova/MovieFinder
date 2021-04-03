@@ -23,6 +23,7 @@ class MovieRepository @Inject constructor(
             if (!imdbId.isNullOrEmpty()) extrasMovie.imdbId = imdbId
             if (!homepage.isNullOrEmpty()) extrasMovie.homepage = homepage
             if (!genres.isNullOrEmpty()) extrasMovie.genres = genres
+            if (!countries.isNullOrEmpty()) extrasMovie.countries = countries
             if (!tagline.isNullOrEmpty()) extrasMovie.tagline = tagline
             if (!overview.isNullOrEmpty()) extrasMovie.overview = overview
             if (runtime != 0) extrasMovie.runtime = runtime

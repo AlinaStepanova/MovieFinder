@@ -5,7 +5,9 @@ import com.avs.moviefinder.data.dto.Movie
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 open class BaseRepository {
 
     @Inject

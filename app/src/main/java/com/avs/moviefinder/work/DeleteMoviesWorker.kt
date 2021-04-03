@@ -6,11 +6,13 @@ import androidx.work.WorkerParameters
 import com.avs.moviefinder.repository.BaseRepository
 import com.avs.moviefinder.utils.isMovieLastUpdated2DaysAgo
 import io.reactivex.Single
+import javax.inject.Inject
 
 class DeleteMoviesWorker(appContext: Context, params: WorkerParameters) :
     RxWorker(appContext, params) {
 
-    val repository = BaseRepository()
+    @Inject
+    lateinit var repository: BaseRepository
 
     override fun createWork(): Single<Result> {
         return repository.getAllMovies()
@@ -27,7 +29,7 @@ class DeleteMoviesWorker(appContext: Context, params: WorkerParameters) :
     }
 
     companion object {
-        const val WORK_NAME = "DeleteMoviesWorker"
+        const val WORKER_NAME = "DeleteMoviesWorker"
     }
 
 }
