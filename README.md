@@ -1,6 +1,7 @@
 # MovieFinder
 
-Find movies to be added to your personal watch- and favorites lists, search for movies by the title.
+Find movies to be added to your personal watch- and favorites lists, search for movies by the title.<br />
+Review popular, top rated and now playing movies.
 
 <i>Note: work in progress.</i>
 
