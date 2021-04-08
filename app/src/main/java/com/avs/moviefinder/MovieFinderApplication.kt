@@ -7,8 +7,12 @@ import com.avs.moviefinder.work.DeleteMoviesWorker
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 open class MovieFinderApplication : DaggerApplication() {
+
+    @Inject
+    lateinit var workerFactory: WorkerFactory
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         val component: AppComponent = DaggerAppComponent.builder().application(this).build()
@@ -19,6 +23,7 @@ open class MovieFinderApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
         initDeleteMoviesWorker()
     }
 

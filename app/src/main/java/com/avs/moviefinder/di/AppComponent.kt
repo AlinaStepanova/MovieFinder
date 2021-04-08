@@ -23,6 +23,7 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         ContextModule::class,
         DatabaseModule::class,
+        WorkerModule::class,
         BroadcastModule::class
     ]
 )
