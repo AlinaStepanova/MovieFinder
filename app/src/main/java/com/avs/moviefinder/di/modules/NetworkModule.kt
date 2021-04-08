@@ -1,8 +1,8 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
-import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.network.MoviesApi
+import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.utils.HTTP_TIMEOUT_IN_SECONDS
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

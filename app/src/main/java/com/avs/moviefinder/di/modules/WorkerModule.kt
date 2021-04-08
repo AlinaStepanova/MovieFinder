@@ -1,10 +1,10 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import androidx.work.WorkerFactory
 import com.avs.moviefinder.di.annotations.WorkerKey
+import com.avs.moviefinder.di.factories.ChildWorkerFactory
+import com.avs.moviefinder.di.factories.ParentWorkerFactory
 import com.avs.moviefinder.work.DeleteMoviesWorker
-import com.avs.moviefinder.work.factory.ChildWorkerFactory
-import com.avs.moviefinder.work.factory.ParentWorkerFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

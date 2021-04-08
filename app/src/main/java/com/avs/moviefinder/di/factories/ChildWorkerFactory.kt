@@ -1,4 +1,4 @@
-package com.avs.moviefinder.work.factory
+package com.avs.moviefinder.di.factories
 
 import android.content.Context
 import androidx.work.RxWorker

@@ -10,8 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
-import com.avs.moviefinder.di.GenericSavedStateViewModelFactory
-import com.avs.moviefinder.di.MainViewModelFactory
+import com.avs.moviefinder.di.factories.GenericSavedStateViewModelFactory
+import com.avs.moviefinder.di.factories.MainViewModelFactory
 import com.avs.moviefinder.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity

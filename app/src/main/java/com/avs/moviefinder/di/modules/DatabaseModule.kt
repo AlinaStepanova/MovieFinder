@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import android.content.Context
 import androidx.room.Room

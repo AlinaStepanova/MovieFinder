@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
-import com.avs.moviefinder.di.ViewModelFactory
+import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener

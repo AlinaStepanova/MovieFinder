@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.factories
 
 import android.os.Bundle
 import androidx.lifecycle.AbstractSavedStateViewModelFactory

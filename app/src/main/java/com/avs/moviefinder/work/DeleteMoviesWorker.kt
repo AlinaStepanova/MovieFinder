@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.avs.moviefinder.data.database.DatabaseManager
+import com.avs.moviefinder.di.factories.ChildWorkerFactory
 import com.avs.moviefinder.utils.isMovieLastUpdated2DaysAgo
-import com.avs.moviefinder.work.factory.ChildWorkerFactory
 import io.reactivex.Single
 import javax.inject.Inject
 
