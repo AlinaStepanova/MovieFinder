@@ -4,6 +4,8 @@ import androidx.work.*
 import com.avs.moviefinder.di.AppComponent
 import com.avs.moviefinder.di.DaggerAppComponent
 import com.avs.moviefinder.work.DeleteMoviesWorker
+import com.avs.moviefinder.work.DeleteMoviesWorker.Companion.WORKER_NAME
+import com.avs.moviefinder.work.DeleteMoviesWorker.Companion.WORKER_TAG
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import java.util.concurrent.TimeUnit
@@ -23,7 +25,10 @@ open class MovieFinderApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
+        WorkManager.initialize(
+            this,
+            Configuration.Builder().setWorkerFactory(workerFactory).build()
+        )
         initDeleteMoviesWorker()
     }
 
@@ -34,14 +39,13 @@ open class MovieFinderApplication : DaggerApplication() {
             .setRequiresCharging(false)
             .build()
 
-        val workRequest = PeriodicWorkRequest.Builder(DeleteMoviesWorker::class.java, 15, TimeUnit.MINUTES)
-            .setConstraints(constrains)
-            .build()
-
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            DeleteMoviesWorker.WORKER_NAME,
+            WORKER_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
-            workRequest
+            PeriodicWorkRequestBuilder<DeleteMoviesWorker>(15, TimeUnit.MINUTES)
+                .addTag(WORKER_TAG)
+                .setConstraints(constrains)
+                .build()
         )
     }
 }

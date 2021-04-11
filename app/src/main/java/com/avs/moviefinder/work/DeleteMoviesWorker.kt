@@ -19,13 +19,13 @@ class DeleteMoviesWorker(
     override fun createWork(): Single<Result> {
         return databaseManager.getAllMovies()
             .doOnSuccess { localMovies ->
-                Log.d(WORKER_NAME, "Number of movies in database is ${localMovies.size}")
+                Log.d("DeleteMoviesWorker", "Number of movies in database is ${localMovies.size}")
                 for (movie in localMovies) {
                     if (!movie.isFavorite && !movie.isInWatchLater
                         && isMovieLastUpdated2DaysAgo(movie.lastTimeUpdated)
                     ) {
                         databaseManager.delete(movie)
-                        Log.d(WORKER_NAME, "Deleted movie is ${movie.title}, id is ${movie.id}")
+                        Log.d("DeleteMoviesWorker", "Deleted movie is ${movie.title}, id is ${movie.id}")
                     }
                 }
             }
@@ -35,6 +35,7 @@ class DeleteMoviesWorker(
 
     companion object {
         const val WORKER_NAME = "DeleteMoviesWorker"
+        const val WORKER_TAG = "DeleteMoviesWorkerTag"
     }
 
     class Factory @Inject constructor(
