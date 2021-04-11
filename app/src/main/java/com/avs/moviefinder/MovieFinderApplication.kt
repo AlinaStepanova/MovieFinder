@@ -42,7 +42,7 @@ open class MovieFinderApplication : DaggerApplication() {
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             WORKER_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
-            PeriodicWorkRequestBuilder<DeleteMoviesWorker>(15, TimeUnit.MINUTES)
+            PeriodicWorkRequestBuilder<DeleteMoviesWorker>(12, TimeUnit.HOURS)
                 .addTag(WORKER_TAG)
                 .setConstraints(constrains)
                 .build()

@@ -264,16 +264,4 @@ class UtilsKtTest {
         assertNotNull(color)
         assertTrue(color > 0)
     }
-
-    @Test
-    fun testIsMovieLastUpdated2DaysAgo() {
-        val movieUpdateDate = Calendar.getInstance()
-        assertFalse(isMovieLastUpdated2DaysAgo(movieUpdateDate.timeInMillis))
-        movieUpdateDate.add(Calendar.DAY_OF_MONTH, -1)
-        assertFalse(isMovieLastUpdated2DaysAgo(movieUpdateDate.timeInMillis))
-        movieUpdateDate.add(Calendar.DAY_OF_MONTH, -5)
-        assertTrue(isMovieLastUpdated2DaysAgo(movieUpdateDate.timeInMillis))
-        movieUpdateDate.add(Calendar.DAY_OF_MONTH, 10)
-        assertFalse(isMovieLastUpdated2DaysAgo(movieUpdateDate.timeInMillis))
-    }
 }

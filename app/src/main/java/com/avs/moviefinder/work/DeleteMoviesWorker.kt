@@ -6,7 +6,6 @@ import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.avs.moviefinder.data.database.DatabaseManager
 import com.avs.moviefinder.di.factories.ChildWorkerFactory
-import com.avs.moviefinder.utils.isMovieLastUpdated2DaysAgo
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -19,13 +18,11 @@ class DeleteMoviesWorker(
     override fun createWork(): Single<Result> {
         return databaseManager.getAllMovies()
             .doOnSuccess { localMovies ->
-                Log.d("DeleteMoviesWorker", "Number of movies in database is ${localMovies.size}")
+                Log.d(WORKER_TAG, "Number of movies in database is ${localMovies.size}")
                 for (movie in localMovies) {
-                    if (!movie.isFavorite && !movie.isInWatchLater
-                        && isMovieLastUpdated2DaysAgo(movie.lastTimeUpdated)
-                    ) {
+                    if (!movie.isFavorite && !movie.isInWatchLater) {
                         databaseManager.delete(movie)
-                        Log.d("DeleteMoviesWorker", "Deleted movie is ${movie.title}, id is ${movie.id}")
+                        Log.d(WORKER_TAG, "Deleted movie is ${movie.title}, id is ${movie.id}")
                     }
                 }
             }
