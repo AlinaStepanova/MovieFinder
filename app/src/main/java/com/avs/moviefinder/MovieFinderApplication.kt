@@ -4,6 +4,7 @@ import androidx.work.*
 import com.avs.moviefinder.di.AppComponent
 import com.avs.moviefinder.di.DaggerAppComponent
 import com.avs.moviefinder.work.DeleteMoviesWorker
+import com.avs.moviefinder.work.DeleteMoviesWorker.Companion.REPEAT_INTERVAL_HOURS
 import com.avs.moviefinder.work.DeleteMoviesWorker.Companion.WORKER_NAME
 import com.avs.moviefinder.work.DeleteMoviesWorker.Companion.WORKER_TAG
 import dagger.android.AndroidInjector
@@ -42,7 +43,7 @@ open class MovieFinderApplication : DaggerApplication() {
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             WORKER_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
-            PeriodicWorkRequestBuilder<DeleteMoviesWorker>(12, TimeUnit.HOURS)
+            PeriodicWorkRequestBuilder<DeleteMoviesWorker>(REPEAT_INTERVAL_HOURS, TimeUnit.HOURS)
                 .addTag(WORKER_TAG)
                 .setConstraints(constrains)
                 .build()

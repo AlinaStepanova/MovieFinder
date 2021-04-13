@@ -22,7 +22,7 @@ class DeleteMoviesWorker(
                 for (movie in localMovies) {
                     if (!movie.isFavorite && !movie.isInWatchLater) {
                         databaseManager.delete(movie)
-                        Log.d(WORKER_TAG, "Deleted movie is ${movie.title}, id is ${movie.id}")
+                        Log.d(WORKER_TAG, "Deleted movie is ${movie.title}")
                     }
                 }
             }
@@ -33,6 +33,7 @@ class DeleteMoviesWorker(
     companion object {
         const val WORKER_NAME = "DeleteMoviesWorker"
         const val WORKER_TAG = "DeleteMoviesWorkerTag"
+        const val REPEAT_INTERVAL_HOURS = 12L
     }
 
     class Factory @Inject constructor(
