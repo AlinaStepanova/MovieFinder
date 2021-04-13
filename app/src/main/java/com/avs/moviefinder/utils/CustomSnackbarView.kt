@@ -31,15 +31,19 @@ class ConnectivitySnackbarView @JvmOverloads constructor(
     override fun animateContentIn(delay: Int, duration: Int) {
         AlphaAnimation(0F, 1F).apply {
             interpolator = DecelerateInterpolator()
-            setDuration(500)
+            setDuration(ANIMATION_DURATION_MILLIS)
         }.start()
     }
 
     override fun animateContentOut(delay: Int, duration: Int) {
         AlphaAnimation(1F, 0F).apply {
             interpolator = AccelerateInterpolator()
-            setDuration(500)
+            setDuration(ANIMATION_DURATION_MILLIS)
         }.start()
+    }
+
+    companion object {
+        const val ANIMATION_DURATION_MILLIS = 500L
     }
 }
 

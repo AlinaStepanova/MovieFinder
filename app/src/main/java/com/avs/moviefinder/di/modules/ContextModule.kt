@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import android.app.Application
 import android.content.Context

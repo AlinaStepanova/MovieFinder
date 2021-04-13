@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import com.avs.moviefinder.data.network.LocaleReceiver
 import dagger.Module

@@ -1,8 +1,9 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.di.annotations.ViewModelKey
+import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.favorites.FavoritesViewModel
 import com.avs.moviefinder.ui.home.HomeViewModel
 import com.avs.moviefinder.ui.movie.MovieViewModel
@@ -17,7 +18,8 @@ abstract class ViewModelsModule {
 
     @Binds
     internal abstract fun bindViewModelFactory(
-        factory: ViewModelFactory): ViewModelProvider.Factory
+        factory: ViewModelFactory
+    ): ViewModelProvider.Factory
 
     @Binds
     @IntoMap

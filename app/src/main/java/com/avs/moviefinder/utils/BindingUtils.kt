@@ -1,7 +1,6 @@
 package com.avs.moviefinder.utils
 
 import android.content.res.Configuration
-import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,24 +16,22 @@ import jp.wasabeef.picasso.transformations.CropTransformation
 import jp.wasabeef.picasso.transformations.CropTransformation.GravityHorizontal
 import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
+private const val RATING_DEFAULT_VALUE = "0"
+
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {
     item?.let {
         text = context.getString(R.string.unknown_text)
         val date = item.releaseDate?.let { date -> formatDate(date) }
-        text = if (date.isNullOrEmpty()) {
-            context.getString(R.string.unknown_text)
-        } else {
-            date
-        }
+        text = if (date.isNullOrEmpty()) context.getString(R.string.unknown_text) else date
     }
 }
 
 @BindingAdapter("ratingFormatted")
 fun TextView.setRatingFormatted(item: Movie?) {
     item?.let {
-        val rating = formatRating(it.rating ?: "0")
-        if (rating == "0") {
+        val rating = formatRating(it.rating ?: RATING_DEFAULT_VALUE)
+        if (rating == RATING_DEFAULT_VALUE) {
             visibility = View.GONE
         } else {
             visibility = View.VISIBLE
@@ -48,7 +45,7 @@ fun ImageView.setRatingFormatted(item: Movie?) {
     item?.let {
         visibility = View.VISIBLE
         val rating = it.rating?.let { rating -> formatRating(rating) }
-        if (rating == "0") {
+        if (rating == RATING_DEFAULT_VALUE) {
             visibility = View.GONE
         }
     }
@@ -135,9 +132,5 @@ fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
 
 private fun TextView.setTextState(backgroundId: Int, textColorId: Int) {
     background = ContextCompat.getDrawable(context, backgroundId)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        setTextColor(resources.getColor(textColorId, context.theme))
-    } else {
-        setTextColor(resources.getColor(textColorId))
-    }
+    setTextColor(getColorFromResources(context, textColorId))
 }

@@ -65,19 +65,13 @@ class HomeRepository @Inject constructor(
             if (localMovies.isEmpty()) {
                 insertMovies(fetchedMovies)
             } else {
-                localMovies.forEach { movie ->
-                    val isInFetchedList = fetchedMovies.contains(movie)
-                    if (!movie.isInWatchLater && !movie.isFavorite && !isInFetchedList) {
-                        deleteMovie(movie)
-                    }
-                }
-                fetchedMovies.forEach { movie ->
-                    val insertedMovie = localMovies.firstOrNull { it.id == movie.id }
-                    if (insertedMovie != null) {
-                        movie.isInWatchLater = insertedMovie.isInWatchLater
-                        movie.isFavorite = insertedMovie.isFavorite
-                    } else if (movie.id != 0L) {
-                        insertMovie(movie)
+                fetchedMovies.forEach { fetchedMovie ->
+                    val localMovie = localMovies.firstOrNull { it.id == fetchedMovie.id }
+                    if (localMovie != null) {
+                        fetchedMovie.isInWatchLater = localMovie.isInWatchLater
+                        fetchedMovie.isFavorite = localMovie.isFavorite
+                    } else if (fetchedMovie.id != 0L) {
+                        insertMovie(fetchedMovie)
                     }
                 }
             }
@@ -87,7 +81,7 @@ class HomeRepository @Inject constructor(
 
     fun getAllMovies(category: MoviesCategory?) {
         compositeDisposable.add(
-            databaseManager.getAllMovies().subscribe({ localMovies ->
+            getAllMovies().subscribe({ localMovies ->
                 moviesDB = localMovies as ArrayList<Movie>
                 when (category) {
                     MoviesCategory.POPULAR -> getPopularMovies()

@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.modules
 
 import com.avs.moviefinder.di.annotations.PerFragment
 import com.avs.moviefinder.ui.favorites.FavoritesFragment

@@ -29,7 +29,7 @@ class SearchResultRepository @Inject constructor(
 
     fun getSubmittedQuery(query: String) {
         compositeDisposable.add(
-            databaseManager.getAllMovies().subscribe({ dbMovies ->
+            getAllMovies().subscribe({ dbMovies ->
                 compositeDisposable.add(
                     serverApi.getMovieByTitle(buildMovieByNameUrl(query))
                         .subscribe({ searchedMovies ->

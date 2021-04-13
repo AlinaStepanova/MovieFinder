@@ -1,4 +1,4 @@
-package com.avs.moviefinder.di
+package com.avs.moviefinder.di.factories
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
