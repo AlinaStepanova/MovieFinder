@@ -50,8 +50,23 @@
         <item name="colorControlHighlight">@color/colorPrimaryTransparent</item>
     </style>
 
-    <style name="collapsingToolbarLayoutTitleColor" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="CollapsingToolbarTitleColor" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemHeaderStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/item_layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/margin_8dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_4dp</item>
+        <item name="android:background">@drawable/rounded_button_shape_active</item>
+        <item name="android:padding">@dimen/margin_8dp</item>
+        <item name="android:paddingStart">@dimen/margin_16dp</item>
+        <item name="android:paddingEnd">@dimen/margin_16dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/text_size_16sp</item>
     </style>
 
 </resources>
