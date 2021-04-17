@@ -279,7 +279,7 @@
                     android:textColor="@color/greyDark"
                     android:textSize="@dimen/text_size_movie_details"
                     app:readMoreMaxLine="5"
-                    app:readMoreText="...Read more"
+                    app:readMoreText="@string/read_more_text"
                     android:background="?attr/selectableItemBackground"
                     app:readMoreColor="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -23,4 +23,5 @@
     <string name="homepage">Homepage</string>
     <string name="hours">h</string>
     <string name="minutes">m</string>
+    <string name="read_more_text">...Read more</string>
 </resources>

@@ -110,7 +110,9 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
 
+    // custom ui
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
     implementation 'kr.co.prnd:readmore-textview:1.0.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 }
