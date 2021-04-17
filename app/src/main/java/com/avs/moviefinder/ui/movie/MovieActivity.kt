@@ -74,7 +74,11 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatGenres(it)
                 // todo fix toolbar title
                 if (binding.toolbar.title != it.title) binding.toolbar.title = it.title
-                binding.tvLinks.text = buildLinks(it.imdbId, it.homepage, resources.getString(R.string.homepage))
+                binding.tvLinks.text = buildLinks(
+                    it.imdbId,
+                    it.homepage,
+                    resources.getString(R.string.homepage)
+                )
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
             }

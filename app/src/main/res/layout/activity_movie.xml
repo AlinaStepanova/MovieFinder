@@ -269,7 +269,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
 
-                <TextView
+                <kr.co.prnd.readmore.ReadMoreTextView
                     android:id="@+id/tvOverview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -278,6 +278,10 @@
                     android:layout_marginEnd="@dimen/text_margin"
                     android:textColor="@color/greyDark"
                     android:textSize="@dimen/text_size_movie_details"
+                    app:readMoreMaxLine="5"
+                    app:readMoreText="...Read more"
+                    android:background="?attr/selectableItemBackground"
+                    app:readMoreColor="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvGenres" />

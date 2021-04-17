@@ -112,4 +112,5 @@ dependencies {
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+    implementation 'kr.co.prnd:readmore-textview:1.0.0'
 }
