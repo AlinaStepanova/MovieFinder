@@ -70,7 +70,7 @@ fun buildTopRatedMoviesUrl(): String {
 fun buildMovieByIdUrl(id: Long): String {
     val append = "&append_to_response=videos,similar,credits"
     val language = LocaleReceiver.language
-    return "3/movie/$id?api_key=$API_KEY&language=$language"
+    return "3/movie/$id?api_key=$API_KEY&language=$language$append"
 }
 
 fun buildMovieByNameUrl(movieTitle: String): String {
