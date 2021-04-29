@@ -1,9 +1,6 @@
 package com.avs.moviefinder.data.network
 
-import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesAPIFilter
-import com.avs.moviefinder.data.dto.MoviesSearchFilter
-import com.avs.moviefinder.data.dto.Videos
+import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.utils.API_KEY
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -32,4 +29,7 @@ interface MoviesApi {
 
     @GET("3/movie/{movie_id}/videos?api_key=$API_KEY&language=en-US&include_adult=false")
     fun getVideosByMovieId(@Path("movie_id") movieId: Long): Single<Videos>
+
+    @GET("3/movie/{movie_id}/credits?api_key=$API_KEY&language=en-US&include_adult=false")
+    fun getCreditsByMovieId(@Path("movie_id") movieId: Long): Single<Credits>
 }

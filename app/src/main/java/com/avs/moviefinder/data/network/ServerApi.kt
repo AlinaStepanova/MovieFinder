@@ -1,9 +1,6 @@
 package com.avs.moviefinder.data.network
 
-import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesAPIFilter
-import com.avs.moviefinder.data.dto.MoviesSearchFilter
-import com.avs.moviefinder.data.dto.Videos
+import com.avs.moviefinder.data.dto.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -29,6 +26,13 @@ class ServerApi @Inject constructor(
     fun getVideos(movieId: Long): Single<Videos> {
         return moviesApi
             .getVideosByMovieId(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getCredits(movieId: Long): Single<Credits> {
+        return moviesApi
+            .getCreditsByMovieId(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -95,33 +95,3 @@ data class Crew(
         }
     }
 }
-
-data class Credits(
-    var cast: List<Cast>? = null,
-    var crew: List<Crew>? = null
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.createTypedArrayList(Cast),
-        parcel.createTypedArrayList(Crew)
-    ) {
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeTypedList(cast)
-        parcel.writeTypedList(crew)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Credits> {
-        override fun createFromParcel(parcel: Parcel): Credits {
-            return Credits(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Credits?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
