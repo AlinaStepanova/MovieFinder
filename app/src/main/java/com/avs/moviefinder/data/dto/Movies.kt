@@ -10,6 +10,8 @@ data class MoviesSearchFilter(@SerializedName("results") val movies: LinkedList<
 
 data class Videos(@SerializedName("results") val videos: ArrayList<Result> = ArrayList())
 
+data class Similar(@SerializedName("results") val similar: ArrayList<Result> = ArrayList())
+
 data class Credits(var cast: List<Cast> = ArrayList(), var crew: List<Crew> = ArrayList())
 
 data class MoviesFilterResult(val movies: LinkedList<Movie> = LinkedList())

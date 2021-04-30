@@ -32,4 +32,7 @@ interface MoviesApi {
 
     @GET("3/movie/{movie_id}/credits?api_key=$API_KEY&language=en-US&include_adult=false")
     fun getCreditsByMovieId(@Path("movie_id") movieId: Long): Single<Credits>
+
+    @GET("3/movie/{movie_id}/similar?api_key=$API_KEY&language=en-US&include_adult=false")
+    fun getSimilarByMovieId(@Path("movie_id") movieId: Long): Single<Similar>
 }

@@ -50,10 +50,10 @@ class MovieRepository @Inject constructor(
                     rxBus.send(extrasMovie)
                 }
                 compositeDisposable.add(
-                    serverApi.getCredits(extrasMovie.id)
+                    serverApi.getSimilar(extrasMovie.id)
                         .subscribe(
-                            { result -> Log.d("jjj", result.toString()) },
-                            { error -> Log.d("jjj", error.toString()) })
+                            { result -> Log.d(this.javaClass.toString(), result.toString()) },
+                            { error -> Log.d(this.javaClass.toString(), error.toString()) })
                 )
             }, {})
         )

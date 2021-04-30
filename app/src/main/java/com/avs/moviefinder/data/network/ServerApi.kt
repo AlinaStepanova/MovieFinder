@@ -37,6 +37,13 @@ class ServerApi @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getSimilar(movieId: Long): Single<Similar> {
+        return moviesApi
+            .getSimilarByMovieId(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun getTopRatedMovies(url: String): Single<MoviesAPIFilter> {
         return moviesApi
             .getTopRatedMovies(url)
