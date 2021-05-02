@@ -4,6 +4,13 @@
 
     <data>
 
+        <variable
+            name="cast"
+            type="com.avs.moviefinder.data.dto.Cast" />
+
+        <variable
+            name="clickListener"
+            type="com.avs.moviefinder.ui.recycler_view.CastListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
