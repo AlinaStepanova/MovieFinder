@@ -15,12 +15,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:layout_marginEnd="@dimen/margin_8dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/castPhoto"
-            android:layout_width="@dimen/dimen_72dp"
-            android:layout_height="90dp"
+            android:layout_width="@dimen/dimen_86dp"
+            android:layout_height="100dp"
+            app:castImage="@{cast}"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,10 +35,11 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:padding="2dp"
+            android:layout_marginTop="@dimen/margin_4dp"
             android:textColor="@color/mainGrey"
-            android:textSize="@dimen/text_size_12sp"
+            android:textSize="@dimen/text_size_14sp"
             android:textStyle="italic"
+            app:castName="@{cast}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/castPhoto" />
@@ -45,9 +50,9 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:padding="2dp"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14sp"
+            android:textSize="@dimen/text_size_16sp"
+            app:castRole="@{cast}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

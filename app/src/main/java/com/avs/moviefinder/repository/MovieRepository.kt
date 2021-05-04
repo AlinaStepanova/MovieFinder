@@ -49,13 +49,17 @@ class MovieRepository @Inject constructor(
                 } else {
                     rxBus.send(extrasMovie)
                 }
-                compositeDisposable.add(
-                    serverApi.getCredits(extrasMovie.id)
-                        .subscribe(
-                            { result -> Log.d("jjj", result.toString()) },
-                            { error -> Log.d(this.javaClass.toString(), error.toString()) })
-                )
+                getCast()
             }, {})
+        )
+    }
+
+    private fun getCast() {
+        compositeDisposable.add(
+            serverApi.getCredits(extrasMovie.id)
+                .subscribe(
+                    { credits -> rxBus.send(credits) },
+                    { error -> Log.d(this.javaClass.toString(), error.toString()) })
         )
     }
 }

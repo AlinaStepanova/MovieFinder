@@ -18,6 +18,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
+import com.avs.moviefinder.ui.recycler_view.CastAdapter
+import com.avs.moviefinder.ui.recycler_view.CastListener
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE
@@ -54,7 +56,14 @@ class MovieActivity : DaggerAppCompatActivity() {
         val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
+        val adapter = CastAdapter(CastListener {  })
+        movieViewModel.cast.observe(this, {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
         movieViewModel.openMovieDetails(extrasMovie)
+        binding.rvCast.adapter = adapter
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {

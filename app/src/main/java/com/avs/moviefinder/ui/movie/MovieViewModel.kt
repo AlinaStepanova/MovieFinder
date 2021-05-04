@@ -3,6 +3,8 @@ package com.avs.moviefinder.ui.movie
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.avs.moviefinder.data.dto.Cast
+import com.avs.moviefinder.data.dto.Credits
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.repository.MovieRepository
 import com.avs.moviefinder.utils.RxBus
@@ -18,6 +20,9 @@ class MovieViewModel @Inject constructor(
     private var _movie = MutableLiveData<Movie?>()
     val movie: LiveData<Movie?>
         get() = _movie
+    private var _cast = MutableLiveData<List<Cast>>()
+    val cast: LiveData<List<Cast>>
+        get() = _cast
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
@@ -42,6 +47,9 @@ class MovieViewModel @Inject constructor(
                     || _movie.value?.id == event.id) {
                         _movie.value = event
                 }
+            }
+            is Credits -> {
+                _cast.value = event.cast.take(16)
             }
             is Locale -> openMovieDetails(_movie.value)
         }
