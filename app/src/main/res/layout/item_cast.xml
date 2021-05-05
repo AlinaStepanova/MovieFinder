@@ -22,7 +22,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/castPhoto"
             android:layout_width="@dimen/dimen_86dp"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/photo_person_height"
             app:castImage="@{cast}"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp"
+            android:textSize="@dimen/text_size_15sp"
             app:castRole="@{cast}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

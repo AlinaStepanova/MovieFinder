@@ -58,7 +58,9 @@ class MovieActivity : DaggerAppCompatActivity() {
         binding.toolbar.title = extrasMovie?.title
         val adapter = CastAdapter(CastListener {  })
         movieViewModel.cast.observe(this, {
-            it?.let {
+            if (it.isNullOrEmpty()) {
+                binding.rvCast.visibility = View.GONE
+            } else {
                 adapter.submitList(it)
             }
         })
