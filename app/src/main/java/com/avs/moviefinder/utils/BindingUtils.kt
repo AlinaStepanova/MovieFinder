@@ -39,8 +39,11 @@ fun TextView.setCastRole(cast: Cast?) {
 
 @BindingAdapter("castImage")
 fun ShapeableImageView.setCastImage(cast: Cast) {
-    val widthRatio = 1F
-    val heightRatio = 2F
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setAllCorners(CornerFamily.ROUNDED, pixels)
+        .build()
     Picasso.get()
         .load(CAST_PHOTO_URL + cast.profilePath)
         .placeholder(R.drawable.ic_local_movies_grey)
