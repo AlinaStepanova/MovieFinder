@@ -61,6 +61,7 @@ class MovieActivity : DaggerAppCompatActivity() {
             if (it.isNullOrEmpty()) {
                 binding.rvCast.visibility = View.GONE
             } else {
+                binding.tvCast.visibility = View.VISIBLE
                 adapter.submitList(it)
             }
         })

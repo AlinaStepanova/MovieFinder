@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Credits
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.Similar
 import com.avs.moviefinder.repository.MovieRepository
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
@@ -50,6 +51,9 @@ class MovieViewModel @Inject constructor(
             }
             is Credits -> {
                 _cast.value = event.cast.take(16)
+            }
+            is Similar -> {
+
             }
             is Locale -> openMovieDetails(_movie.value)
         }

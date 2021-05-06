@@ -50,6 +50,7 @@ class MovieRepository @Inject constructor(
                     rxBus.send(extrasMovie)
                 }
                 getCast()
+                getSimilar()
             }, {})
         )
     }
@@ -59,6 +60,15 @@ class MovieRepository @Inject constructor(
             serverApi.getCredits(extrasMovie.id)
                 .subscribe(
                     { credits -> rxBus.send(credits) },
+                    { error -> Log.d(this.javaClass.toString(), error.toString()) })
+        )
+    }
+
+    private fun getSimilar() {
+        compositeDisposable.add(
+            serverApi.getSimilar(extrasMovie.id)
+                .subscribe(
+                    { similar -> rxBus.send(similar) },
                     { error -> Log.d(this.javaClass.toString(), error.toString()) })
         )
     }

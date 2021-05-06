@@ -270,7 +270,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginEnd="@dimen/text_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_movie_title"
@@ -285,7 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginEnd="@dimen/text_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_movie_details"
@@ -311,18 +311,32 @@
                     app:readMoreMaxLine="5"
                     app:readMoreText="@string/read_more_text" />
 
+                <TextView
+                    android:id="@+id/tvCast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:text="@string/cast_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:fontFamily="sans-serif-condensed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCast"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/list_cast_height"
                     android:layout_marginStart="@dimen/margin_8dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
                     android:layout_marginEnd="@dimen/margin_8dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvCast" />
 
                 <TextView
                     android:id="@+id/tvLinks"
