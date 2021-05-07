@@ -18,8 +18,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.ui.recycler_view.CastAdapter
 import com.avs.moviefinder.ui.recycler_view.CastListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.CastAdapter
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE

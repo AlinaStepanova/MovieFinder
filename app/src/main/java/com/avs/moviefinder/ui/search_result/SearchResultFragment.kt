@@ -18,7 +18,7 @@ import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
-import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import javax.inject.Inject
 
@@ -61,7 +61,7 @@ class SearchResultFragment : BaseFragment() {
         binding.lifecycleOwner = this
         val query = arguments?.getString(this::class.java.simpleName)
         searchResultViewModel.searchInitialQuery(query)
-        val adapter = BaseMoviesAdapter(
+        val adapter = MoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivityForResult(movie) },
                 { movieId -> searchResultViewModel.shareMovie(movieId) },

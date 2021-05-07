@@ -12,7 +12,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
@@ -44,7 +44,7 @@ class WatchLaterFragment : BaseFragment() {
         val root: View = binding.root
         binding.watchLaterViewModel = watchLaterViewModel
         binding.lifecycleOwner = this
-        val adapter = BaseMoviesAdapter(
+        val adapter = MoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> watchLaterViewModel.shareMovie(movieId) },

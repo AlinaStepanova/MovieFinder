@@ -8,7 +8,7 @@ import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.databinding.ItemHeaderBinding
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.ui.recycler_view.MovieViewHolder
+import com.avs.moviefinder.ui.recycler_view.view_holders.MovieViewHolder
 
 
 class FindAdapter(
