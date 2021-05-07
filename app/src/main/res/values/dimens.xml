@@ -27,6 +27,6 @@
     <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="list_cast_height">180dp</dimen>
     <dimen name="photo_person_height">100dp</dimen>
-    <dimen name="poster_height">120dp</dimen>
+    <dimen name="poster_height">128dp</dimen>
     <dimen name="text_size_22">22sp</dimen>
 </resources>

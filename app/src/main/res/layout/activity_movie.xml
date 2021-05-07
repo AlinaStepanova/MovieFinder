@@ -339,6 +339,33 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvCast" />
 
                 <TextView
+                    android:id="@+id/tvSimilar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:text="@string/similar_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:fontFamily="sans-serif-condensed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvCast" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSimilar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_cast_height"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginEnd="6dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSimilar" />
+
+                <TextView
                     android:id="@+id/tvLinks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -348,7 +375,7 @@
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rvCast" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvSimilar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

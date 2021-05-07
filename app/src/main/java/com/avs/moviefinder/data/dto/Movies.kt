@@ -2,7 +2,6 @@ package com.avs.moviefinder.data.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class MoviesAPIFilter(@SerializedName("results") val movies: LinkedList<Movie> = LinkedList())
 

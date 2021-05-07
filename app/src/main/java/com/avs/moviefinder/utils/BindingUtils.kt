@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.Result
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -46,6 +47,29 @@ fun ShapeableImageView.setCastImage(cast: Cast) {
         .build()
     Picasso.get()
         .load(CAST_PHOTO_URL + cast.profilePath)
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
+
+@BindingAdapter("similarTitle")
+fun TextView.setSimilarMovieTitle(result: Result?) {
+    result?.let {
+        text = context.getString(R.string.unknown_text)
+        val title = result.title
+        text = if (title.isNullOrEmpty()) context.getString(R.string.unknown_text) else title
+    }
+}
+
+@BindingAdapter("similarMoviePoster")
+fun ShapeableImageView.setSimilarMoviePoster(result: Result) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setAllCorners(CornerFamily.ROUNDED, pixels)
+        .build()
+    Picasso.get()
+        .load(CAST_PHOTO_URL + result.posterPath)
         .placeholder(R.drawable.ic_local_movies_grey)
         .error(R.drawable.ic_local_movies_grey)
         .into(this)

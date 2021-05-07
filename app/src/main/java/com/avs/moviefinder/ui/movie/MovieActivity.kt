@@ -19,7 +19,9 @@ import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.recycler_view.CastListener
+import com.avs.moviefinder.ui.recycler_view.ResultListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.CastAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.ResultAdapter
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE
@@ -56,17 +58,27 @@ class MovieActivity : DaggerAppCompatActivity() {
         val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
-        val adapter = CastAdapter(CastListener {  })
+        val castAdapter = CastAdapter(CastListener {  })
         movieViewModel.cast.observe(this, {
             if (it.isNullOrEmpty()) {
                 binding.rvCast.visibility = View.GONE
             } else {
                 binding.tvCast.visibility = View.VISIBLE
-                adapter.submitList(it)
+                castAdapter.submitList(it)
+            }
+        })
+        val similarAdapter = ResultAdapter(ResultListener {  })
+        movieViewModel.similarMovies.observe(this, {
+            if (it.isNullOrEmpty()) {
+                binding.rvSimilar.visibility = View.GONE
+            } else {
+                binding.tvSimilar.visibility = View.VISIBLE
+                similarAdapter.submitList(it)
             }
         })
         movieViewModel.openMovieDetails(extrasMovie)
-        binding.rvCast.adapter = adapter
+        binding.rvCast.adapter = castAdapter
+        binding.rvSimilar.adapter = similarAdapter
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
