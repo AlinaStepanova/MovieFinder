@@ -14,7 +14,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentHomeBinding
-import com.avs.moviefinder.di.ViewModelFactory
+import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.movie.MovieActivity
@@ -31,7 +31,8 @@ class HomeFragment : BaseFragment() {
     lateinit var connectionLiveData: ConnectionLiveData
     lateinit var homeViewModel: HomeViewModel
 
-    private lateinit var binding: FragmentHomeBinding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -52,7 +53,7 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home, container, false
         )
         val root: View = binding.root
@@ -96,15 +97,12 @@ class HomeFragment : BaseFragment() {
         homeViewModel.errorType.observe(viewLifecycleOwner, {
             handleErrorEvent(it)
         })
-        connectionLiveData.observe(viewLifecycleOwner, {
-            homeViewModel.reactOnNetworkChangeState(it)
-        })
-        homeViewModel.isBackOnline.observe(viewLifecycleOwner, {
-            it?.let {
-                showConnectivitySnackBar(getString(R.string.back_online_text))
-            }
-        })
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun startMovieActivityForResult(movie: Movie) {
@@ -117,10 +115,6 @@ class HomeFragment : BaseFragment() {
 
     private fun handleErrorEvent(it: ErrorType?) {
         when (it) {
-            null -> {
-                binding.ivError.visibility = View.INVISIBLE
-                binding.tvErrorText.visibility = View.INVISIBLE
-            }
             ErrorType.NETWORK -> {
                 binding.ivError.visibility = View.VISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE
@@ -132,6 +126,8 @@ class HomeFragment : BaseFragment() {
                 showSnackBar(resources.getString(R.string.no_results_found))
             }
             else -> {
+                binding.ivError.visibility = View.INVISIBLE
+                binding.tvErrorText.visibility = View.INVISIBLE
             }
         }
     }

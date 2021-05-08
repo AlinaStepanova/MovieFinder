@@ -15,7 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.ContentViewCallback
 
-class IconSnackbarView @JvmOverloads constructor(
+class ConnectivitySnackbarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -24,29 +24,33 @@ class IconSnackbarView @JvmOverloads constructor(
     var message: TextView
 
     init {
-        View.inflate(context, R.layout.icon_snackbar, this)
+        View.inflate(context, R.layout.connectivity_snackbar, this)
         message = findViewById(R.id.message)
     }
 
     override fun animateContentIn(delay: Int, duration: Int) {
         AlphaAnimation(0F, 1F).apply {
             interpolator = DecelerateInterpolator()
-            setDuration(500)
+            setDuration(ANIMATION_DURATION_MILLIS)
         }.start()
     }
 
     override fun animateContentOut(delay: Int, duration: Int) {
         AlphaAnimation(1F, 0F).apply {
             interpolator = AccelerateInterpolator()
-            setDuration(500)
+            setDuration(ANIMATION_DURATION_MILLIS)
         }.start()
+    }
+
+    companion object {
+        const val ANIMATION_DURATION_MILLIS = 500L
     }
 }
 
-class IconSnackbar(
+class ConnectivitySnackbar(
     parent: ViewGroup,
-    content: IconSnackbarView
-) : BaseTransientBottomBar<IconSnackbar>(parent, content, content) {
+    content: ConnectivitySnackbarView
+) : BaseTransientBottomBar<ConnectivitySnackbar>(parent, content, content) {
 
     companion object {
         fun make(
@@ -55,16 +59,16 @@ class IconSnackbar(
             duration: Int,
             anchor: BottomNavigationView,
             backgroundColor: Int
-        ): IconSnackbar {
+        ): ConnectivitySnackbar {
             val customView = LayoutInflater.from(viewGroup.context).inflate(
-                R.layout.layout_icon_snackbar,
+                R.layout.layout_connectivity_snackbar,
                 viewGroup,
                 false
-            ) as IconSnackbarView
+            ) as ConnectivitySnackbarView
 
             customView.message.text = message
 
-            val snackbar = IconSnackbar(viewGroup, customView)
+            val snackbar = ConnectivitySnackbar(viewGroup, customView)
             snackbar.view.setBackgroundColor(backgroundColor)
 
             return snackbar

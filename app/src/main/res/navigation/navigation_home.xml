@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_home"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_home_fragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_home_fragment"
         android:name="com.avs.moviefinder.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />

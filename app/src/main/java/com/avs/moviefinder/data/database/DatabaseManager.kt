@@ -4,7 +4,6 @@ import android.util.Log
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesDBFilter
 import com.avs.moviefinder.data.dto.WatchList
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Single
@@ -34,11 +33,10 @@ class DatabaseManager @Inject constructor(
             .subscribe({ }, { handleError(it) })
     }
 
-    fun getAllMovies(): Disposable {
+    fun getAllMovies(): Single<List<Movie>> {
         return dataSource.getAllEntries()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(MoviesDBFilter(it)) }, { handleError(it) })
     }
 
     fun update(movie: Movie): Disposable {
@@ -72,10 +70,6 @@ class DatabaseManager @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
-    }
-
-    private fun readSuccessMessage(items: Any) {
-        Log.d(this.javaClass.simpleName, "Inserted successfully $items")
     }
 
     private fun handleError(error: Throwable?) {

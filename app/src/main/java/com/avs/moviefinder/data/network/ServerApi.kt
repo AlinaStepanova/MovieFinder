@@ -1,71 +1,67 @@
 package com.avs.moviefinder.data.network
 
-import android.util.Log
-import com.avs.moviefinder.BuildConfig
-import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.data.dto.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ServerApi @Inject constructor(
-    private val rxBus: RxBus,
     private val moviesApi: MoviesApi
 ) {
-    fun getPopularMovies(): Disposable {
+
+    fun getPopularMoviesAsSingle(url: String): Single<MoviesAPIFilter> {
         return moviesApi
-            .getPopularMovies()
+            .getPopularMovies(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
-    fun getMovieById(id: Long): Disposable {
+    fun getMovieById(url: String): Single<Movie> {
+        return moviesApi.getMovieById(url)
+    }
+
+    fun getVideos(movieId: Long): Single<Videos> {
         return moviesApi
-            .getMovieById(id)
+            .getVideosByMovieId(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
-    fun callMovieById(id: Long): Single<Movie> {
-        return moviesApi.getMovieById(id)
-    }
-
-    fun getTopRatedMovies(): Disposable {
+    fun getCredits(movieId: Long): Single<Credits> {
         return moviesApi
-            .getTopRatedMovies()
+            .getCreditsByMovieId(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
-    fun getNowPlayingMovies(url: String): Disposable {
+    fun getSimilar(movieId: Long): Single<Similar> {
+        return moviesApi
+            .getSimilarByMovieId(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getTopRatedMovies(url: String): Single<MoviesAPIFilter> {
+        return moviesApi
+            .getTopRatedMovies(url)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getNowPlayingMovies(url: String): Single<MoviesAPIFilter> {
         return moviesApi
             .getNowPlayingMovies(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
     }
 
-    fun getMovieByTitle(title: String): Disposable {
+    fun getMovieByTitle(url: String): Single<MoviesSearchFilter> {
         return moviesApi
-            .getMovieByName(title)
+            .getMovieByName(url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ rxBus.send(it) }, { handleError(it) })
-    }
-
-    private fun handleError(error: Throwable?) {
-        if (BuildConfig.DEBUG) {
-            if (error != null) {
-                rxBus.send(error)
-            }
-            Log.d(this.javaClass.simpleName, error.toString())
-        }
     }
 }

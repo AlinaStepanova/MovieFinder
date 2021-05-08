@@ -14,9 +14,9 @@
     </data>
 
     <HorizontalScrollView
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -24,20 +24,9 @@
 
             <TextView
                 android:id="@+id/vPopular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/item_layout_margin"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/rounded_button_shape_active"
+                style="@style/ItemHeaderStyle"
                 android:onClick="@{() -> clickListener.popularClick()}"
-                android:padding="@dimen/margin_8dp"
-                android:paddingStart="@dimen/margin_16dp"
-                android:paddingEnd="@dimen/margin_16dp"
                 android:text="@string/popular_movies"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,20 +34,9 @@
 
             <TextView
                 android:id="@+id/vTopRated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/item_layout_margin"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/rounded_button_shape_active"
+                style="@style/ItemHeaderStyle"
                 android:onClick="@{() -> clickListener.topRatedClick()}"
-                android:padding="@dimen/margin_8dp"
-                android:paddingStart="@dimen/margin_16dp"
-                android:paddingEnd="@dimen/margin_16dp"
                 android:text="@string/top_rated_movies"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vPopular"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,21 +44,12 @@
 
             <TextView
                 android:id="@+id/vNowPlaying"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/item_layout_margin"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
+                style="@style/ItemHeaderStyle"
+                android:layout_marginEnd="@dimen/margin_12dp"
                 android:onClick="@{() -> clickListener.nowPlayingClick()}"
-                android:background="@drawable/rounded_button_shape_active"
-                android:padding="@dimen/margin_8dp"
-                android:paddingStart="@dimen/margin_16dp"
-                android:paddingEnd="@dimen/margin_16dp"
                 android:text="@string/now_playing"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vTopRated"
                 app:layout_constraintTop_toTopOf="parent"
                 app:nowPlayingCategory="@{selectedCategory}" />

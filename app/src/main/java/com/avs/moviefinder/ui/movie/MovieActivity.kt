@@ -16,8 +16,10 @@ import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
-import com.avs.moviefinder.di.ViewModelFactory
+import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
+import com.avs.moviefinder.ui.recycler_view.CastAdapter
+import com.avs.moviefinder.ui.recycler_view.CastListener
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE
@@ -35,7 +37,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     lateinit var movieViewModel: MovieViewModel
 
     lateinit var binding: ActivityMovieBinding
-    var statusBarColor : Int = 0
+    var statusBarColor: Int = 0
 
     private val target = initTarget()
 
@@ -51,10 +53,19 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         binding.shimmerViewContainer.startShimmerAnimation()
-        val extrasMovie : Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
+        val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
+        val adapter = CastAdapter(CastListener {  })
+        movieViewModel.cast.observe(this, {
+            if (it.isNullOrEmpty()) {
+                binding.rvCast.visibility = View.GONE
+            } else {
+                adapter.submitList(it)
+            }
+        })
         movieViewModel.openMovieDetails(extrasMovie)
+        binding.rvCast.adapter = adapter
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
@@ -72,7 +83,13 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRuntime(it)
                 formatCountries(it)
                 formatGenres(it)
-                binding.tvLinks.text = buildLinks(it.imdbId, it.homepage)
+                // todo fix toolbar title
+                if (binding.toolbar.title != it.title) binding.toolbar.title = it.title
+                binding.tvLinks.text = buildLinks(
+                    it.imdbId,
+                    it.homepage,
+                    resources.getString(R.string.homepage)
+                )
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
             }
@@ -143,7 +160,11 @@ class MovieActivity : DaggerAppCompatActivity() {
     }
 
     private fun formatRuntime(movie: Movie) {
-        val runtime = formatRuntime(movie.runtime)
+        val runtime = formatRuntime(
+            movie.runtime,
+            resources.getString(R.string.hours),
+            resources.getString(R.string.minutes)
+        )
         if (runtime.isNotEmpty()) {
             binding.ivHourglass.visibility = View.VISIBLE
             binding.tvRuntime.visibility = View.VISIBLE

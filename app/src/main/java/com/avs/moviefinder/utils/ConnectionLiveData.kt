@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class ConnectionLiveData @Inject constructor(val context: Context?) : LiveData<Boolean>(){
 
-    var  intentFilter = IntentFilter(CONNECTIVITY_ACTION)
+    private var  intentFilter = IntentFilter(CONNECTIVITY_ACTION)
     private var  connectivityManager = context?.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     private lateinit var networkCallback : NetworkCallback
 

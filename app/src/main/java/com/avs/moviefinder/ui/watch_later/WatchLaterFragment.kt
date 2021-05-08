@@ -10,10 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
-import com.avs.moviefinder.di.ViewModelFactory
+import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.BaseMoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
 
@@ -23,7 +24,8 @@ class WatchLaterFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var watchLaterViewModel: WatchLaterViewModel
 
-    private lateinit var binding: FragmentWatchLaterBinding
+    private var _binding: FragmentWatchLaterBinding? = null
+    private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,7 +38,7 @@ class WatchLaterFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_watch_later, container, false
         )
         val root: View = binding.root
@@ -68,10 +70,13 @@ class WatchLaterFragment : BaseFragment() {
         })
         watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
             it?.let {
-                if (!it) watchLaterViewModel.updateMovieIndex.value?.let { index ->
+                if (!it.first) watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
                     showSnackBarWithAction(
-                        getString(R.string.deleted_watch_snack_bar_text)
+                        buildUndoSnackBarMessage(
+                            it.second,
+                            getString(R.string.deleted_watch_snack_bar_text)
+                        )
                     ) { watchLaterViewModel.undoRemovingMovie() }
                 } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemInserted(index)
@@ -83,6 +88,11 @@ class WatchLaterFragment : BaseFragment() {
         binding.rvWatchLaterRecyclerView.adapter = adapter
         watchLaterViewModel.getWatchLaterMovies()
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setIconsVisibility(movies: List<Movie>) {
