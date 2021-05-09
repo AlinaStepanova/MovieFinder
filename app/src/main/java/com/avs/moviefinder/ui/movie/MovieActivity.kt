@@ -64,6 +64,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.rvCast.visibility = View.GONE
             } else {
                 binding.tvCast.visibility = View.VISIBLE
+                binding.rvCast.visibility = View.VISIBLE
                 castAdapter.submitList(it)
             }
         })
@@ -73,6 +74,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.rvSimilar.visibility = View.GONE
             } else {
                 binding.tvSimilar.visibility = View.VISIBLE
+                binding.rvSimilar.visibility = View.VISIBLE
                 similarAdapter.submitList(it)
             }
         })

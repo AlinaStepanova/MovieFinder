@@ -85,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvLinks"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -114,7 +113,15 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/margin_16dp"
+                            android:layout_marginEnd="@dimen/margin_16dp"
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:background="@color/shimmer" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/photo_person_height"
                             android:layout_marginStart="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/margin_16dp"
                             android:background="@color/shimmer" />
@@ -315,7 +322,7 @@
                     android:id="@+id/tvCast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_8dp"
                     android:text="@string/cast_text"
@@ -327,6 +334,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCast"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/list_cast_height"
                     android:layout_marginStart="@dimen/margin_16dp"
@@ -342,7 +350,7 @@
                     android:id="@+id/tvSimilar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:text="@string/similar_text"
@@ -354,6 +362,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSimilar"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/list_cast_height"
                     android:layout_marginStart="@dimen/margin_16dp"
@@ -370,7 +379,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_18dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginBottom="@dimen/margin_8dp"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintBottom_toBottomOf="parent"
