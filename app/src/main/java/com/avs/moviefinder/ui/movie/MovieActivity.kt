@@ -18,6 +18,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
+import com.avs.moviefinder.ui.recycler_view.CastAdapter
+import com.avs.moviefinder.ui.recycler_view.CastListener
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.IDLE
@@ -54,7 +56,16 @@ class MovieActivity : DaggerAppCompatActivity() {
         val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
+        val adapter = CastAdapter(CastListener {  })
+        movieViewModel.cast.observe(this, {
+            if (it.isNullOrEmpty()) {
+                binding.rvCast.visibility = View.GONE
+            } else {
+                adapter.submitList(it)
+            }
+        })
         movieViewModel.openMovieDetails(extrasMovie)
+        binding.rvCast.adapter = adapter
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
         binding.appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
@@ -74,7 +85,11 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatGenres(it)
                 // todo fix toolbar title
                 if (binding.toolbar.title != it.title) binding.toolbar.title = it.title
-                binding.tvLinks.text = buildLinks(it.imdbId, it.homepage, resources.getString(R.string.homepage))
+                binding.tvLinks.text = buildLinks(
+                    it.imdbId,
+                    it.homepage,
+                    resources.getString(R.string.homepage)
+                )
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
             }

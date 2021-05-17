@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.recycler_view
 
+import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Movie
 
 class MovieListener(
@@ -12,4 +13,10 @@ class MovieListener(
     fun onShareClick(movie: Movie) = shareListener(movie.id)
     fun onFavoritesClick(movie: Movie) = watchedClick(movie.id)
     fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie.id)
+}
+
+class CastListener(
+    val clickListener: (cast: Cast) -> Unit,
+) {
+    fun onClick(cast: Cast) = clickListener(cast)
 }

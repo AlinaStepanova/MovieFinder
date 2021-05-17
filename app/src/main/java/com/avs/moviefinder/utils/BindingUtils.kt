@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.google.android.material.imageview.ShapeableImageView
@@ -17,6 +18,35 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityHorizontal
 import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
 private const val RATING_DEFAULT_VALUE = "0"
+
+@BindingAdapter("castName")
+fun TextView.setCastName(cast: Cast?) {
+    cast?.let {
+        text = context.getString(R.string.unknown_text)
+        val name = cast.name
+        text = if (name.isNullOrEmpty()) context.getString(R.string.unknown_text) else name
+    }
+}
+
+@BindingAdapter("castRole")
+fun TextView.setCastRole(cast: Cast?) {
+    cast?.let {
+        text = context.getString(R.string.unknown_text)
+        val role = cast.character
+        text = if (role.isNullOrEmpty()) context.getString(R.string.unknown_text) else role
+    }
+}
+
+@BindingAdapter("castImage")
+fun ShapeableImageView.setCastImage(cast: Cast) {
+    val widthRatio = 1F
+    val heightRatio = 2F
+    Picasso.get()
+        .load(CAST_PHOTO_URL + cast.profilePath)
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
 
 @BindingAdapter("releaseDateFormatted")
 fun TextView.setReleaseDateFormatted(item: Movie?) {

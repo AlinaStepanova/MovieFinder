@@ -1,5 +1,6 @@
 package com.avs.moviefinder.repository
 
+import android.util.Log
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.utils.RxBus
@@ -48,7 +49,17 @@ class MovieRepository @Inject constructor(
                 } else {
                     rxBus.send(extrasMovie)
                 }
+                getCast()
             }, {})
+        )
+    }
+
+    private fun getCast() {
+        compositeDisposable.add(
+            serverApi.getCredits(extrasMovie.id)
+                .subscribe(
+                    { credits -> rxBus.send(credits) },
+                    { error -> Log.d(this.javaClass.toString(), error.toString()) })
         )
     }
 }

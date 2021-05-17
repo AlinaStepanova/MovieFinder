@@ -23,4 +23,5 @@
     <string name="homepage">Сайт</string>
     <string name="hours">г</string>
     <string name="minutes">хв</string>
+    <string name="read_more_text">...Більше</string>
 </resources>

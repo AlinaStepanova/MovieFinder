@@ -69,8 +69,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:layout_marginBottom="4dp"
+            android:background="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".ui.movie.MovieActivity"
             tools:showIn="@layout/activity_movie">
@@ -97,27 +97,52 @@
                         android:orientation="vertical">
 
                         <View
-                            android:background="@color/shimmer"
                             android:layout_width="90dp"
-                            android:layout_marginTop="@dimen/margin_18dp"
-                            android:layout_marginBottom="@dimen/margin_8dp"
+                            android:layout_height="@dimen/text_size_16sp"
                             android:layout_marginStart="@dimen/margin_16dp"
+                            android:layout_marginTop="@dimen/margin_18dp"
                             android:layout_marginEnd="@dimen/margin_16dp"
-                            android:layout_height="@dimen/text_size_16sp" />
+                            android:layout_marginBottom="@dimen/margin_8dp"
+                            android:background="@color/shimmer" />
 
                         <View
-                            android:background="@color/shimmer"
                             android:layout_width="175dp"
                             android:layout_height="20dp"
                             android:layout_marginStart="@dimen/margin_16dp"
-                            android:layout_marginBottom="@dimen/margin_16dp"/>
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:background="@color/shimmer" />
 
                         <View
-                            android:background="@color/shimmer"
                             android:layout_width="match_parent"
+                            android:layout_height="100dp"
                             android:layout_marginStart="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/margin_16dp"
-                            android:layout_height="100dp" />
+                            android:background="@color/shimmer" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/list_cast_height"
+                            android:layout_marginTop="@dimen/margin_16dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="@dimen/dimen_86dp"
+                                android:layout_height="@dimen/photo_person_height"
+                                android:layout_marginStart="@dimen/margin_16dp"
+                                android:background="@color/shimmer" />
+
+                            <View
+                                android:layout_width="@dimen/dimen_86dp"
+                                android:layout_height="@dimen/photo_person_height"
+                                android:layout_marginStart="@dimen/margin_16dp"
+                                android:background="@color/shimmer" />
+
+                            <View
+                                android:layout_width="@dimen/dimen_86dp"
+                                android:layout_height="@dimen/photo_person_height"
+                                android:layout_marginStart="@dimen/margin_16dp"
+                                android:background="@color/shimmer" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -129,8 +154,8 @@
                     android:layout_height="@dimen/margin_16dp"
                     android:layout_marginStart="@dimen/margin_16dp"
                     android:layout_marginTop="@dimen/margin_18dp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_calendar"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/mainGrey"
@@ -269,18 +294,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvTagline" />
 
-                <TextView
+                <kr.co.prnd.readmore.ReadMoreTextView
                     android:id="@+id/tvOverview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
                     android:layout_marginTop="@dimen/margin_8dp"
                     android:layout_marginEnd="@dimen/text_margin"
+                    android:background="?attr/selectableItemBackground"
                     android:textColor="@color/greyDark"
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvGenres" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvGenres"
+                    app:readMoreColor="@color/colorPrimary"
+                    app:readMoreMaxLine="5"
+                    app:readMoreText="@string/read_more_text" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCast"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_cast_height"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_8dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
 
                 <TextView
                     android:id="@+id/tvLinks"
@@ -292,7 +334,7 @@
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvCast" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
