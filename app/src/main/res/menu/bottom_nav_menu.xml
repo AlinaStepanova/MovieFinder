@@ -2,18 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_favorite"
+        android:menuCategory="secondary"
         android:title="@string/title_favorites" />
 
     <item
-        android:id="@+id/navigation_watch_later"
+        android:id="@+id/watchLaterFragment"
         android:icon="@drawable/ic_watch_later"
+        android:menuCategory="secondary"
         android:title="@string/title_watch_later" />
 
 </menu>

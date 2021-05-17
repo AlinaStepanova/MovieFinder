@@ -62,7 +62,7 @@ open class BaseFragment : DaggerFragment() {
         messageSnackbar?.let { snackbar ->
             snackbar.setBackgroundTint(Color.WHITE)
             snackbar.setTextColor(Color.BLACK)
-            snackbar.anchorView = activity.binding.navView
+            snackbar.anchorView = activity.binding.bottomNav
             snackbar.show()
         }
     }
@@ -86,7 +86,7 @@ open class BaseFragment : DaggerFragment() {
                     )
                 )
             }
-            snackbar.anchorView = activity.binding.navView
+            snackbar.anchorView = activity.binding.bottomNav
             snackbar.show()
         }
     }
