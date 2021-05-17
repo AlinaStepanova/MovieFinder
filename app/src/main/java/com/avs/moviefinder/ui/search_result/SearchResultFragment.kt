@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ErrorType
@@ -29,6 +30,7 @@ class SearchResultFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var searchResultViewModel: SearchResultViewModel
+    private val args: SearchResultFragmentArgs by navArgs()
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
@@ -59,8 +61,7 @@ class SearchResultFragment : BaseFragment() {
         val root: View = binding.root
         binding.findDetailViewModel = searchResultViewModel
         binding.lifecycleOwner = this
-        val query = arguments?.getString(this::class.java.simpleName)
-        searchResultViewModel.searchInitialQuery(query)
+        searchResultViewModel.searchInitialQuery(args.query)
         val adapter = BaseMoviesAdapter(
             MovieListener(
                 { movie -> startMovieActivityForResult(movie) },

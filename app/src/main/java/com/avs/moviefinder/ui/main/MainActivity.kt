@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.avs.moviefinder.NavGraphDirections
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.factories.GenericSavedStateViewModelFactory
@@ -52,7 +53,8 @@ class MainActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
 
         appBarConfiguration = AppBarConfiguration(
@@ -85,7 +87,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                popFindDetailFragment(supportFragmentManager)
+                navController.navigateUp()
                 return true
             }
 
@@ -103,21 +105,22 @@ class MainActivity : DaggerAppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    openFindDetailFragment(supportFragmentManager, query)
+                    val action = NavGraphDirections.actionGlobalSearchResultFragment(query)
+                    navController.navigate(action)
                     mainViewModel.onQueryTextSubmit(query)
                     this@MainActivity.currentFocus?.clearFocus()
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if(!this@MainActivity.hasWindowFocus()) return false
+                    if (!this@MainActivity.hasWindowFocus()) return false
                     mainViewModel.onQueryTextChanged(newText)
                     return false
                 }
             })
         }.also {
             menuItem.actionView = it
-            if(!mainViewModel.getLatestQueryTest().isNullOrEmpty()){
+            if (!mainViewModel.getLatestQueryTest().isNullOrEmpty()) {
                 menuItem.expandActionView()
                 menuItem.expandSearchViewWithText(mainViewModel.getLatestQueryTest())
             }
@@ -125,7 +128,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     }
 
-    private fun MenuItem.expandSearchViewWithText(text: String?){
+    private fun MenuItem.expandSearchViewWithText(text: String?) {
         expandActionView()
         (actionView as? SearchView)?.setQuery(text, false)
     }

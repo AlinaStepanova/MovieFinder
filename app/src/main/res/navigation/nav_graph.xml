@@ -17,4 +17,17 @@
         android:id="@+id/watchLaterFragment"
         android:name="com.avs.moviefinder.ui.watch_later.WatchLaterFragment"
         tools:layout="@layout/fragment_watch_later" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.avs.moviefinder.ui.search_result.SearchResultFragment"
+        android:label="SearchResultFragment"
+        tools:layout="@layout/fragment_search_result">
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/actionGlobalSearchResultFragment"
+        app:destination="@id/searchResultFragment"
+        app:launchSingleTop="true" />
 </navigation>
