@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
@@ -37,13 +38,24 @@ open class BaseFragment : DaggerFragment() {
         super.onPause()
     }
 
-    fun startMovieActivity(movie: Movie) {
-        startActivity(Intent(activity, MovieActivity::class.java).apply {
+    private fun getMovieActivityIntent(movie: Movie): Intent {
+        return Intent(activity, MovieActivity::class.java).apply {
             putExtra(MOVIE_EXTRA_TAG, movie)
-        })
+        }
     }
 
-    fun shareMovie(movieLink: String) {
+    protected fun startMovieActivity(movie: Movie) {
+        startActivity(getMovieActivityIntent(movie))
+    }
+
+    protected fun startMovieActivityForResult(
+        movie: Movie,
+        resultLauncher: ActivityResultLauncher<Intent>
+    ) {
+        resultLauncher.launch(getMovieActivityIntent(movie))
+    }
+
+    protected fun shareMovie(movieLink: String) {
         startActivity(
             Intent.createChooser(
                 getShareIntent(fragmentContext, movieLink),
@@ -52,7 +64,7 @@ open class BaseFragment : DaggerFragment() {
         )
     }
 
-    fun showSnackBar(message: String) {
+    protected fun showSnackBar(message: String) {
         val activity = (activity as MainActivity)
         messageSnackbar?.dismiss()
         messageSnackbar = Snackbar.make(
@@ -67,7 +79,7 @@ open class BaseFragment : DaggerFragment() {
         }
     }
 
-    fun showSnackBarWithAction(message: String, call: () -> Unit) {
+    protected fun showSnackBarWithAction(message: String, call: () -> Unit) {
         val activity = (activity as MainActivity)
         actionSnackbar?.dismiss()
         actionSnackbar = Snackbar.make(
