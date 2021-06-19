@@ -14,7 +14,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.Result
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
@@ -58,26 +60,10 @@ class MovieActivity : DaggerAppCompatActivity() {
         val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
         loadImage(extrasMovie?.posterPath ?: "")
         binding.toolbar.title = extrasMovie?.title
-        val castAdapter = CastAdapter(CastListener {  })
-        movieViewModel.cast.observe(this, {
-            if (it.isNullOrEmpty()) {
-                binding.rvCast.visibility = View.GONE
-            } else {
-                binding.tvCast.visibility = View.VISIBLE
-                binding.rvCast.visibility = View.VISIBLE
-                castAdapter.submitList(it)
-            }
-        })
-        val similarAdapter = ResultAdapter(ResultListener {  })
-        movieViewModel.similarMovies.observe(this, {
-            if (it.isNullOrEmpty()) {
-                binding.rvSimilar.visibility = View.GONE
-            } else {
-                binding.tvSimilar.visibility = View.VISIBLE
-                binding.rvSimilar.visibility = View.VISIBLE
-                similarAdapter.submitList(it)
-            }
-        })
+        val castAdapter = CastAdapter(CastListener { })
+        movieViewModel.cast.observe(this, observeCast(castAdapter))
+        val similarAdapter = ResultAdapter(ResultListener { })
+        movieViewModel.similarMovies.observe(this, observeSimilarMovies(similarAdapter))
         movieViewModel.openMovieDetails(extrasMovie)
         binding.rvCast.adapter = castAdapter
         binding.rvSimilar.adapter = similarAdapter
@@ -92,7 +78,7 @@ class MovieActivity : DaggerAppCompatActivity() {
             it?.let {
                 stopShimmerAnimation()
                 setTagline(it)
-                binding.tvOverview.text = it.overview
+                if (binding.tvOverview.text.isEmpty()) binding.tvOverview.text = it.overview
                 formatReleaseDate(it)
                 formatRating(it)
                 formatRuntime(it)
@@ -156,6 +142,28 @@ class MovieActivity : DaggerAppCompatActivity() {
         Picasso.get().cancelRequest(target)
         super.onDestroy()
     }
+
+    private fun observeSimilarMovies(similarAdapter: ResultAdapter): (list: List<Result>) -> Unit =
+        {
+            if (it.isNullOrEmpty()) {
+                binding.rvSimilar.visibility = View.GONE
+            } else {
+                binding.tvSimilar.visibility = View.VISIBLE
+                binding.rvSimilar.visibility = View.VISIBLE
+                similarAdapter.submitList(it)
+            }
+        }
+
+    private fun observeCast(castAdapter: CastAdapter): (list: List<Cast>) -> Unit =
+        {
+            if (it.isNullOrEmpty()) {
+                binding.rvCast.visibility = View.GONE
+            } else {
+                binding.tvCast.visibility = View.VISIBLE
+                binding.rvCast.visibility = View.VISIBLE
+                castAdapter.submitList(it)
+            }
+        }
 
     private fun stopShimmerAnimation() {
         binding.shimmerViewContainer.visibility = View.GONE
