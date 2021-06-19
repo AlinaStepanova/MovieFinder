@@ -2,7 +2,6 @@ package com.avs.moviefinder.ui.search_result
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +9,22 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.avs.moviefinder.R
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentSearchResultBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.ui.movie.MovieActivity
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import javax.inject.Inject
-
-val SEARCH_RESULT_FRAGMENT_TAG = SearchResultFragment::class.simpleName
 
 class SearchResultFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var searchResultViewModel: SearchResultViewModel
+    private val args: SearchResultFragmentArgs by navArgs()
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
@@ -59,11 +55,10 @@ class SearchResultFragment : BaseFragment() {
         val root: View = binding.root
         binding.findDetailViewModel = searchResultViewModel
         binding.lifecycleOwner = this
-        val query = arguments?.getString(this::class.java.simpleName)
-        searchResultViewModel.searchInitialQuery(query)
+        searchResultViewModel.searchInitialQuery(args.query)
         val adapter = MoviesAdapter(
             MovieListener(
-                { movie -> startMovieActivityForResult(movie) },
+                { movie -> startMovieActivityForResult(movie, resultLauncher) },
                 { movieId -> searchResultViewModel.shareMovie(movieId) },
                 { movieId -> searchResultViewModel.addToFavorites(movieId) }
             ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
@@ -104,14 +99,6 @@ class SearchResultFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun startMovieActivityForResult(movie: Movie) {
-        resultLauncher.launch(
-            Intent(activity, MovieActivity::class.java).apply {
-                putExtra(MOVIE_EXTRA_TAG, movie)
-            }
-        )
     }
 
     private fun handleErrorEvent(it: ErrorType?) {
