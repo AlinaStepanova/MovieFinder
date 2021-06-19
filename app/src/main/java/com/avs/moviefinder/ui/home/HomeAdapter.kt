@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.databinding.ItemHeaderBinding
 import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
 import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.databinding.ItemHeaderBinding
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.recycler_view.view_holders.MovieViewHolder
 
 
-class FindAdapter(
+class HomeAdapter(
     private val movieClickListener: MovieListener,
     private val categoryClickListener: CategoryClickListener
 ) :

@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment() {
         val root: View = binding.root
         binding.findViewModel = homeViewModel
         binding.lifecycleOwner = this
-        val adapter = FindAdapter(
+        val adapter = HomeAdapter(
             MovieListener(
                 { movie -> startMovieActivityForResult(movie, resultLauncher) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
