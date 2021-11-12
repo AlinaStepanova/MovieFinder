@@ -69,14 +69,11 @@ class HomeFragment : BaseFragment() {
         )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
-        homeViewModel.movies.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.submitList(it)
-            }
-        })
-        homeViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.notifyItemChanged(it)
+        homeViewModel.movies.observe(viewLifecycleOwner, { movies ->
+            movies?.let {
+                adapter.submitList(movies.map { movie ->
+                    movie.copy()
+                })
             }
         })
         homeViewModel.selectedCategory.observe(viewLifecycleOwner, {

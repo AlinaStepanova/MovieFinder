@@ -22,8 +22,8 @@ class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<LinkedList<Movie>>()
-    val movies: LiveData<LinkedList<Movie>>
+    private var _movies = MutableLiveData<MutableList<Movie>>()
+    val movies: LiveData<MutableList<Movie>>
         get() = _movies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
@@ -39,9 +39,6 @@ class HomeViewModel @Inject constructor(
         get() = _shareBody
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
-    private var _updateMovieIndex = MutableLiveData<Int?>()
-    val updateMovieIndex: LiveData<Int?>
-        get() = _updateMovieIndex
     private val compositeDisposable = CompositeDisposable()
     private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
@@ -72,8 +69,7 @@ class HomeViewModel @Inject constructor(
                         val updatedMovieIndex = list.indexOf(it)
                         if (updatedMovieIndex != -1) {
                             list[updatedMovieIndex] = event
-                            _updateMovieIndex.value = updatedMovieIndex
-                            _updateMovieIndex.value = null
+                            _movies.value = list
                         }
                     }
                 }
