@@ -36,9 +36,6 @@ class SearchResultViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var _updateMovieIndex = MutableLiveData<Int?>()
-    val updateMovieIndex: LiveData<Int?>
-        get() = _updateMovieIndex
     private var _query = MutableLiveData<String?>()
     private var _initialQuery = MutableLiveData<String?>()
     private var rxBusDisposable: Disposable? = null
@@ -70,8 +67,7 @@ class SearchResultViewModel @Inject constructor(
                         val updatedMovieIndex = list.indexOf(it)
                         if (updatedMovieIndex != -1) {
                             list[updatedMovieIndex] = event
-                            _updateMovieIndex.value = updatedMovieIndex
-                            _updateMovieIndex.value = null
+                            _movies.value = list
                         }
                     }
                 }

@@ -64,14 +64,11 @@ class SearchResultFragment : BaseFragment() {
             ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
         )
         binding.rvFindRecyclerView.adapter = adapter
-        searchResultViewModel.movies.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.submitList(it)
-            }
-        })
-        searchResultViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.notifyItemChanged(it)
+        searchResultViewModel.movies.observe(viewLifecycleOwner, { movies ->
+            movies?.let {
+                adapter.submitList(movies.map { movie ->
+                    movie.copy()
+                })
             }
         })
         searchResultViewModel.shareBody.observe(viewLifecycleOwner, {
