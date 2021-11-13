@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/activity_movie.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.10872855701311807" />
+        <entry key="app/src/main/res/layout/fragment_search_result.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/item_movie.xml" value="0.19701086956521738" />
       </map>
     </option>

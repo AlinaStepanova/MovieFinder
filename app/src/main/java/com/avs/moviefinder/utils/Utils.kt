@@ -19,8 +19,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 const val MINUTES_IN_HOUR = 60
+const val BOTTOM_PADDING_DP = 56
 const val USA = "USA"
 const val USA_FULL = "United States of America"
 const val IMDB = "https://www.imdb.com/"

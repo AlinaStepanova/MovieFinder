@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -53,9 +54,18 @@ class MainActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val bottomPadding = dpToPx(BOTTOM_PADDING_DP).toInt()
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.searchResultFragment -> hideBottomNav()
+                else -> showBottomNav(bottomPadding)
+            }
+        }
 
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.homeFragment, R.id.favoritesFragment, R.id.watchLaterFragment)
@@ -72,6 +82,16 @@ class MainActivity : DaggerAppCompatActivity() {
                 if (isOnline) showConnectivitySnackBar(getString(R.string.back_online_text))
             }
         })
+    }
+
+    private fun hideBottomNav() {
+        binding.bottomNav.visibility = View.GONE
+        binding.navHostFragment.setPadding(0, 0, 0, 0)
+    }
+
+    private fun showBottomNav(bottomPadding: Int) {
+        binding.bottomNav.visibility = View.VISIBLE
+        binding.navHostFragment.setPadding(0, 0, 0, bottomPadding)
     }
 
     override fun onSupportNavigateUp(): Boolean {
