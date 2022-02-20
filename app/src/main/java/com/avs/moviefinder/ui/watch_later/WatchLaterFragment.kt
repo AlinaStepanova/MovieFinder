@@ -12,8 +12,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -48,8 +48,8 @@ class WatchLaterFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> watchLaterViewModel.shareMovie(movieId) },
-                { movieId -> watchLaterViewModel.addFavorites(movieId) }
-            ) { movieId -> watchLaterViewModel.addToWatchLater(movieId) }
+                { movie -> watchLaterViewModel.addFavorites(movie.id) }
+            ) { movie -> watchLaterViewModel.addToWatchLater(movie.id) }
         )
         watchLaterViewModel.movies.observe(viewLifecycleOwner, {
             it?.let {

@@ -60,8 +60,8 @@ class SearchResultFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivityForResult(movie, resultLauncher) },
                 { movieId -> searchResultViewModel.shareMovie(movieId) },
-                { movieId -> searchResultViewModel.addToFavorites(movieId) }
-            ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
+                { movie -> searchResultViewModel.addToFavorites(movie.id) }
+            ) { movie -> searchResultViewModel.addToWatchLater(movie.id) }
         )
         binding.rvFindRecyclerView.adapter = adapter
         searchResultViewModel.movies.observe(viewLifecycleOwner, { movies ->

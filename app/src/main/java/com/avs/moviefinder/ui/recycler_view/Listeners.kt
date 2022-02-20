@@ -7,13 +7,13 @@ import com.avs.moviefinder.data.dto.Result
 class MovieListener(
     val movieClickListener: (movie: Movie) -> Unit,
     val shareListener: (movieId: Long) -> Unit,
-    val watchedClick: (movieId: Long) -> Unit,
-    val watchLaterClick: (movieId: Long) -> Unit
+    val favoritesClick: (movie: Movie) -> Unit,
+    val watchLaterClick: (movie: Movie) -> Unit
 ) {
     fun onClick(movie: Movie) = movieClickListener(movie)
     fun onShareClick(movie: Movie) = shareListener(movie.id)
-    fun onFavoritesClick(movie: Movie) = watchedClick(movie.id)
-    fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie.id)
+    fun onFavoritesClick(movie: Movie) = favoritesClick(movie)
+    fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie)
 }
 
 class CastListener(

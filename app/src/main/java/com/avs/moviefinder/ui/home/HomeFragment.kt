@@ -59,8 +59,8 @@ class HomeFragment : BaseFragment() {
             MovieListener(
                 { movie -> startMovieActivityForResult(movie, resultLauncher) },
                 { movieId -> homeViewModel.shareMovie(movieId) },
-                { movieId -> homeViewModel.addToFavorites(movieId) }
-            ) { movieId -> homeViewModel.addToWatchLater(movieId) },
+                { movie -> homeViewModel.addToFavorites(movie.id) }
+            ) { movie -> homeViewModel.addToWatchLater(movie.id) },
             CategoryClickListener(
                 { homeViewModel.onPopularClick() },
                 { homeViewModel.onTopRatedClick() },

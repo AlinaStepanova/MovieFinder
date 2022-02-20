@@ -1,5 +1,6 @@
 package com.avs.moviefinder.data.dto
 
+import androidx.paging.PagingData
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -13,6 +14,6 @@ data class Similar(@SerializedName("results") val similar: ArrayList<Result> = A
 
 data class MoviesFilterResult(val movies: LinkedList<Movie> = LinkedList())
 
-data class FavoritesList(val movies: List<Movie>? = LinkedList())
+data class FavoritesList(val movies: PagingData<Movie>)
 
 data class WatchList(val movies: List<Movie>? = LinkedList())

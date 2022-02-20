@@ -12,8 +12,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesPagingAdapter
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -44,47 +44,36 @@ class FavoritesFragment : BaseFragment() {
         val root: View = binding.root
         binding.favoritesViewModel = favoritesViewModel
         binding.lifecycleOwner = this
-        val adapter = MoviesAdapter(
+        val adapter = MoviesPagingAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> favoritesViewModel.shareMovie(movieId) },
-                { movieId -> favoritesViewModel.addFavorites(movieId) }
-            ) { movieId -> favoritesViewModel.addToWatchLater(movieId) }
+                { movie -> favoritesViewModel.addFavorites(movie) }
+            ) { movie -> favoritesViewModel.addToWatchLater(movie) }
         )
-        favoritesViewModel.movies.observe(viewLifecycleOwner, {
+        favoritesViewModel.movies.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.submitList(it)
+                adapter.submitData(lifecycle, it)
             }
-            setIconsVisibility(it)
-        })
-        favoritesViewModel.shareBody.observe(viewLifecycleOwner, {
+            setIconsVisibility(adapter.snapshot().items)
+        }
+        favoritesViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        favoritesViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.notifyItemChanged(it)
+        }
+        favoritesViewModel.removedMovieTitle.observe(viewLifecycleOwner) { title ->
+            title?.let {
+                showSnackBarWithAction(
+                    buildUndoSnackBarMessage(
+                        it,
+                        getString(R.string.deleted_favorite_snack_bar_text)
+                    )
+                ) { favoritesViewModel.undoRemovingMovie() }
             }
-        })
-        favoritesViewModel.isInserted.observe(viewLifecycleOwner, {
-            it?.let {
-                if (!it.first) favoritesViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemRemoved(index)
-                    showSnackBarWithAction(
-                        buildUndoSnackBarMessage(
-                            it.second,
-                            getString(R.string.deleted_favorite_snack_bar_text)
-                        )
-                    ) { favoritesViewModel.undoRemovingMovie() }
-                } else favoritesViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemInserted(index)
-                    binding.rvFindRecyclerView.smoothScrollToPosition(index)
-                }
-            }
-            setIconsVisibility(adapter.currentList)
-        })
+            setIconsVisibility(adapter.snapshot().items)
+        }
         binding.rvFindRecyclerView.adapter = adapter
         favoritesViewModel.getFavorites()
         return root
