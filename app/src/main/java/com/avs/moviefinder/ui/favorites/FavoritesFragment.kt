@@ -63,11 +63,11 @@ class FavoritesFragment : BaseFragment() {
         favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
-        favoritesViewModel.removedMovieTitle.observe(viewLifecycleOwner) { title ->
-            title?.let {
+        favoritesViewModel.removedMovie.observe(viewLifecycleOwner) { movie ->
+            movie?.title?.let { title ->
                 showSnackBarWithAction(
                     buildUndoSnackBarMessage(
-                        it,
+                        title,
                         getString(R.string.deleted_favorite_snack_bar_text)
                     )
                 ) { favoritesViewModel.undoRemovingMovie() }

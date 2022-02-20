@@ -32,10 +32,9 @@ class FavoritesViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var _removedMovieTitle = MutableLiveData<String?>()
-    val removedMovieTitle: LiveData<String?>
-        get() = _removedMovieTitle
-    private var removedMovie: Movie? = null
+    private var _removedMovie = MutableLiveData<Movie?>()
+    val removedMovie: LiveData<Movie?>
+        get() = _removedMovie
     private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
@@ -70,14 +69,13 @@ class FavoritesViewModel @Inject constructor(
 
     private fun disposeDeletingDependencies() {
         timer?.dispose()
-        _removedMovieTitle.value = null
-        removedMovie = null
+        _removedMovie.value = null
     }
 
     fun getFavorites() = repository.getFavoritesList()
 
     fun undoRemovingMovie() {
-        removedMovie?.let {
+        _removedMovie.value?.let {
             disposeDeletingDependencies()
             addFavorites(it)
         }
@@ -92,21 +90,19 @@ class FavoritesViewModel @Inject constructor(
         val isInWatchLater = !movie.isInWatchLater
         val updatedMovie = movie.copy()
         updatedMovie.isInWatchLater = isInWatchLater
-        if (isInWatchLater) {
-            updatedMovie.lastTimeUpdated = System.currentTimeMillis()
-        }
         repository.updateMovie(updatedMovie)
     }
 
     fun addFavorites(movie: Movie) {
-        movie.isFavorite = !movie.isFavorite
-        if (!movie.isFavorite) {
+        val isFavorite = !movie.isFavorite
+        val updatedMovie = movie.copy()
+        updatedMovie.isFavorite = isFavorite
+        if (!updatedMovie.isFavorite) {
             disposeDeletingDependencies()
-            _removedMovieTitle.value = movie.title ?: ""
-            removedMovie = movie
+            _removedMovie.value = updatedMovie
             startCountdown()
         }
-        repository.updateMovie(movie)
+        repository.updateMovie(updatedMovie)
     }
 
 }
