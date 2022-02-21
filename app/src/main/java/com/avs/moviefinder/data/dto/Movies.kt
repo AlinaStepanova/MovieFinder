@@ -16,4 +16,4 @@ data class MoviesFilterResult(val movies: LinkedList<Movie> = LinkedList())
 
 data class FavoritesList(val movies: PagingData<Movie>)
 
-data class WatchList(val movies: List<Movie>? = LinkedList())
+data class WatchList(val movies: PagingData<Movie>)

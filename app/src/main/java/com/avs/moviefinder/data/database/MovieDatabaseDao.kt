@@ -26,7 +26,7 @@ interface MovieDatabaseDao {
     fun getFavoritesList(): PagingSource<Int, Movie>
 
     @Query("SELECT * from movie_table WHERE isInWatchLater = 1 ORDER BY lastTimeUpdated DESC")
-    fun getWatchLaterList(): Single<List<Movie>?>
+    fun getWatchLaterList(): PagingSource<Int, Movie>
 
     @Query("SELECT * from movie_table")
     fun getAllEntries(): Single<List<Movie>>

@@ -82,8 +82,20 @@ class DatabaseManager @Inject constructor(
             .subscribe({ it?.let { favorites -> rxBus.send(FavoritesList(favorites)) } }, { handleError(it) })
     }
 
+    private fun getWatchLaterMoviesPage(): Observable<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5,
+                enablePlaceholders = true,
+                prefetchDistance = 2,
+                initialLoadSize = 5
+            ),
+            pagingSourceFactory = { dataSource.getWatchLaterList() }
+        ).observable
+    }
+
     fun getWatchLaterList(): Disposable {
-        return dataSource.getWatchLaterList()
+        return getWatchLaterMoviesPage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })

@@ -13,7 +13,7 @@ import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesPagingAdapter
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -44,47 +44,36 @@ class WatchLaterFragment : BaseFragment() {
         val root: View = binding.root
         binding.watchLaterViewModel = watchLaterViewModel
         binding.lifecycleOwner = this
-        val adapter = MoviesAdapter(
+        val adapter = MoviesPagingAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
                 { movieId -> watchLaterViewModel.shareMovie(movieId) },
-                { movie -> watchLaterViewModel.addFavorites(movie.id) }
-            ) { movie -> watchLaterViewModel.addToWatchLater(movie.id) }
+                { movie -> watchLaterViewModel.addFavorites(movie) }
+            ) { movie -> watchLaterViewModel.addToWatchLater(movie) }
         )
-        watchLaterViewModel.movies.observe(viewLifecycleOwner, {
+        watchLaterViewModel.movies.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.submitList(it)
+                adapter.submitData(lifecycle, it)
             }
-            setIconsVisibility(it)
-        })
-        watchLaterViewModel.shareBody.observe(viewLifecycleOwner, {
+            setIconsVisibility(adapter.snapshot().items)
+        }
+        watchLaterViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        watchLaterViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.notifyItemChanged(it)
+        }
+        watchLaterViewModel.removedMovie.observe(viewLifecycleOwner) { movie ->
+            movie?.title?.let { title ->
+                showSnackBarWithAction(
+                    buildUndoSnackBarMessage(
+                        title,
+                        getString(R.string.deleted_favorite_snack_bar_text)
+                    )
+                ) { watchLaterViewModel.undoRemovingMovie() }
             }
-        })
-        watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
-            it?.let {
-                if (!it.first) watchLaterViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemRemoved(index)
-                    showSnackBarWithAction(
-                        buildUndoSnackBarMessage(
-                            it.second,
-                            getString(R.string.deleted_watch_snack_bar_text)
-                        )
-                    ) { watchLaterViewModel.undoRemovingMovie() }
-                } else watchLaterViewModel.updateMovieIndex.value?.let { index ->
-                    adapter.notifyItemInserted(index)
-                    binding.rvWatchLaterRecyclerView.smoothScrollToPosition(index)
-                }
-            }
-            setIconsVisibility(adapter.currentList)
-        })
+            setIconsVisibility(adapter.snapshot().items)
+        }
         binding.rvWatchLaterRecyclerView.adapter = adapter
         watchLaterViewModel.getWatchLaterMovies()
         return root
