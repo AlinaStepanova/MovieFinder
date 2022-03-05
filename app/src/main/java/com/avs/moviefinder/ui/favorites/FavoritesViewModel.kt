@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
@@ -72,7 +73,7 @@ class FavoritesViewModel @Inject constructor(
         _removedMovie.value = null
     }
 
-    fun getFavorites() = repository.getFavoritesList()
+    fun getFavorites() = repository.getFavoritesList(viewModelScope)
 
     fun undoRemovingMovie() {
         _removedMovie.value?.let {

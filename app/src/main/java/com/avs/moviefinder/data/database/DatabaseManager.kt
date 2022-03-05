@@ -6,9 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.observable
 import com.avs.moviefinder.BuildConfig
-import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.WatchList
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -20,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DatabaseManager @Inject constructor(
-    private val rxBus: RxBus,
+    val rxBus: RxBus,
     private val dataSource: MovieDatabaseDao
 ) {
 
@@ -63,7 +61,7 @@ class DatabaseManager @Inject constructor(
         return dataSource.get(id)
     }
 
-    private fun getFavoritesMoviesPage(): Observable<PagingData<Movie>> {
+    fun getFavoritesMoviesPage(): Observable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5,
@@ -75,14 +73,7 @@ class DatabaseManager @Inject constructor(
         ).observable
     }
 
-    fun getAllFavorites(): Disposable {
-        return getFavoritesMoviesPage()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { favorites -> rxBus.send(FavoritesList(favorites)) } }, { handleError(it) })
-    }
-
-    private fun getWatchLaterMoviesPage(): Observable<PagingData<Movie>> {
+    fun getWatchLaterMoviesPage(): Observable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5,
@@ -94,14 +85,7 @@ class DatabaseManager @Inject constructor(
         ).observable
     }
 
-    fun getWatchLaterList(): Disposable {
-        return getWatchLaterMoviesPage()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
-    }
-
-    private fun handleError(error: Throwable?) {
+    fun handleError(error: Throwable?) {
         if (BuildConfig.DEBUG) {
             if (error != null) {
                 rxBus.send(error)

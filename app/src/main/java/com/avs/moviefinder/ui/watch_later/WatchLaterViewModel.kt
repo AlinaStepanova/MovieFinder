@@ -3,6 +3,7 @@ package com.avs.moviefinder.ui.watch_later
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.WatchList
@@ -72,7 +73,7 @@ class WatchLaterViewModel @Inject constructor(
         _removedMovie.value = null
     }
 
-    fun getWatchLaterMovies() = repository.getWatchList()
+    fun getWatchLaterMovies() = repository.getWatchList(viewModelScope)
 
     fun undoRemovingMovie() {
         _removedMovie.value?.let {
