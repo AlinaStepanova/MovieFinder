@@ -26,10 +26,6 @@ open class MovieFinderApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        WorkManager.initialize(
-            this,
-            Configuration.Builder().setWorkerFactory(workerFactory).build()
-        )
         initDeleteMoviesWorker()
     }
 
