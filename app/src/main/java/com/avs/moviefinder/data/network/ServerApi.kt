@@ -64,4 +64,7 @@ class ServerApi @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun getMovieByName(page: Int, language: String,
+               query: String) = moviesApi.movieByName(page, language, query)
 }

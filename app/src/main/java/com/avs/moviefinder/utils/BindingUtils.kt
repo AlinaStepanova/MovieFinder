@@ -160,6 +160,23 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
         .into(this)
 }
 
+@BindingAdapter("smallPosterImage")
+fun ShapeableImageView.setSmallPosterImage(item: Movie) {
+    Picasso.get()
+        .load(POSTER_URL + item.posterPath)
+        .transform(
+            CropTransformation(
+                1F,
+                1F,
+                GravityHorizontal.CENTER,
+                GravityVertical.TOP
+            )
+        )
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
+
 @BindingAdapter("popularCategory")
 fun TextView.setPopularCategoryAppearance(selectedCategory: MoviesCategory) {
     if (selectedCategory == MoviesCategory.POPULAR) {

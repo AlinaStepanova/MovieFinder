@@ -1,12 +1,10 @@
 package com.avs.moviefinder.ui.search_result
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -16,7 +14,7 @@ import com.avs.moviefinder.databinding.FragmentSearchResultBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviePreviewPagingAdapter
 import javax.inject.Inject
 
 class SearchResultFragment : BaseFragment() {
@@ -28,15 +26,6 @@ class SearchResultFragment : BaseFragment() {
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
-
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    searchResultViewModel.handleOnActivityResult(it)
-                }
-            }
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,30 +45,26 @@ class SearchResultFragment : BaseFragment() {
         binding.findDetailViewModel = searchResultViewModel
         binding.lifecycleOwner = this
         searchResultViewModel.searchInitialQuery(args.query)
-        val adapter = MoviesAdapter(
+        val adapter = MoviePreviewPagingAdapter(
             MovieListener(
-                { movie -> startMovieActivityForResult(movie, resultLauncher) },
-                { movieId -> searchResultViewModel.shareMovie(movieId) },
-                { movie -> searchResultViewModel.addToFavorites(movie.id) }
-            ) { movie -> searchResultViewModel.addToWatchLater(movie.id) }
+                { movie -> startMovieActivity(movie) },
+                { }, { }, { }
+            )
         )
         binding.rvFindRecyclerView.adapter = adapter
-        searchResultViewModel.movies.observe(viewLifecycleOwner, { movies ->
-            movies?.let {
-                adapter.submitList(movies.map { movie ->
-                    movie.copy()
-                })
-            }
-        })
-        searchResultViewModel.shareBody.observe(viewLifecycleOwner, {
+        searchResultViewModel.movies.observe(viewLifecycleOwner) { movies ->
+            adapter.submitData(lifecycle, movies)
+        }
+        searchResultViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        searchResultViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        searchResultViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        searchResultViewModel.errorType.observe(viewLifecycleOwner, {
+        }
+        searchResultViewModel.errorType.observe(viewLifecycleOwner) {
             handleErrorEvent(it)
-        })
+        }
+
         return root
     }
 

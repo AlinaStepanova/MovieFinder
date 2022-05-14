@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.avs.moviefinder.data.dto.Movie" />
+
+        <variable
+            name="movieClickListener"
+            type="com.avs.moviefinder.ui.recycler_view.MovieListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_layout_margin_vertical"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:onClick="@{() -> movieClickListener.onClick(movie)}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1.45"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:smallPosterImage="@{movie}"
+            tools:background="@tools:sample/backgrounds/scenic" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivPoster">
+
+            <TextView
+                android:id="@+id/tvMovieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:layout_marginTop="@dimen/margin_4dp"
+                android:layout_marginEnd="@dimen/margin_8dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_movie_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/ivCalendar"
+                android:layout_width="@dimen/margin_16dp"
+                android:layout_height="@dimen/margin_16dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
+                app:tint="@color/mainGrey"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvMovieYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_4dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_8dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxEms="16"
+                android:maxLines="1"
+                android:textColor="@color/greyDark"
+                android:textSize="@dimen/text_size_extra_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivCalendar"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
+                app:releaseDateFormatted="@{movie}"
+                tools:text="2020" />
+
+            <ImageView
+                android:id="@+id/ivStar"
+                android:layout_width="@dimen/margin_16dp"
+                android:layout_height="@dimen/margin_16dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="@+id/tvMovieYear"
+                app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
+                app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
+                app:ratingFormattedIcon="@{movie}"
+                app:tint="@color/mainGrey"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvMovieRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_4dp"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_8dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxEms="6"
+                android:maxLines="1"
+                android:textColor="@color/greyDark"
+                android:textSize="@dimen/text_size_extra_info"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivStar"
+                app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle"
+                app:ratingFormatted="@{movie}"
+                tools:text="9.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
