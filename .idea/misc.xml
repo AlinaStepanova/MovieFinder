@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_calendar.xml" value="0.1835" />
         <entry key="app/src/main/res/drawable/ic_local_movies_grey.xml" value="0.1615" />
+        <entry key="app/src/main/res/drawable/ic_star.xml" value="0.1835" />
         <entry key="app/src/main/res/drawable/rounded_item_shape.xml" value="0.21944444444444444" />
         <entry key="app/src/main/res/layout-land/item_movie.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19701086956521738" />
@@ -12,6 +14,8 @@
         <entry key="app/src/main/res/layout/fragment_search_result.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/item_movie.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/item_movie_new.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_movie_preview.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_similar.xml" value="0.14628623188405798" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.1712962962962963" />
         <entry key="app/src/main/res/menu/menu_movie.xml" value="0.1712962962962963" />
