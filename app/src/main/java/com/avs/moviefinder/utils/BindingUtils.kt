@@ -163,7 +163,7 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
 @BindingAdapter("smallPosterImage")
 fun ShapeableImageView.setSmallPosterImage(item: Movie) {
     Picasso.get()
-        .load(POSTER_URL + item.posterPath)
+        .load(POSTER_PREVIEW_URL + item.posterPath)
         .transform(
             CropTransformation(
                 1F,
