@@ -39,8 +39,7 @@ class SearchResultViewModel @Inject constructor(
     private var rxBusDisposable: Disposable? = null
 
     init {
-        _isProgressVisible.value = true
-        _errorType.value = null
+        setLoadingState()
     }
 
     override fun onCleared() {
@@ -51,16 +50,6 @@ class SearchResultViewModel @Inject constructor(
 
     private fun handleServerResponse(event: Any?) {
         when (event) {
-//            is MoviesSearchFilter -> {
-//                _isProgressVisible.value = false
-//                _isLoading.value = false
-////                if (event.movies.isEmpty()) _errorType.value =
-////                    ErrorType.NO_RESULTS else _errorType.value = null
-////                _movies.value = event.movies
-//                searchResultRepository.getAllPagedMovies(
-//                    _query.value ?: "", viewModelScope
-//                )
-//            }
             is Query -> onQuerySubmitted(event.query)
             is Locale -> getQueryByTitle(_query.value)
             is ConnectivityRestored -> {
@@ -82,13 +71,21 @@ class SearchResultViewModel @Inject constructor(
 
     private fun onQuerySubmitted(query: String?) {
         if (query != null) {
+            setLoadingState()
             searchResultRepository.getAllPagedMovies(query, viewModelScope)
             _query.value = query
         }
     }
 
+    private fun setLoadingState() {
+        _isProgressVisible.value = true
+        _errorType.value = null
+        _movies.value = PagingData.empty()
+    }
+
     private fun getQueryByTitle(query: String?) {
         if (query != null) {
+            setLoadingState()
             searchResultRepository.getAllPagedMovies(_query.value ?: "", viewModelScope)
         }
     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentSearchResultBinding
@@ -52,6 +53,13 @@ class SearchResultFragment : BaseFragment() {
             )
         )
         binding.rvFindRecyclerView.adapter = adapter
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.source.refresh is LoadState.Error) {
+                handleErrorEvent(ErrorType.NO_RESULTS)
+            }
+        }
+
         searchResultViewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.submitData(lifecycle, movies)
         }

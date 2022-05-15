@@ -26,11 +26,15 @@ class MoviesSource (
     }
 
     private fun toLoadResult(data: MoviesResponse, position: Int): LoadResult<Int, Movie> {
-        return LoadResult.Page(
+        return if (data.results.isEmpty()) {
+            LoadResult.Error(Throwable("Empty result"))
+        } else {
+            LoadResult.Page(
                 data = data.results,
                 prevKey = if (position == 1) null else position - 1,
                 nextKey = if (position == data.total) null else position + 1
             )
+        }
     }
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
