@@ -11,7 +11,7 @@
 
         <variable
             name="movieClickListener"
-            type="com.avs.moviefinder.ui.recycler_view.MovieListener" />
+            type="com.avs.moviefinder.ui.recycler_view.MovieClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

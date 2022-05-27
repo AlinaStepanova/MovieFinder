@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ItemMoviePreviewBinding
-import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.MovieClickListener
 
 class MoviePreviewViewHolder private constructor(private val binding: ItemMoviePreviewBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(
-        movieClickListener: MovieListener,
+        movieClickListener: MovieClickListener,
         item: Movie
     ) {
         binding.movieClickListener = movieClickListener

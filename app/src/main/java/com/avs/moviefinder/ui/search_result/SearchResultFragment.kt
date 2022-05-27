@@ -14,7 +14,7 @@ import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentSearchResultBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.MovieClickListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.MoviePreviewPagingAdapter
 import javax.inject.Inject
 
@@ -47,10 +47,7 @@ class SearchResultFragment : BaseFragment() {
         binding.lifecycleOwner = this
         searchResultViewModel.searchInitialQuery(args.query)
         val adapter = MoviePreviewPagingAdapter(
-            MovieListener(
-                { movie -> startMovieActivity(movie) },
-                { }, { }, { }
-            )
+            MovieClickListener { movie -> startMovieActivity(movie) }
         )
         binding.rvFindRecyclerView.adapter = adapter
 

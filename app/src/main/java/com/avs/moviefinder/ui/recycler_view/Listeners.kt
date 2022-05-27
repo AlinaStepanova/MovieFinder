@@ -16,6 +16,12 @@ class MovieListener(
     fun onWatchLaterClick(movie: Movie) = watchLaterClick(movie)
 }
 
+class MovieClickListener(
+    val clickListener: (movie: Movie) -> Unit
+) {
+    fun onClick(movie: Movie) = clickListener(movie)
+}
+
 class CastListener(
     val clickListener: (cast: Cast) -> Unit
 ) {

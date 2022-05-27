@@ -3,11 +3,11 @@ package com.avs.moviefinder.ui.recycler_view.adaptes
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.ui.recycler_view.MovieClickListener
 import com.avs.moviefinder.ui.recycler_view.MovieDiffCallback
-import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.ui.recycler_view.view_holders.MoviePreviewViewHolder
 
-class MoviePreviewPagingAdapter(private val movieClickListener: MovieListener) :
+class MoviePreviewPagingAdapter(private val movieClickListener: MovieClickListener) :
     PagingDataAdapter<Movie, MoviePreviewViewHolder>(MovieDiffCallback()) {
 
     override fun onBindViewHolder(holder: MoviePreviewViewHolder, position: Int) {
