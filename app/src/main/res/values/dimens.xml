@@ -18,6 +18,7 @@
     <dimen name="text_size_extra_info">15sp</dimen>
     <dimen name="text_size_movie_details">16sp</dimen>
     <dimen name="text_size_movie_title">18sp</dimen>
+    <dimen name="text_size_movie_title_preview">16sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
 
     <dimen name="image_control_size">20dp</dimen>

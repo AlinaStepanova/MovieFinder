@@ -18,7 +18,7 @@
         <entry key="app/src/main/res/layout/fragment_search_result.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/item_movie.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/item_movie_new.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/item_movie_preview.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_movie_preview.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_similar.xml" value="0.14628623188405798" />
         <entry key="app/src/main/res/layout/layout_connectivity_snackbar.xml" value="0.161231884057971" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
