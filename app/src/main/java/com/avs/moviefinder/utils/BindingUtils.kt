@@ -162,6 +162,12 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
 
 @BindingAdapter("smallPosterImage")
 fun ShapeableImageView.setSmallPosterImage(item: Movie) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setTopRightCorner(CornerFamily.ROUNDED, pixels)
+        .setTopLeftCorner(CornerFamily.ROUNDED, pixels)
+        .build()
     Picasso.get()
         .load(POSTER_PREVIEW_URL + item.posterPath)
         .transform(

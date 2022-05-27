@@ -20,7 +20,7 @@
             android:id="@+id/rvFindRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:spanCount="2"
+            app:spanCount="@integer/spanCountPreview"
             android:layout_margin="@dimen/margin_8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
