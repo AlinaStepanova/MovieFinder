@@ -13,3 +13,6 @@ const val SHARE_INTENT_TYPE = "text/plain"
 const val LONG_DURATION_MS = 2750L
 const val IS_MOVIE_UPDATED_EXTRA = "isMovieUpdated"
 const val HTTP_TIMEOUT_IN_SECONDS = 10L
+const val PAGE_SIZE = 20
+const val PREFETCH_DISTANCE = 5
+const val EMPTY_RESULT_MESSAGE = "Empty result"

@@ -5,11 +5,12 @@ import androidx.paging.rxjava2.RxPagingSource
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesResponse
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.utils.EMPTY_RESULT_MESSAGE
 import com.avs.moviefinder.utils.buildMovieByNameUrl
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class MoviesSource (
+class SearchMoviesSource (
     private val serverApi: ServerApi,
     private val query: String,
 ) : RxPagingSource<Int, Movie>() {
@@ -27,7 +28,7 @@ class MoviesSource (
 
     private fun toLoadResult(data: MoviesResponse, position: Int): LoadResult<Int, Movie> {
         return if (data.results.isEmpty()) {
-            LoadResult.Error(Throwable("Empty result"))
+            LoadResult.Error(Throwable(EMPTY_RESULT_MESSAGE))
         } else {
             LoadResult.Page(
                 data = data.results,

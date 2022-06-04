@@ -4,13 +4,15 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
-import androidx.paging.rxjava2.flowable
-import com.avs.moviefinder.data.MoviesSource
+import androidx.paging.rxjava2.observable
+import com.avs.moviefinder.data.SearchMoviesSource
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.PagingDataList
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.utils.PAGE_SIZE
+import com.avs.moviefinder.utils.PREFETCH_DISTANCE
 import com.avs.moviefinder.utils.RxBus
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -34,16 +36,17 @@ class SearchResultRepository @Inject constructor(
         )
     }
 
-    private fun getPagedData(query: String): Flowable<PagingData<Movie>> {
-        val c =  Pager(
+    private fun getPagedData(query: String): Observable<PagingData<Movie>> {
+        val pager = Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = PAGE_SIZE,
                 enablePlaceholders = true,
-                maxSize = 30,
-                prefetchDistance = 5,
-                initialLoadSize = 40),
-            pagingSourceFactory = { MoviesSource(serverApi, query) }
+                maxSize = PREFETCH_DISTANCE * 2 + PAGE_SIZE,
+                prefetchDistance = PREFETCH_DISTANCE,
+                initialLoadSize = PAGE_SIZE * 2
+            ),
+            pagingSourceFactory = { SearchMoviesSource(serverApi, query) }
         )
-        return c.flowable
+        return pager.observable
     }
 }
