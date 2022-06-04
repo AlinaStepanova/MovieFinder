@@ -5,7 +5,6 @@ import com.avs.moviefinder.utils.API_KEY
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.Url
 
 /**
@@ -23,14 +22,7 @@ interface MoviesApi {
     fun getNowPlayingMovies(@Url url: String): Single<MoviesAPIFilter>
 
     @GET
-    fun getMovieByName(@Url url: String): Single<MoviesSearchFilter>
-
-    @GET("3/search/movie?api_key=$API_KEY")
-    fun movieByName(
-        @Query("page") page: Int,
-        @Query("language") language: String,
-        @Query("query") query: String
-    ) : Single<MoviesResponse>
+    fun getMovieByName(@Url url: String): Single<MoviesResponse>
 
     @GET
     fun getMovieById(@Url url: String): Single<Movie>

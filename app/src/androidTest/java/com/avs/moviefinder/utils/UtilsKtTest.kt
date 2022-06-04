@@ -14,7 +14,6 @@ import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UtilsKtTest {
 
@@ -74,7 +73,7 @@ class UtilsKtTest {
     @Test
     fun buildMovieByNameUrlTest() {
         val title = "Movie title"
-        val url = buildMovieByNameUrl(title)
+        val url = buildMovieByNameUrl(title, 0)
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.contains(title))
         assertTrue(url.isNotBlank())

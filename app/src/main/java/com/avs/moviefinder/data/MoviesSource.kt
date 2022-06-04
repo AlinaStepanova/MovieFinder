@@ -4,8 +4,8 @@ import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesResponse
-import com.avs.moviefinder.data.network.LocaleReceiver
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.utils.buildMovieByNameUrl
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
@@ -14,12 +14,12 @@ class MoviesSource (
     private val query: String,
 ) : RxPagingSource<Int, Movie>() {
 
-    private val language = LocaleReceiver.language
-
     override fun loadSingle(params: LoadParams<Int>): Single<LoadResult<Int, Movie>> {
         val position = params.key ?: 1
 
-        return serverApi.getMovieByName(position, language, query)
+        val url = buildMovieByNameUrl(query, position)
+
+        return serverApi.getMovieByName(url)
             .subscribeOn(Schedulers.io())
             .map { toLoadResult(it, position) }
             .onErrorReturn { LoadResult.Error(it) }
