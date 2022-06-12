@@ -12,8 +12,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -51,24 +51,24 @@ class WatchLaterFragment : BaseFragment() {
                 { movieId -> watchLaterViewModel.addFavorites(movieId) }
             ) { movieId -> watchLaterViewModel.addToWatchLater(movieId) }
         )
-        watchLaterViewModel.movies.observe(viewLifecycleOwner, {
+        watchLaterViewModel.movies.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
             }
             setIconsVisibility(it)
-        })
-        watchLaterViewModel.shareBody.observe(viewLifecycleOwner, {
+        }
+        watchLaterViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        watchLaterViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
+        }
+        watchLaterViewModel.updateMovieIndex.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.notifyItemChanged(it)
             }
-        })
-        watchLaterViewModel.isInserted.observe(viewLifecycleOwner, {
+        }
+        watchLaterViewModel.isInserted.observe(viewLifecycleOwner) {
             it?.let {
                 if (!it.first) watchLaterViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
@@ -84,7 +84,7 @@ class WatchLaterFragment : BaseFragment() {
                 }
             }
             setIconsVisibility(adapter.currentList)
-        })
+        }
         binding.rvWatchLaterRecyclerView.adapter = adapter
         watchLaterViewModel.getWatchLaterMovies()
         return root

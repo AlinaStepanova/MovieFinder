@@ -21,7 +21,6 @@ import com.avs.moviefinder.di.factories.MainViewModelFactory
 import com.avs.moviefinder.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
@@ -74,14 +73,14 @@ class MainActivity : DaggerAppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
 
-        connectionLiveData.observe(this, {
+        connectionLiveData.observe(this) {
             mainViewModel.reactOnNetworkChangeState(it)
-        })
-        mainViewModel.isBackOnline.observe(this, { isOnline ->
+        }
+        mainViewModel.isBackOnline.observe(this) { isOnline ->
             isOnline?.let {
                 if (isOnline) showConnectivitySnackBar(getString(R.string.back_online_text))
             }
-        })
+        }
     }
 
     private fun hideBottomNav() {

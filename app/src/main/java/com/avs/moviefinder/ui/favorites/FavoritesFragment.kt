@@ -12,8 +12,8 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -51,24 +51,24 @@ class FavoritesFragment : BaseFragment() {
                 { movieId -> favoritesViewModel.addFavorites(movieId) }
             ) { movieId -> favoritesViewModel.addToWatchLater(movieId) }
         )
-        favoritesViewModel.movies.observe(viewLifecycleOwner, {
+        favoritesViewModel.movies.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
             }
             setIconsVisibility(it)
-        })
-        favoritesViewModel.shareBody.observe(viewLifecycleOwner, {
+        }
+        favoritesViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        favoritesViewModel.updateMovieIndex.observe(viewLifecycleOwner, {
+        }
+        favoritesViewModel.updateMovieIndex.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.notifyItemChanged(it)
             }
-        })
-        favoritesViewModel.isInserted.observe(viewLifecycleOwner, {
+        }
+        favoritesViewModel.isInserted.observe(viewLifecycleOwner) {
             it?.let {
                 if (!it.first) favoritesViewModel.updateMovieIndex.value?.let { index ->
                     adapter.notifyItemRemoved(index)
@@ -84,7 +84,7 @@ class FavoritesFragment : BaseFragment() {
                 }
             }
             setIconsVisibility(adapter.currentList)
-        })
+        }
         binding.rvFindRecyclerView.adapter = adapter
         favoritesViewModel.getFavorites()
         return root

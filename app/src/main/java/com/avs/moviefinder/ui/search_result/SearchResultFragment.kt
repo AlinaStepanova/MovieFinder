@@ -64,22 +64,22 @@ class SearchResultFragment : BaseFragment() {
             ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
         )
         binding.rvFindRecyclerView.adapter = adapter
-        searchResultViewModel.movies.observe(viewLifecycleOwner, { movies ->
+        searchResultViewModel.movies.observe(viewLifecycleOwner) { movies ->
             movies?.let {
                 adapter.submitList(movies.map { movie ->
                     movie.copy()
                 })
             }
-        })
-        searchResultViewModel.shareBody.observe(viewLifecycleOwner, {
+        }
+        searchResultViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        searchResultViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        searchResultViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        searchResultViewModel.errorType.observe(viewLifecycleOwner, {
+        }
+        searchResultViewModel.errorType.observe(viewLifecycleOwner) {
             handleErrorEvent(it)
-        })
+        }
         return root
     }
 

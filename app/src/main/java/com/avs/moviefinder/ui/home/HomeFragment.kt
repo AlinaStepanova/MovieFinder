@@ -69,27 +69,27 @@ class HomeFragment : BaseFragment() {
         )
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
-        homeViewModel.movies.observe(viewLifecycleOwner, { movies ->
+        homeViewModel.movies.observe(viewLifecycleOwner) { movies ->
             movies?.let {
                 adapter.submitList(movies.map { movie ->
                     movie.copy()
                 })
             }
-        })
-        homeViewModel.selectedCategory.observe(viewLifecycleOwner, {
+        }
+        homeViewModel.selectedCategory.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.setSelectedCategory(it)
             }
-        })
-        homeViewModel.shareBody.observe(viewLifecycleOwner, {
+        }
+        homeViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
-        homeViewModel.isProgressVisible.observe(viewLifecycleOwner, {
+        }
+        homeViewModel.isProgressVisible.observe(viewLifecycleOwner) {
             binding.pbFindProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
-        homeViewModel.errorType.observe(viewLifecycleOwner, {
+        }
+        homeViewModel.errorType.observe(viewLifecycleOwner) {
             handleErrorEvent(it)
-        })
+        }
         return root
     }
 

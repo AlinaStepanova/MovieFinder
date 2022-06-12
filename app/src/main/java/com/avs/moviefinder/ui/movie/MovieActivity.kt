@@ -74,7 +74,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 setAppBarColor(state)
 
         })
-        movieViewModel.movie.observe(this, {
+        movieViewModel.movie.observe(this) {
             it?.let {
                 stopShimmerAnimation()
                 setTagline(it)
@@ -84,7 +84,6 @@ class MovieActivity : DaggerAppCompatActivity() {
                 formatRuntime(it)
                 formatCountries(it)
                 formatGenres(it)
-                // todo fix toolbar title
                 if (binding.toolbar.title != it.title) binding.toolbar.title = it.title
                 binding.tvLinks.text = buildLinks(
                     it.imdbId,
@@ -94,10 +93,10 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.fabFavorite.setImageResource(if (it.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
                 binding.fabWatched.setImageResource(if (it.isInWatchLater) R.drawable.ic_watch_later else R.drawable.ic_outline_watch_later)
             }
-        })
-        movieViewModel.shareBody.observe(this, {
+        }
+        movieViewModel.shareBody.observe(this) {
             if (!it.isNullOrEmpty()) shareMovie(it)
-        })
+        }
         binding.fabFavorite.setOnClickListener { movieViewModel.addToFavorites() }
         binding.fabWatched.setOnClickListener { movieViewModel.addToWatchLater() }
     }
@@ -145,7 +144,7 @@ class MovieActivity : DaggerAppCompatActivity() {
 
     private fun observeSimilarMovies(similarAdapter: ResultAdapter): (list: List<Result>) -> Unit =
         {
-            if (it.isNullOrEmpty()) {
+            if (it.isEmpty()) {
                 binding.rvSimilar.visibility = View.GONE
             } else {
                 binding.tvSimilar.visibility = View.VISIBLE
@@ -156,7 +155,7 @@ class MovieActivity : DaggerAppCompatActivity() {
 
     private fun observeCast(castAdapter: CastAdapter): (list: List<Cast>) -> Unit =
         {
-            if (it.isNullOrEmpty()) {
+            if (it.isEmpty()) {
                 binding.rvCast.visibility = View.GONE
             } else {
                 binding.tvCast.visibility = View.VISIBLE
