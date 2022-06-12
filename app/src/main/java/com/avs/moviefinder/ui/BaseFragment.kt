@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
@@ -74,7 +75,9 @@ open class BaseFragment : DaggerFragment() {
         messageSnackbar?.let { snackbar ->
             snackbar.setBackgroundTint(Color.WHITE)
             snackbar.setTextColor(Color.BLACK)
-            snackbar.anchorView = activity.binding.bottomNav
+            if (activity.binding.bottomNav.isVisible) {
+                snackbar.anchorView = activity.binding.bottomNav
+            }
             snackbar.show()
         }
     }
@@ -98,7 +101,9 @@ open class BaseFragment : DaggerFragment() {
                     )
                 )
             }
-            snackbar.anchorView = activity.binding.bottomNav
+            if (activity.binding.bottomNav.isVisible) {
+                snackbar.anchorView = activity.binding.bottomNav
+            }
             snackbar.show()
         }
     }
