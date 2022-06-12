@@ -27,11 +27,11 @@
         <activity
             android:name=".ui.movie.MovieActivity"
             android:label="@string/title_activity_movie"
+            android:exported="true"
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>
