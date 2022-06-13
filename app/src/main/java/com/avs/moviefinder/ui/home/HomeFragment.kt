@@ -98,8 +98,8 @@ class HomeFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun handleErrorEvent(it: ErrorType?) {
-        when (it) {
+    private fun handleErrorEvent(errorType: ErrorType?) {
+        when (errorType) {
             ErrorType.NETWORK -> {
                 binding.ivError.visibility = View.VISIBLE
                 binding.tvErrorText.visibility = View.INVISIBLE

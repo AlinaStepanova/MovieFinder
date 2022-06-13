@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -139,9 +140,9 @@ class MainActivity : DaggerAppCompatActivity() {
             })
         }.also {
             menuItem.actionView = it
-            if (!mainViewModel.getLatestQueryTest().isNullOrEmpty()) {
-                menuItem.expandActionView()
-                menuItem.expandSearchViewWithText(mainViewModel.getLatestQueryTest())
+            if (!mainViewModel.getLatestQuery().isNullOrEmpty()) {
+                menuItem.expandSearchViewWithText(mainViewModel.getLatestQuery())
+                this@MainActivity.currentFocus?.clearFocus()
             }
         }
 
@@ -158,8 +159,8 @@ class MainActivity : DaggerAppCompatActivity() {
             binding.container,
             message,
             Snackbar.LENGTH_LONG,
-            binding.bottomNav,
-            color
+            color,
+            if (binding.bottomNav.isVisible) binding.bottomNav else null,
         ).show()
     }
 }

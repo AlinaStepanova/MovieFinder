@@ -36,7 +36,8 @@ class MainViewModel constructor(
     }
 
     fun onQueryTextChanged(newText: String) = handle.set(KEY_SEARCH_QUERY, newText)
-    fun getLatestQueryTest(): String? = handle.get<String>(KEY_SEARCH_QUERY)
+
+    fun getLatestQuery(): String? = handle.get<String>(KEY_SEARCH_QUERY)
 
     companion object {
         const val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
