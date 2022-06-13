@@ -57,8 +57,8 @@ class ConnectivitySnackbar(
             viewGroup: ViewGroup,
             message: String,
             duration: Int,
-            anchor: BottomNavigationView,
-            backgroundColor: Int
+            backgroundColor: Int,
+            anchor: BottomNavigationView?
         ): ConnectivitySnackbar {
             val customView = LayoutInflater.from(viewGroup.context).inflate(
                 R.layout.layout_connectivity_snackbar,
@@ -71,9 +71,12 @@ class ConnectivitySnackbar(
             val snackbar = ConnectivitySnackbar(viewGroup, customView)
             snackbar.view.setBackgroundColor(backgroundColor)
 
+            anchor?.let {
+                snackbar.anchorView = it
+            }
+
             return snackbar
                 .setDuration(duration)
-                .setAnchorView(anchor)
         }
     }
 }
