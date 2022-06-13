@@ -139,9 +139,9 @@ class MainActivity : DaggerAppCompatActivity() {
             })
         }.also {
             menuItem.actionView = it
-            if (!mainViewModel.getLatestQueryTest().isNullOrEmpty()) {
-                menuItem.expandActionView()
-                menuItem.expandSearchViewWithText(mainViewModel.getLatestQueryTest())
+            if (!mainViewModel.getLatestQuery().isNullOrEmpty()) {
+                menuItem.expandSearchViewWithText(mainViewModel.getLatestQuery())
+                this@MainActivity.currentFocus?.clearFocus()
             }
         }
 
