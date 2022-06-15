@@ -19,6 +19,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
+import org.powermock.api.mockito.PowerMockito
+
 
 @RunWith(MockitoJUnitRunner::class)
 internal class FavoritesViewModelTest {
@@ -42,7 +44,7 @@ internal class FavoritesViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = FavoritesViewModel(rxBus, repository)
+        viewModel = spy(FavoritesViewModel(rxBus, repository))
         movies = mutableListOf(
             Movie(1, "Harry Potter and the Philosopher's Stone", isFavorite = true),
             Movie(2, "Harry Potter and the Chamber of Secrets", isFavorite = true),
@@ -87,5 +89,51 @@ internal class FavoritesViewModelTest {
         val currentMovies = viewModel.movies.value ?: emptyList()
         assertFalse(currentMovies.contains(movieToRemove))
         assertEquals(currentMovies.size, movies.size - 1)
+    }
+
+    @Test
+    fun undoRemovingFromFavoritesTest() {
+        viewModel.subscribeToEvents(FavoritesList(movies))
+        val movieToRemove = movies[1]
+        viewModel.addFavorites(movieToRemove.id)
+        verify(repository, atMostOnce()).updateMovie(movieToRemove)
+
+        PowerMockito.doNothing().`when`(viewModel, "startCountdown")
+        viewModel.subscribeToEvents(movieToRemove)
+        viewModel.undoRemovingMovie()
+        viewModel.subscribeToEvents(movieToRemove)
+
+        val currentMovies = viewModel.movies.value ?: emptyList()
+        assertTrue(currentMovies.contains(movieToRemove))
+        assertEquals(currentMovies.size, movies.size)
+    }
+
+    @Test
+    fun addToWatchLaterTest() {
+        viewModel.subscribeToEvents(FavoritesList(movies))
+        val movie = movies[0]
+        viewModel.addToWatchLater(movie.id)
+        verify(repository, atMostOnce()).updateMovie(movie)
+        viewModel.subscribeToEvents(movie)
+        val currentMovies = viewModel.movies.value ?: emptyList()
+
+        assert(currentMovies.filter { it.isInWatchLater }.size == 1)
+        assertTrue(currentMovies.contains(movie))
+        assertEquals(currentMovies.size, movies.size)
+    }
+
+    @Test
+    fun removeFromWatchLaterTest() {
+        movies.map { it.isInWatchLater = true }
+        viewModel.subscribeToEvents(FavoritesList(movies))
+        val movie = movies[0]
+        viewModel.addToWatchLater(movie.id)
+        verify(repository, atMostOnce()).updateMovie(movie)
+        viewModel.subscribeToEvents(movie)
+        val currentMovies = viewModel.movies.value ?: emptyList()
+
+        assert(currentMovies.filter { it.isInWatchLater }.size == movies.size - 1)
+        assertTrue(currentMovies.contains(movie))
+        assertEquals(currentMovies.size, movies.size)
     }
 }
