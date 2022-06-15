@@ -16,8 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -45,10 +44,10 @@ internal class FavoritesViewModelTest {
         MockitoAnnotations.initMocks(this)
         viewModel = FavoritesViewModel(rxBus, repository)
         movies = mutableListOf(
-            Movie(1, "Harry Potter and the Philosopher's Stone"),
-            Movie(2, "Harry Potter and the Chamber of Secrets"),
-            Movie(3, "Harry Potter and the Prisoner of Azkaban"),
-            Movie(4, "Harry Potter and the Goblet of Fire")
+            Movie(1, "Harry Potter and the Philosopher's Stone", isFavorite = true),
+            Movie(2, "Harry Potter and the Chamber of Secrets", isFavorite = true),
+            Movie(3, "Harry Potter and the Prisoner of Azkaban", isFavorite = true),
+            Movie(4, "Harry Potter and the Goblet of Fire", isFavorite = true)
         )
     }
 
@@ -61,14 +60,32 @@ internal class FavoritesViewModelTest {
 
     @Test
     fun getFavoritesFromDBTest() {
-        var currentMovie = viewModel.movies.value
-        assertTrue(currentMovie.isNullOrEmpty())
+        var currentMovies = viewModel.movies.value
+        assertTrue(currentMovies.isNullOrEmpty())
         verify(repository, times(1)).getFavoritesList()
         viewModel.subscribeToEvents(FavoritesList(movies))
-        currentMovie = viewModel.movies.getOrAwaitValue()
-        assertTrue(currentMovie.isNotEmpty())
-        assertEquals(currentMovie.size, movies.size)
+        currentMovies = viewModel.movies.getOrAwaitValue()
+        assertTrue(currentMovies.isNotEmpty())
+        assertEquals(currentMovies.size, movies.size)
         val isProgressVisible = viewModel.isProgressVisible.getOrAwaitValue()
         assertFalse(isProgressVisible)
+    }
+
+    @Test
+    fun updateMovieNeverCalledTest() {
+        viewModel.addFavorites(-1)
+        verify(repository, never()).updateMovie(movies[0])
+    }
+
+    @Test
+    fun removeFromFavoritesTest() {
+        viewModel.subscribeToEvents(FavoritesList(movies))
+        val movieToRemove = movies[0]
+        viewModel.addFavorites(movieToRemove.id)
+        verify(repository, atMostOnce()).updateMovie(movieToRemove)
+        viewModel.subscribeToEvents(movieToRemove)
+        val currentMovies = viewModel.movies.value ?: emptyList()
+        assertFalse(currentMovies.contains(movieToRemove))
+        assertEquals(currentMovies.size, movies.size - 1)
     }
 }
