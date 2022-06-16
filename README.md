@@ -16,7 +16,7 @@ The TMDb movie database API: https://www.themoviedb.org/documentation/api
 
 <h3> Architecture approach </h3>
 
-<img src="https://user-images.githubusercontent.com/23102335/174061985-b1fe3d85-4198-4b9a-b33f-21952ac57383.png" width="45%">
+<img src="https://user-images.githubusercontent.com/23102335/174061985-b1fe3d85-4198-4b9a-b33f-21952ac57383.png" width="50%">
 
 <h3> Main libraries used: </h3>
 
@@ -32,6 +32,7 @@ The TMDb movie database API: https://www.themoviedb.org/documentation/api
 <b> Picasso </b> - for loading and customizing images<br>
 <b> JUnit 4, Mockito </b> - tests<br>
 
+---
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/23102335/104854463-8410b100-590f-11eb-92a0-1157cb55e8dc.png" width="28%">
