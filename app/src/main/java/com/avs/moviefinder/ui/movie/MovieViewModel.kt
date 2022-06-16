@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.repository.MovieRepository
+import com.avs.moviefinder.utils.CAST_REQUIRED_COUNT
 import com.avs.moviefinder.utils.RxBus
+import com.avs.moviefinder.utils.SIMILAR_MOVIES_REQUIRED_COUNT
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.Disposable
 import java.util.*
@@ -50,10 +52,10 @@ class MovieViewModel @Inject constructor(
                 }
             }
             is Credits -> {
-                _cast.value = event.cast.take(16)
+                _cast.value = event.cast.take(CAST_REQUIRED_COUNT)
             }
             is Similar -> {
-                _similarMovies.value = event.similar.take(10)
+                _similarMovies.value = event.similar.take(SIMILAR_MOVIES_REQUIRED_COUNT)
             }
             is Locale -> openMovieDetails(_movie.value)
         }
