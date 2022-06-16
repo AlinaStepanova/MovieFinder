@@ -23,10 +23,12 @@ The TMDb movie database API: https://www.themoviedb.org/documentation/api
 <b> Retrofit </b> - as HTTP client<br>
 <b> Dagger 2 </b> - as dependency injection library<br>
 <b> RxJava 2 </b> - for execution of asynchronous tasks<br>
-<b> Room </b> - for work with SQLite databse<br>
+<b> Room </b> - for work with SQLite database<br>
 <b> Navigation Component </b> - for work with fragments and navigation<br>
-<b> Work Manager </b> - for repetative constraint-based tasks on background<br>
+<b> Work Manager </b> - for repetitive constraint-based tasks on background<br>
 <b> Paging </b> - for loading data in pages and showing it in a Recycler View<br>
+<b> Lifecycle </b> - for performing actions in response to a change in the lifecycle status of activities and fragments<br>
+<b> Databinding </b> - for binding UI components in layouts to data sources<br>
 <b> Picasso </b> - for loading and customizing images<br>
 <b> JUnit 4, Mockito </b> - tests<br>
 
