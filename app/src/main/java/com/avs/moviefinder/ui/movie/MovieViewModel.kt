@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.movie
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -43,7 +44,8 @@ class MovieViewModel @Inject constructor(
         super.onCleared()
     }
 
-    private fun subscribeToEvents(event: Any?) {
+    @VisibleForTesting
+    fun subscribeToEvents(event: Any?) {
         when (event) {
             is Movie -> {
                 if (_movie.value?.id == 0L || _movie.value?.id == null
