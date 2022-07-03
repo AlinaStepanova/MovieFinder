@@ -46,7 +46,7 @@ class UtilsKtTest {
 
     @Test
     fun buildPopularMoviesUrlTest() {
-        val url = buildPopularMoviesUrl()
+        val url = buildPopularMoviesUrl(position)
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.isNotBlank())
         assertNotNull(url)

@@ -1,4 +1,4 @@
-package com.avs.moviefinder.data
+package com.avs.moviefinder.data.network.sources
 
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource

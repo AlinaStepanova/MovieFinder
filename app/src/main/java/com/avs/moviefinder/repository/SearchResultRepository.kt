@@ -5,10 +5,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import androidx.paging.rxjava2.observable
-import com.avs.moviefinder.data.SearchMoviesSource
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.PagingDataList
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.data.network.sources.SearchMoviesSource
 import com.avs.moviefinder.utils.PAGE_SIZE
 import com.avs.moviefinder.utils.PREFETCH_DISTANCE
 import com.avs.moviefinder.utils.RxBus

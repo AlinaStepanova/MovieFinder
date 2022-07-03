@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="findViewModel"
             type="com.avs.moviefinder.ui.home.HomeViewModel" />
+
+        <variable
+            name="selectedCategory"
+            type="com.avs.moviefinder.ui.home.MoviesCategory" />
+
+        <variable
+            name="clickListener"
+            type="com.avs.moviefinder.ui.home.CategoryClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,28 +25,36 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
+        <include
+            android:id="@+id/itemHeader"
+            layout="@layout/item_header"
+            app:clickListener="@{clickListener}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectedCategory="@{selectedCategory}" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/itemHeader"
             app:onRefreshListener="@{() -> findViewModel.onRefresh()}"
             app:refreshing="@{findViewModel.isLoading}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFindRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/item_layout_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:spanCount="@integer/spanCountPreview" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ProgressBar
@@ -53,10 +70,10 @@
             android:id="@+id/ivError"
             android:layout_width="@dimen/image_find_movie_max_height"
             android:layout_height="@dimen/image_find_movie_max_height"
+            android:layout_marginBottom="@dimen/design_bottom_navigation_height"
+            android:paddingHorizontal="@dimen/margin_16dp"
             android:src="@drawable/ic_cloud_off"
             android:visibility="invisible"
-            android:paddingHorizontal="@dimen/margin_16dp"
-            android:layout_marginBottom="@dimen/design_bottom_navigation_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

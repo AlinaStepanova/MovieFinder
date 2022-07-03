@@ -1,20 +1,20 @@
 package com.avs.moviefinder.ui.home
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.LoadState
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentHomeBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.MovieListener
+import com.avs.moviefinder.ui.recycler_view.MovieClickListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviePreviewPagingAdapter
 import com.avs.moviefinder.utils.ConnectionLiveData
 import javax.inject.Inject
 
@@ -23,21 +23,13 @@ class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
     @Inject
     lateinit var connectionLiveData: ConnectionLiveData
     lateinit var homeViewModel: HomeViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    homeViewModel.handleOnActivityResult(it)
-                }
-            }
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,30 +47,33 @@ class HomeFragment : BaseFragment() {
         val root: View = binding.root
         binding.findViewModel = homeViewModel
         binding.lifecycleOwner = this
-        val adapter = HomeAdapter(
-            MovieListener(
-                { movie -> startMovieActivityForResult(movie, resultLauncher) },
-                { movieId -> homeViewModel.shareMovie(movieId) },
-                { movie -> homeViewModel.addToFavorites(movie.id) }
-            ) { movie -> homeViewModel.addToWatchLater(movie.id) },
-            CategoryClickListener(
-                { homeViewModel.onPopularClick() },
-                { homeViewModel.onTopRatedClick() },
-                { homeViewModel.onNowPlayingClick() }
-            )
+        homeViewModel.selectedCategory.value?.let {
+            binding.selectedCategory = it
+        }
+
+        binding.clickListener = CategoryClickListener(
+            { homeViewModel.onPopularClick() },
+            { homeViewModel.onTopRatedClick() },
+            { homeViewModel.onNowPlayingClick() }
         )
+        val adapter = MoviePreviewPagingAdapter(
+            MovieClickListener { movie -> startMovieActivity(movie) }
+        )
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.source.refresh is LoadState.Error) {
+                handleErrorEvent(ErrorType.NO_RESULTS)
+            }
+        }
+
         binding.rvFindRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
         homeViewModel.movies.observe(viewLifecycleOwner) { movies ->
-            movies?.let {
-                adapter.submitList(movies.map { movie ->
-                    movie.copy()
-                })
-            }
+            adapter.submitData(lifecycle, movies)
         }
         homeViewModel.selectedCategory.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.setSelectedCategory(it)
+                binding.selectedCategory = it
             }
         }
         homeViewModel.shareBody.observe(viewLifecycleOwner) {
