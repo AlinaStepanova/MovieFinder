@@ -40,11 +40,7 @@ class ServerApi @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getPopularMoviesAsSingle(url: String) = moviesApi.getPopularMovies(url)
-
-    fun getTopRatedMovies(url: String) = moviesApi.getTopRatedMovies(url)
-
-    fun getNowPlayingMovies(url: String) = moviesApi.getNowPlayingMovies(url)
+    fun getMovies(url: String) = moviesApi.getMovies(url)
 
     fun getMovieByName(url: String) = moviesApi.getMovieByName(url)
 }

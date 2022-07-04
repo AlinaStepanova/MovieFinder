@@ -71,6 +71,15 @@ fun buildTopRatedMoviesUrl(page: Int): String {
             "&language=$language"
 }
 
+fun buildUpcomingMoviesUrl(page: Int): String {
+    val language = LocaleReceiver.language
+    return "3/movie/upcoming?api_key=$API_KEY" +
+            "&page=$page" +
+            "&region=US" +
+            "&include_adult=false" +
+            "&language=$language"
+}
+
 fun buildMovieByIdUrl(id: Long): String {
     val language = LocaleReceiver.language
     return "3/movie/$id?api_key=$API_KEY&language=$language"

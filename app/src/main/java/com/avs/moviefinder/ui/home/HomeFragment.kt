@@ -54,7 +54,8 @@ class HomeFragment : BaseFragment() {
         binding.clickListener = CategoryClickListener(
             { homeViewModel.onPopularClick() },
             { homeViewModel.onTopRatedClick() },
-            { homeViewModel.onNowPlayingClick() }
+            { homeViewModel.onNowPlayingClick() },
+            { homeViewModel.onUpcomingClick() }
         )
         val adapter = MoviePreviewPagingAdapter(
             MovieClickListener { movie -> startMovieActivity(movie) }

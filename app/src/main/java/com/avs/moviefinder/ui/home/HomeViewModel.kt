@@ -104,4 +104,11 @@ class HomeViewModel @Inject constructor(
             onRefresh()
         }
     }
+
+    fun onUpcomingClick() {
+        if (_selectedCategory.value != MoviesCategory.UPCOMING) {
+            _selectedCategory.value = MoviesCategory.UPCOMING
+            onRefresh()
+        }
+    }
 }

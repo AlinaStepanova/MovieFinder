@@ -6,10 +6,7 @@ import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.MoviesResponse
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.ui.home.MoviesCategory
-import com.avs.moviefinder.utils.EMPTY_RESULT_MESSAGE
-import com.avs.moviefinder.utils.buildNowPlayingUrl
-import com.avs.moviefinder.utils.buildPopularMoviesUrl
-import com.avs.moviefinder.utils.buildTopRatedMoviesUrl
+import com.avs.moviefinder.utils.*
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
@@ -23,13 +20,16 @@ class HomeMoviesSource (
 
         val single: Single<MoviesResponse> = when (category) {
             MoviesCategory.POPULAR -> {
-                serverApi.getPopularMoviesAsSingle(buildPopularMoviesUrl(position))
+                serverApi.getMovies(buildPopularMoviesUrl(position))
             }
             MoviesCategory.NOW_PLAYING -> {
-                serverApi.getNowPlayingMovies(buildNowPlayingUrl(position))
+                serverApi.getMovies(buildNowPlayingUrl(position))
             }
             MoviesCategory.TOP_RATED -> {
-                serverApi.getTopRatedMovies(buildTopRatedMoviesUrl(position))
+                serverApi.getMovies(buildTopRatedMoviesUrl(position))
+            }
+            MoviesCategory.UPCOMING -> {
+                serverApi.getMovies(buildUpcomingMoviesUrl(position))
             }
         }
 

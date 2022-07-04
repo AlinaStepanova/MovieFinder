@@ -210,6 +210,15 @@ fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
     }
 }
 
+@BindingAdapter("upcomingCategory")
+fun TextView.setUpcomingCategoryAppearance(selectedCategory: MoviesCategory) {
+    if (selectedCategory == MoviesCategory.UPCOMING) {
+        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    } else {
+        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+    }
+}
+
 private fun TextView.setTextState(backgroundId: Int, textColorId: Int) {
     background = ContextCompat.getDrawable(context, backgroundId)
     setTextColor(getColorFromResources(context, textColorId))
