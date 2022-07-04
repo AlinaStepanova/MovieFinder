@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.avs.moviefinder.data.dto.ConnectivityRestored
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.PagingDataList
+import com.avs.moviefinder.data.dto.PagingSearchDataList
 import com.avs.moviefinder.data.dto.Query
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.repository.SearchResultRepository
@@ -61,7 +61,7 @@ class SearchResultViewModel @Inject constructor(
                 _movies.value = PagingData.empty()
                 _errorType.value = ErrorType.NETWORK
             }
-            is PagingDataList -> {
+            is PagingSearchDataList -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
                 _movies.value = event.movies

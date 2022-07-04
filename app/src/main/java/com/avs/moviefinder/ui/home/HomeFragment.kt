@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentHomeBinding
@@ -62,6 +63,7 @@ class HomeFragment : BaseFragment() {
         adapter.addLoadStateListener { loadState ->
             if (loadState.source.refresh is LoadState.Error) {
                 handleErrorEvent(ErrorType.NO_RESULTS)
+                adapter.submitData(lifecycle, PagingData.empty())
             }
         }
 

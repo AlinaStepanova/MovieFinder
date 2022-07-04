@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import androidx.paging.rxjava2.observable
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.PagingDataList
+import com.avs.moviefinder.data.dto.PagingSearchDataList
 import com.avs.moviefinder.data.network.ServerApi
 import com.avs.moviefinder.data.network.sources.SearchMoviesSource
 import com.avs.moviefinder.utils.PAGE_SIZE
@@ -30,7 +30,7 @@ class SearchResultRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 it?.let { pagingData ->
-                    rxBus.send(PagingDataList(pagingData))
+                    rxBus.send(PagingSearchDataList(pagingData))
                 }
             }, { databaseManager.handleError(it)})
         )

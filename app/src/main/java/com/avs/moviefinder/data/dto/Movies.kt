@@ -20,6 +20,8 @@ data class WatchList(val movies: PagingData<Movie>)
 
 data class PagingDataList(val movies: PagingData<Movie>)
 
+data class PagingSearchDataList(val movies: PagingData<Movie>)
+
 data class MoviesResponse(
     @SerializedName("total_pages") val total: Int = 0,
     val page: Int = 0,
