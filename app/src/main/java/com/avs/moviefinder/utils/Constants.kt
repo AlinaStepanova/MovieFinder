@@ -16,3 +16,5 @@ const val HTTP_TIMEOUT_IN_SECONDS = 10L
 const val PAGE_SIZE = 20
 const val PREFETCH_DISTANCE = 5
 const val EMPTY_RESULT_MESSAGE = "Empty result"
+const val CAST_REQUIRED_COUNT = 16
+const val SIMILAR_MOVIES_REQUIRED_COUNT = 10

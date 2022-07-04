@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.watch_later
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,7 +45,8 @@ class WatchLaterViewModel @Inject constructor(
         _isProgressVisible.value = true
     }
 
-    private fun subscribeToEvents(event: Any) {
+    @VisibleForTesting
+    fun subscribeToEvents(event: Any) {
         when (event) {
             is WatchList -> {
                 _isProgressVisible.value = false

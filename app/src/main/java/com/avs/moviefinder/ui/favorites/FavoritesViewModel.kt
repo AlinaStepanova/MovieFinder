@@ -1,5 +1,6 @@
 package com.avs.moviefinder.ui.favorites
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,7 +52,8 @@ class FavoritesViewModel @Inject constructor(
         super.onCleared()
     }
 
-    private fun subscribeToEvents(event: Any) {
+    @VisibleForTesting
+    fun subscribeToEvents(event: Any) {
         when (event) {
             is FavoritesList -> {
                 _isProgressVisible.value = false
