@@ -35,14 +35,15 @@ The TMDb movie database API: https://www.themoviedb.org/documentation/api
 ---
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/23102335/104854463-8410b100-590f-11eb-92a0-1157cb55e8dc.png" width="28%">
-  <img src="https://user-images.githubusercontent.com/23102335/104854464-85da7480-590f-11eb-98be-5fd6712455f3.png" width="28%">
-  <img src="https://user-images.githubusercontent.com/23102335/104854466-870ba180-590f-11eb-98ab-367415fb3b08.png" width="28%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212391-7c7ea900-b9c8-4358-997e-7d0ca1f05630.jpeg" width="25%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212431-633ccef3-2608-4cf8-b30f-32e8ee89f423.jpeg" width="25%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212459-e025b521-6f00-4781-b73f-3f797bd721bc.jpeg" width="25%">
 </p>
 
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=19W0jVi8MHo5ExgqrC7HXroK3Of0XabyU" width="28%">
-  <img src="https://drive.google.com/uc?export=view&id=1IdgRrbndIEGEtaBXxtp5a_Wfeq6MvhIE" width="28%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212691-50074bd2-7f12-43e0-b62b-f2a5117a3c67.jpeg" width="25%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212735-bdd77dde-8c2a-465d-bde3-bd0144595343.jpeg" width="25%">
+  <img src="https://user-images.githubusercontent.com/23102335/177212769-f62bb262-10d7-4f49-8662-0f0e0bd720b6.jpeg" width="25%">
 </p>
 
 Please, obtain your own API key in order to work with the source code.
