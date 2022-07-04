@@ -52,9 +52,7 @@ class SearchResultViewModel @Inject constructor(
         when (event) {
             is Query -> onQuerySubmitted(event.query)
             is Locale -> getQueryByTitle(_query.value)
-            is ConnectivityRestored -> {
-                if (_errorType.value == ErrorType.NETWORK) getQueryByTitle(_query.value)
-            }
+            is ConnectivityRestored -> getQueryByTitle(_query.value)
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false

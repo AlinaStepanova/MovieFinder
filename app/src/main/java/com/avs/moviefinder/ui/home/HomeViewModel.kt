@@ -57,9 +57,7 @@ class HomeViewModel @Inject constructor(
     private fun subscribeToEvents(event: Any?) {
         when (event) {
             is Locale -> onRefresh()
-            is ConnectivityRestored -> {
-                if (_errorType.value == ErrorType.NETWORK) onRefresh()
-            }
+            is ConnectivityRestored -> onRefresh()
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
