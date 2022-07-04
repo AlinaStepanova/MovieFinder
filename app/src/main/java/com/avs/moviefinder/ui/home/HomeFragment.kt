@@ -1,12 +1,11 @@
 package com.avs.moviefinder.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navGraphViewModels
 import androidx.paging.LoadState
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.network.ErrorType
@@ -26,14 +25,13 @@ class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var connectionLiveData: ConnectionLiveData
-    lateinit var homeViewModel: HomeViewModel
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+    private val homeViewModel: HomeViewModel by
+    navGraphViewModels(R.id.nav_graph) {
+        viewModelFactory
     }
 
     override fun onCreateView(

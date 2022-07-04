@@ -1,12 +1,11 @@
 package com.avs.moviefinder.ui.favorites
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navGraphViewModels
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
@@ -22,15 +21,13 @@ class FavoritesFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var favoritesViewModel: FavoritesViewModel
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        favoritesViewModel =
-            ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
+    private val favoritesViewModel: FavoritesViewModel by
+    navGraphViewModels(R.id.nav_graph) {
+        viewModelFactory
     }
 
     override fun onCreateView(

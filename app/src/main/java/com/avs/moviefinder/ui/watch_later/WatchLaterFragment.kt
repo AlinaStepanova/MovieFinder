@@ -1,12 +1,11 @@
 package com.avs.moviefinder.ui.watch_later
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navGraphViewModels
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
@@ -22,15 +21,13 @@ class WatchLaterFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var watchLaterViewModel: WatchLaterViewModel
 
     private var _binding: FragmentWatchLaterBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        watchLaterViewModel =
-            ViewModelProvider(this, viewModelFactory).get(WatchLaterViewModel::class.java)
+    private val watchLaterViewModel: WatchLaterViewModel by
+    navGraphViewModels(R.id.nav_graph) {
+        viewModelFactory
     }
 
     override fun onCreateView(
