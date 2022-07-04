@@ -1,16 +1,15 @@
 package com.avs.moviefinder.ui.home
 
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.avs.moviefinder.data.dto.ConnectivityRestored
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesFilterResult
+import com.avs.moviefinder.data.dto.PagingDataList
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.repository.HomeRepository
-import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
-import com.avs.moviefinder.utils.IS_MOVIE_UPDATED_EXTRA
 import com.avs.moviefinder.utils.RxBus
 import com.avs.moviefinder.utils.buildShareLink
 import io.reactivex.disposables.CompositeDisposable
@@ -22,9 +21,10 @@ class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<MutableList<Movie>>()
-    val movies: LiveData<MutableList<Movie>>
+    private var _movies = MutableLiveData<PagingData<Movie>>()
+    val movies: LiveData<PagingData<Movie>>
         get() = _movies
+
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -37,14 +37,15 @@ class HomeViewModel @Inject constructor(
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
+    private var _selectedCategory = MutableLiveData<MoviesCategory>()
     val selectedCategory: LiveData<MoviesCategory>
         get() = _selectedCategory
     private val compositeDisposable = CompositeDisposable()
-    private var _selectedCategory = MutableLiveData<MoviesCategory>()
 
     init {
+        _selectedCategory.value = MoviesCategory.POPULAR
         compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
-        homeRepository.getAllMovies(_selectedCategory.value)
+        homeRepository.getAllMovies(_selectedCategory.value, viewModelScope)
     }
 
     override fun onCleared() {
@@ -55,64 +56,30 @@ class HomeViewModel @Inject constructor(
 
     private fun subscribeToEvents(event: Any?) {
         when (event) {
-            is MoviesFilterResult -> {
-                _isProgressVisible.value = false
-                _isLoading.value = false
-                _errorType.value = if (event.movies.isEmpty()) ErrorType.NO_RESULTS else null
-                if (event.movies.isEmpty() || event.movies.first.id != 0L) event.movies.addFirst(Movie())
-                _movies.value = event.movies
-            }
-            is Movie -> {
-                _movies.value?.let { list ->
-                    val fetchedMovie = list.firstOrNull { it.id == event.id }
-                    fetchedMovie?.let {
-                        val updatedMovieIndex = list.indexOf(it)
-                        if (updatedMovieIndex != -1) {
-                            list[updatedMovieIndex] = event
-                            _movies.value = list
-                        }
-                    }
-                }
-            }
             is Locale -> onRefresh()
-            is ConnectivityRestored -> {
-                if (_errorType.value == ErrorType.NETWORK) onRefresh()
-            }
+            is ConnectivityRestored -> onRefresh()
             is Throwable -> {
                 _isProgressVisible.value = false
                 _isLoading.value = false
-                _movies.value = LinkedList()
+                _movies.value = PagingData.empty()
                 _errorType.value = ErrorType.NETWORK
+            }
+            is PagingDataList -> {
+                _isProgressVisible.value = false
+                _isLoading.value = false
+                _movies.value = event.movies
             }
         }
     }
 
     fun onRefresh() {
         _errorType.value = null
-        homeRepository.getAllMovies(_selectedCategory.value)
+        homeRepository.getAllMovies(_selectedCategory.value, viewModelScope)
     }
 
     fun shareMovie(movieId: Long) {
         _shareBody.value = buildShareLink(movieId)
         _shareBody.value = null
-    }
-
-    fun addToWatchLater(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            it.isInWatchLater = !it.isInWatchLater
-            it.lastTimeUpdated = System.currentTimeMillis()
-            homeRepository.insertMovie(it)
-        }
-    }
-
-    fun addToFavorites(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            it.isFavorite = !it.isFavorite
-            it.lastTimeUpdated = System.currentTimeMillis()
-            homeRepository.insertMovie(it)
-        }
     }
 
     fun onPopularClick() {
@@ -136,14 +103,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun handleOnActivityResult(resultIntent: Intent) {
-        val isMovieUpdated = resultIntent.getBooleanExtra(IS_MOVIE_UPDATED_EXTRA, false)
-        if (isMovieUpdated) {
-            val updatedMovie = resultIntent.getParcelableExtra<Movie>(MOVIE_EXTRA_TAG)
-            if (updatedMovie != null && updatedMovie.id > 0) {
-                updatedMovie.lastTimeUpdated = System.currentTimeMillis()
-                homeRepository.updateMovie(updatedMovie)
-            }
+    fun onUpcomingClick() {
+        if (_selectedCategory.value != MoviesCategory.UPCOMING) {
+            _selectedCategory.value = MoviesCategory.UPCOMING
+            onRefresh()
         }
     }
 }

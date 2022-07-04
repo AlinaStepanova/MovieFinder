@@ -19,6 +19,7 @@
     <string name="deleted_watch_snack_bar_text">was deleted from your watchlist</string>
     <string name="unknown_text">Unknown</string>
     <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
     <string name="back_online_text">Back online</string>
     <string name="homepage">Homepage</string>
     <string name="hours">h</string>

@@ -160,6 +160,29 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
         .into(this)
 }
 
+@BindingAdapter("smallPosterImage")
+fun ShapeableImageView.setSmallPosterImage(item: Movie) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setTopRightCorner(CornerFamily.ROUNDED, pixels)
+        .setTopLeftCorner(CornerFamily.ROUNDED, pixels)
+        .build()
+    Picasso.get()
+        .load(POSTER_PREVIEW_URL + item.posterPath)
+        .transform(
+            CropTransformation(
+                1F,
+                1F,
+                GravityHorizontal.CENTER,
+                GravityVertical.TOP
+            )
+        )
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
+
 @BindingAdapter("popularCategory")
 fun TextView.setPopularCategoryAppearance(selectedCategory: MoviesCategory) {
     if (selectedCategory == MoviesCategory.POPULAR) {
@@ -181,6 +204,15 @@ fun TextView.setTopRatedCategoryAppearance(selectedCategory: MoviesCategory) {
 @BindingAdapter("nowPlayingCategory")
 fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
     if (selectedCategory == MoviesCategory.NOW_PLAYING) {
+        setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
+    } else {
+        setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)
+    }
+}
+
+@BindingAdapter("upcomingCategory")
+fun TextView.setUpcomingCategoryAppearance(selectedCategory: MoviesCategory) {
+    if (selectedCategory == MoviesCategory.UPCOMING) {
         setTextState(R.drawable.rounded_button_shape_active, R.color.colorAccent)
     } else {
         setTextState(R.drawable.rounded_button_shape_inactive, R.color.mainGrey)

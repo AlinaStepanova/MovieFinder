@@ -17,7 +17,6 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
@@ -44,27 +43,39 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     return formattedDate
 }
 
-fun buildNowPlayingUrl(): String {
+fun buildNowPlayingUrl(page: Int): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
     val language = LocaleReceiver.language
     return "3/discover/movie?api_key=$API_KEY" +
+            "&page=$page" +
             "&primary_release_date.gte=$monthAgoDate" +
             "&primary_release_date.lte=$currentDate" +
             "&sort_by=popularity.desc" +
             "&language=$language"
 }
 
-fun buildPopularMoviesUrl(): String {
+fun buildPopularMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
     return "3/movie/popular?api_key=$API_KEY" +
+            "&page=$page" +
             "&include_adult=false" +
             "&language=$language"
 }
 
-fun buildTopRatedMoviesUrl(): String {
+fun buildTopRatedMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
     return "3/movie/top_rated?api_key=$API_KEY" +
+            "&page=$page" +
+            "&include_adult=false" +
+            "&language=$language"
+}
+
+fun buildUpcomingMoviesUrl(page: Int): String {
+    val language = LocaleReceiver.language
+    return "3/movie/upcoming?api_key=$API_KEY" +
+            "&page=$page" +
+            "&region=US" +
             "&include_adult=false" +
             "&language=$language"
 }
@@ -74,9 +85,10 @@ fun buildMovieByIdUrl(id: Long): String {
     return "3/movie/$id?api_key=$API_KEY&language=$language"
 }
 
-fun buildMovieByNameUrl(movieTitle: String): String {
+fun buildMovieByNameUrl(movieTitle: String, page: Int): String {
     val language = LocaleReceiver.language
-    return "3/search/movie?api_key=$API_KEY&page=1" +
+    return "3/search/movie?api_key=$API_KEY" +
+            "&page=$page" +
             "&query=$movieTitle" +
             "&include_adult=false" +
             "&language=$language"

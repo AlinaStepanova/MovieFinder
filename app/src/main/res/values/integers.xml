@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="maxLines">14</integer>
+    <integer name="spanCountPreview">2</integer>
 </resources>

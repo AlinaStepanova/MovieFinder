@@ -1,14 +1,22 @@
 package com.avs.moviefinder.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
+import androidx.paging.rxjava2.observable
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.MoviesFilterResult
+import com.avs.moviefinder.data.dto.PagingDataList
 import com.avs.moviefinder.data.network.ServerApi
+import com.avs.moviefinder.data.network.sources.HomeMoviesSource
 import com.avs.moviefinder.ui.home.MoviesCategory
+import com.avs.moviefinder.utils.PAGE_SIZE
+import com.avs.moviefinder.utils.PREFETCH_DISTANCE
 import com.avs.moviefinder.utils.RxBus
-import com.avs.moviefinder.utils.buildNowPlayingUrl
-import com.avs.moviefinder.utils.buildPopularMoviesUrl
-import com.avs.moviefinder.utils.buildTopRatedMoviesUrl
-import java.util.*
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -18,80 +26,38 @@ class HomeRepository @Inject constructor(
 
     private var moviesDB = ArrayList<Movie>()
 
-    private fun insertMovies(movies: List<Movie>) {
-        compositeDisposable.add(databaseManager.insertMovies(movies.filter { it.id > 0 }))
-    }
-
-    private fun getPopularMovies() {
-        val url = buildPopularMoviesUrl()
-        compositeDisposable.add(
-            serverApi.getPopularMoviesAsSingle(url).subscribe({ fetchedMovies ->
-                combineServerAndDatabaseData(
-                    moviesDB,
-                    fetchedMovies.movies
-                )
-            }, { error -> rxBus.send(error) })
-        )
-    }
-
-    private fun getTopRatedMovies() {
-        val url = buildTopRatedMoviesUrl()
-        compositeDisposable.add(
-            serverApi.getTopRatedMovies(url).subscribe({ fetchedMovies ->
-                combineServerAndDatabaseData(
-                    moviesDB,
-                    fetchedMovies.movies
-                )
-            }, { error -> rxBus.send(error) })
-        )
-    }
-
-    private fun getNowPlayingMovies(url: String) {
-        compositeDisposable.add(
-            serverApi.getNowPlayingMovies(url).subscribe({ fetchedMovies ->
-                combineServerAndDatabaseData(
-                    moviesDB,
-                    fetchedMovies.movies
-                )
-            }, { error -> rxBus.send(error) })
-        )
-    }
-
-    private fun combineServerAndDatabaseData(
-        moviesDB: ArrayList<Movie>,
-        fetchedMovies: LinkedList<Movie>
-    ) {
-        moviesDB.let { localMovies ->
-            if (localMovies.isEmpty()) {
-                insertMovies(fetchedMovies)
-            } else {
-                fetchedMovies.forEach { fetchedMovie ->
-                    val localMovie = localMovies.firstOrNull { it.id == fetchedMovie.id }
-                    if (localMovie != null) {
-                        fetchedMovie.isInWatchLater = localMovie.isInWatchLater
-                        fetchedMovie.isFavorite = localMovie.isFavorite
-                    } else if (fetchedMovie.id != 0L) {
-                        insertMovie(fetchedMovie)
-                    }
+    private fun getAllPagedMovies(category: MoviesCategory, scope: CoroutineScope) {
+        compositeDisposable.add(getPagedData(category)
+            .cachedIn(scope)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                it?.let { pagingData ->
+                    rxBus.send(PagingDataList(pagingData))
                 }
-            }
-        }
-        rxBus.send(MoviesFilterResult(fetchedMovies))
+            }, { databaseManager.handleError(it)})
+        )
     }
 
-    fun getAllMovies(category: MoviesCategory?) {
+    private fun getPagedData(category: MoviesCategory): Observable<PagingData<Movie>> {
+        val pager = Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = true,
+                maxSize = PREFETCH_DISTANCE * 2 + PAGE_SIZE,
+                prefetchDistance = PREFETCH_DISTANCE,
+                initialLoadSize = PAGE_SIZE * 2
+            ),
+            pagingSourceFactory = { HomeMoviesSource(serverApi, category) }
+        )
+        return pager.observable
+    }
+
+    fun getAllMovies(category: MoviesCategory?, scope: CoroutineScope) {
         compositeDisposable.add(
             getAllMovies().subscribe({ localMovies ->
                 moviesDB = localMovies as ArrayList<Movie>
-                when (category) {
-                    MoviesCategory.POPULAR -> getPopularMovies()
-                    MoviesCategory.TOP_RATED -> getTopRatedMovies()
-                    MoviesCategory.NOW_PLAYING -> {
-                        val url = buildNowPlayingUrl()
-                        if (url.isNotEmpty()) getNowPlayingMovies(url)
-                    }
-                    null -> getPopularMovies()
-                }
+                getAllPagedMovies(category ?: MoviesCategory.POPULAR, scope)
             }, { error -> rxBus.send(error) })
         )
     }

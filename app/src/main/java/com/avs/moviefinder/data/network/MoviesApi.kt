@@ -13,16 +13,10 @@ import retrofit2.http.Url
 interface MoviesApi {
 
     @GET
-    fun getPopularMovies(@Url url: String): Single<MoviesAPIFilter>
+    fun getMovies(@Url url: String): Single<MoviesResponse>
 
     @GET
-    fun getTopRatedMovies(@Url url: String): Single<MoviesAPIFilter>
-
-    @GET
-    fun getNowPlayingMovies(@Url url: String): Single<MoviesAPIFilter>
-
-    @GET
-    fun getMovieByName(@Url url: String): Single<MoviesSearchFilter>
+    fun getMovieByName(@Url url: String): Single<MoviesResponse>
 
     @GET
     fun getMovieById(@Url url: String): Single<Movie>

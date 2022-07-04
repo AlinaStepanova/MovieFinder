@@ -1,22 +1,21 @@
 package com.avs.moviefinder.ui.search_result
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.paging.LoadState
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.network.ErrorType
 import com.avs.moviefinder.databinding.FragmentSearchResultBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
-import com.avs.moviefinder.ui.recycler_view.MovieListener
-import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesAdapter
+import com.avs.moviefinder.ui.recycler_view.MovieClickListener
+import com.avs.moviefinder.ui.recycler_view.adaptes.MoviePreviewPagingAdapter
 import javax.inject.Inject
 
 class SearchResultFragment : BaseFragment() {
@@ -28,15 +27,6 @@ class SearchResultFragment : BaseFragment() {
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
-
-    private val resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let {
-                    searchResultViewModel.handleOnActivityResult(it)
-                }
-            }
-        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,20 +46,19 @@ class SearchResultFragment : BaseFragment() {
         binding.findDetailViewModel = searchResultViewModel
         binding.lifecycleOwner = this
         searchResultViewModel.searchInitialQuery(args.query)
-        val adapter = MoviesAdapter(
-            MovieListener(
-                { movie -> startMovieActivityForResult(movie, resultLauncher) },
-                { movieId -> searchResultViewModel.shareMovie(movieId) },
-                { movieId -> searchResultViewModel.addToFavorites(movieId) }
-            ) { movieId -> searchResultViewModel.addToWatchLater(movieId) }
+        val adapter = MoviePreviewPagingAdapter(
+            MovieClickListener { movie -> startMovieActivity(movie) }
         )
         binding.rvFindRecyclerView.adapter = adapter
-        searchResultViewModel.movies.observe(viewLifecycleOwner) { movies ->
-            movies?.let {
-                adapter.submitList(movies.map { movie ->
-                    movie.copy()
-                })
+
+        adapter.addLoadStateListener { loadState ->
+            if (loadState.source.refresh is LoadState.Error) {
+                handleErrorEvent(ErrorType.NO_RESULTS)
             }
+        }
+
+        searchResultViewModel.movies.observe(viewLifecycleOwner) { movies ->
+            adapter.submitData(lifecycle, movies)
         }
         searchResultViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
@@ -80,6 +69,7 @@ class SearchResultFragment : BaseFragment() {
         searchResultViewModel.errorType.observe(viewLifecycleOwner) {
             handleErrorEvent(it)
         }
+
         return root
     }
 

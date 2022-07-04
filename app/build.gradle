@@ -93,6 +93,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
     implementation "androidx.room:room-ktx:$version_room"
     implementation "androidx.room:room-rxjava2:$version_room"
+    implementation "androidx.room:room-paging:$version_room"
 
     // tests
     testImplementation 'junit:junit:4.13.2'
