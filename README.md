@@ -1,18 +1,17 @@
 # MovieFinder
 
 Find movies to be added to your personal watch- and favorites lists, search for movies by the title.<br />
-Review popular, top rated and now playing movies.
+Review popular, top rated, upcoming and now playing movies.
 
 <i>Note: work in progress.</i>
 
 The TMDb movie database API: https://www.themoviedb.org/documentation/api
 
+Please, obtain your own API key in order to work with the source code.
 
 <h3> Active branches: </h3>
 
-<ul><b> dev </b> - contains stable implementation of main functionality and tests.</ul>
-
-<ul><b> feature/paging </b> - is derived from a dev branch, contains changes related to the pagination implementation at Favorites, Watch Later and Search fragments (work in progress).</ul>
+<ul><b> dev </b> - contains stable implementation of main functionality.</ul>
 
 <h3> Architecture approach </h3>
 
@@ -45,5 +44,3 @@ The TMDb movie database API: https://www.themoviedb.org/documentation/api
   <img src="https://user-images.githubusercontent.com/23102335/177212735-bdd77dde-8c2a-465d-bde3-bd0144595343.jpeg" width="25%">
   <img src="https://user-images.githubusercontent.com/23102335/177212769-f62bb262-10d7-4f49-8662-0f0e0bd720b6.jpeg" width="25%">
 </p>
-
-Please, obtain your own API key in order to work with the source code.
