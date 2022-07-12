@@ -3,7 +3,6 @@ package com.avs.moviefinder.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.avs.moviefinder.R
@@ -47,13 +46,6 @@ open class BaseFragment : DaggerFragment() {
 
     protected fun startMovieActivity(movie: Movie) {
         startActivity(getMovieActivityIntent(movie))
-    }
-
-    protected fun startMovieActivityForResult(
-        movie: Movie,
-        resultLauncher: ActivityResultLauncher<Intent>
-    ) {
-        resultLauncher.launch(getMovieActivityIntent(movie))
     }
 
     protected fun shareMovie(movieLink: String) {

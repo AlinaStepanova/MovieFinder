@@ -26,3 +26,16 @@ data class Result(
     var voteCount: Int = 0,
     var popularity: Double = 0.0,
 )
+
+fun Result.toMovie(): Movie {
+    return Movie(
+        id = id?.toLongOrNull() ?: 0,
+        title = title,
+        overview = overview,
+        posterPath = posterPath,
+        releaseDate = releaseDate,
+        homepage = site,
+        popularity = popularity,
+        rating = voteAverage.toString(),
+    )
+}
