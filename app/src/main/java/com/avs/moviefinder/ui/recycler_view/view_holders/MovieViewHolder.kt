@@ -16,6 +16,14 @@ class MovieViewHolder private constructor(private val binding: ItemMovieBinding)
         binding.movieClickListener = movieClickListener
         binding.tvMovieTitle.text = item.title
         binding.tvMovieDescription.text = item.overview
+        updateUI(item)
+    }
+
+    fun bindState(item: Movie) {
+        updateUI(item)
+    }
+
+    private fun updateUI(item: Movie) {
         binding.movie = item
         binding.executePendingBindings()
     }
