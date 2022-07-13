@@ -100,13 +100,6 @@ class MovieActivity : DaggerAppCompatActivity() {
         binding.fabWatched.setOnClickListener { movieViewModel.addToWatchLater() }
     }
 
-    private fun loadMovie(movie: Movie?) {
-        loadImage(movie?.posterPath ?: "")
-        binding.appBar.setExpanded(true, true)
-        binding.scrollContainer.smoothScrollTo(0, 0)
-        movieViewModel.openMovieDetails(movie)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_movie, menu)
         return true
@@ -148,6 +141,13 @@ class MovieActivity : DaggerAppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun loadMovie(movie: Movie?) {
+        movieViewModel.openMovieDetails(movie)
+        loadImage(movie?.posterPath ?: "")
+        binding.appBar.setExpanded(true, true)
+        binding.scrollContainer.smoothScrollTo(0, 0)
+    }
+
     private fun observeSimilarMovies(similarAdapter: ResultAdapter): (list: List<Result>) -> Unit =
         {
             if (it.isEmpty()) {
@@ -156,6 +156,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvSimilar.visibility = View.VISIBLE
                 binding.rvSimilar.visibility = View.VISIBLE
                 similarAdapter.submitList(it)
+                binding.rvSimilar.smoothScrollToPosition(0)
             }
         }
 
@@ -167,6 +168,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvCast.visibility = View.VISIBLE
                 binding.rvCast.visibility = View.VISIBLE
                 castAdapter.submitList(it)
+                binding.rvCast.smoothScrollToPosition(0)
             }
         }
 
