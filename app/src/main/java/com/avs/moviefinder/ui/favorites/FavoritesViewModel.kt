@@ -42,6 +42,7 @@ class FavoritesViewModel @Inject constructor(
 
     init {
         compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
+        getFavorites()
         _isProgressVisible.value = true
     }
 

@@ -7,6 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.observable
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.utils.LOCAL_PAGE_SIZE
+import com.avs.moviefinder.utils.LOCAL_PREFETCH_DISTANCE
 import com.avs.moviefinder.utils.RxBus
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -64,10 +66,10 @@ class DatabaseManager @Inject constructor(
     fun getFavoritesMoviesPage(): Observable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5,
+                pageSize = LOCAL_PAGE_SIZE,
                 enablePlaceholders = true,
-                prefetchDistance = 2,
-                initialLoadSize = 5
+                prefetchDistance = LOCAL_PREFETCH_DISTANCE,
+                initialLoadSize = LOCAL_PAGE_SIZE
             ),
             pagingSourceFactory = { dataSource.getFavoritesList() }
         ).observable
@@ -76,10 +78,10 @@ class DatabaseManager @Inject constructor(
     fun getWatchLaterMoviesPage(): Observable<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 5,
+                pageSize = LOCAL_PAGE_SIZE,
                 enablePlaceholders = true,
-                prefetchDistance = 2,
-                initialLoadSize = 5
+                prefetchDistance = LOCAL_PREFETCH_DISTANCE,
+                initialLoadSize = LOCAL_PAGE_SIZE
             ),
             pagingSourceFactory = { dataSource.getWatchLaterList() }
         ).observable

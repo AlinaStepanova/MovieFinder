@@ -42,6 +42,7 @@ class WatchLaterViewModel @Inject constructor(
 
     init {
         compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
+        getWatchLaterMovies()
         _isProgressVisible.value = true
     }
 

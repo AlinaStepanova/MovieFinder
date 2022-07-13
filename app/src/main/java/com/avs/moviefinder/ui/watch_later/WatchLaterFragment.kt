@@ -72,7 +72,6 @@ class WatchLaterFragment : BaseFragment() {
             setIconsVisibility(adapter.snapshot().items)
         }
         binding.rvWatchLaterRecyclerView.adapter = adapter
-        watchLaterViewModel.getWatchLaterMovies()
         return root
     }
 

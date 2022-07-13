@@ -72,7 +72,6 @@ class FavoritesFragment : BaseFragment() {
             setIconsVisibility(adapter.snapshot().items)
         }
         binding.rvFindRecyclerView.adapter = adapter
-        favoritesViewModel.getFavorites()
         return root
     }
 
