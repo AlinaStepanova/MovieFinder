@@ -13,6 +13,10 @@ class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem == newItem
     }
+
+    override fun getChangePayload(oldItem: Movie, newItem: Movie): Any? {
+        return if (oldItem.isFavorite != newItem.isFavorite || oldItem.isInWatchLater != newItem.isInWatchLater) true else null
+    }
 }
 
 class CastDiffCallback : DiffUtil.ItemCallback<Cast>() {

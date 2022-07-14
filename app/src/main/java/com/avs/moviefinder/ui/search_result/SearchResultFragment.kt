@@ -31,7 +31,7 @@ class SearchResultFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         searchResultViewModel =
-            ViewModelProvider(this, viewModelFactory).get(SearchResultViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory)[SearchResultViewModel::class.java]
     }
 
     override fun onCreateView(

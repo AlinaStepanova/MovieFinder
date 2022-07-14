@@ -16,7 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_marginEnd="@dimen/margin_12dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(result)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/similarPoster"

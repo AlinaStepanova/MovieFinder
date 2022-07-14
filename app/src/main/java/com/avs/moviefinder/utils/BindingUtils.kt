@@ -127,7 +127,7 @@ fun ImageView.setWatchLaterAppearance(item: Movie?) {
 }
 
 @BindingAdapter("posterImage")
-fun ShapeableImageView.setPosterImage(item: Movie) {
+fun ShapeableImageView.setPosterImage(item: Movie?) {
     val widthRatio = 1F
     val pixels = dpToPx(16)
     var heightRatio = 0.65F
@@ -146,7 +146,7 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
             .build()
     }
     Picasso.get()
-        .load(POSTER_URL + item.posterPath)
+        .load(POSTER_URL + item?.posterPath)
         .transform(
             CropTransformation(
                 widthRatio,

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/rounded_item_shape.xml" value="0.21944444444444444" />
+        <entry key="app/src/main/res/layout-land/item_movie.xml" value="0.18388791593695272" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/activity_movie.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/connectivity_snackbar.xml" value="0.1609375" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/layout/item_header.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_movie.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/item_movie_preview.xml" value="0.1609375" />
+        <entry key="app/src/main/res/layout/item_similar.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/layout_connectivity_snackbar.xml" value="0.1609375" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1648148148148148" />
       </map>

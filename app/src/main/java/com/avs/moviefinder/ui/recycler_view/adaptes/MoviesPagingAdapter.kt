@@ -17,6 +17,16 @@ class MoviesPagingAdapter(private val movieClickListener: MovieListener) :
         }
     }
 
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            if (payloads[0] == true) {
+                getItem(position)?.let { holder.bindState(it) }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder.from(parent)
     }

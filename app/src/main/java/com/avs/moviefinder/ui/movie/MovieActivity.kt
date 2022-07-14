@@ -17,6 +17,7 @@ import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.Result
+import com.avs.moviefinder.data.dto.toMovie
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
@@ -48,7 +49,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie)
-        movieViewModel = ViewModelProvider(this, viewModelFactory).get(MovieViewModel::class.java)
+        movieViewModel = ViewModelProvider(this, viewModelFactory)[MovieViewModel::class.java]
         setSupportActionBar(binding.toolbar)
         statusBarColor = getPrimaryDarkColor()
         binding.mainViewModel = movieViewModel
@@ -56,15 +57,13 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        binding.shimmerViewContainer.startShimmerAnimation()
         val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
-        loadImage(extrasMovie?.posterPath ?: "")
-        binding.toolbar.title = extrasMovie?.title
+        binding.toolbarLayout.title = extrasMovie?.title ?: ""
+        loadMovie(extrasMovie)
         val castAdapter = CastAdapter(CastListener { })
         movieViewModel.cast.observe(this, observeCast(castAdapter))
-        val similarAdapter = ResultAdapter(ResultListener { })
+        val similarAdapter = ResultAdapter(ResultListener { result -> loadMovie(result.toMovie()) })
         movieViewModel.similarMovies.observe(this, observeSimilarMovies(similarAdapter))
-        movieViewModel.openMovieDetails(extrasMovie)
         binding.rvCast.adapter = castAdapter
         binding.rvSimilar.adapter = similarAdapter
         binding.ivPoster.tag = target
@@ -78,13 +77,13 @@ class MovieActivity : DaggerAppCompatActivity() {
             it?.let {
                 stopShimmerAnimation()
                 setTagline(it)
-                if (binding.tvOverview.text.isEmpty()) binding.tvOverview.text = it.overview
+                binding.tvOverview.text = it.overview
                 formatReleaseDate(it)
                 formatRating(it)
                 formatRuntime(it)
                 formatCountries(it)
                 formatGenres(it)
-                if (binding.toolbar.title != it.title) binding.toolbar.title = it.title
+                binding.toolbarLayout.title = it.title
                 binding.tvLinks.text = buildLinks(
                     it.imdbId,
                     it.homepage,
@@ -142,6 +141,13 @@ class MovieActivity : DaggerAppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun loadMovie(movie: Movie?) {
+        movieViewModel.openMovieDetails(movie)
+        loadImage(movie?.posterPath ?: "")
+        binding.appBar.setExpanded(true, true)
+        binding.scrollContainer.smoothScrollTo(0, 0)
+    }
+
     private fun observeSimilarMovies(similarAdapter: ResultAdapter): (list: List<Result>) -> Unit =
         {
             if (it.isEmpty()) {
@@ -150,6 +156,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvSimilar.visibility = View.VISIBLE
                 binding.rvSimilar.visibility = View.VISIBLE
                 similarAdapter.submitList(it)
+                binding.rvSimilar.smoothScrollToPosition(0)
             }
         }
 
@@ -161,6 +168,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.tvCast.visibility = View.VISIBLE
                 binding.rvCast.visibility = View.VISIBLE
                 castAdapter.submitList(it)
+                binding.rvCast.smoothScrollToPosition(0)
             }
         }
 
@@ -191,6 +199,9 @@ class MovieActivity : DaggerAppCompatActivity() {
             binding.ivHourglass.visibility = View.VISIBLE
             binding.tvRuntime.visibility = View.VISIBLE
             binding.tvRuntime.text = runtime
+        } else {
+            binding.ivHourglass.visibility = View.GONE
+            binding.tvRuntime.visibility = View.GONE
         }
     }
 
@@ -200,6 +211,9 @@ class MovieActivity : DaggerAppCompatActivity() {
             binding.tvMovieRating.text = rating
             binding.tvMovieRating.visibility = View.VISIBLE
             binding.ivStar.visibility = View.VISIBLE
+        } else {
+            binding.tvMovieRating.visibility = View.GONE
+            binding.ivStar.visibility = View.GONE
         }
     }
 
@@ -208,6 +222,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         if (!genres.isNullOrEmpty()) {
             binding.tvGenres.visibility = View.VISIBLE
             binding.tvGenres.text = genres
+        } else {
+            binding.tvGenres.visibility = View.GONE
         }
     }
 
@@ -217,6 +233,9 @@ class MovieActivity : DaggerAppCompatActivity() {
             binding.ivLocation.visibility = View.VISIBLE
             binding.tvCountries.visibility = View.VISIBLE
             binding.tvCountries.text = countries
+        } else {
+            binding.ivLocation.visibility = View.GONE
+            binding.tvCountries.visibility = View.GONE
         }
     }
 
@@ -224,6 +243,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         if (!movie.tagline.isNullOrEmpty()) {
             binding.tvTagline.visibility = View.VISIBLE
             binding.tvTagline.text = movie.tagline
+        } else {
+            binding.tvTagline.visibility = View.GONE
         }
     }
 
@@ -263,7 +284,7 @@ class MovieActivity : DaggerAppCompatActivity() {
                     binding.ivPoster.setImageBitmap(bitmap)
                     Palette.from(bitmap)
                         .generate { palette ->
-                            val swatch = palette!!.dominantSwatch
+                            val swatch = palette?.dominantSwatch
                             swatch?.let {
                                 statusBarColor = it.rgb
                                 this@MovieActivity.window.statusBarColor = statusBarColor

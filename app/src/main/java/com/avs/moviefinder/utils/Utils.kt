@@ -211,7 +211,7 @@ fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
 fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 
 fun getIconVisibility(movies: List<Movie>) =
-    if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+    if (movies.isEmpty()) View.VISIBLE else View.INVISIBLE
 
 fun buildUndoSnackBarMessage(title: String, text: String): String = "\"$title\" $text"
 
