@@ -360,6 +360,37 @@
                     tools:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/tvCrew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/crew_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvCast"
+                    tools:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCrew"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_cast_height"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginEnd="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCrew"
+                    tools:listitem="@layout/item_crew"
+                    tools:visibility="visible" />
+
+                <TextView
                     android:id="@+id/tvSimilar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -371,7 +402,7 @@
                     android:textSize="@dimen/text_size_22"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rvCast"
+                    app:layout_constraintTop_toBottomOf="@+id/rvCrew"
                     tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView

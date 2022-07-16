@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,16 +15,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
-import com.avs.moviefinder.data.dto.Cast
-import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.Result
-import com.avs.moviefinder.data.dto.toMovie
+import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.recycler_view.CastListener
 import com.avs.moviefinder.ui.recycler_view.ResultListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.CastAdapter
+import com.avs.moviefinder.ui.recycler_view.adaptes.CrewAdapter
 import com.avs.moviefinder.ui.recycler_view.adaptes.ResultAdapter
 import com.avs.moviefinder.utils.*
 import com.avs.moviefinder.utils.AppBarStateChangeListener.State.EXPANDED
@@ -62,9 +61,12 @@ class MovieActivity : DaggerAppCompatActivity() {
         loadMovie(extrasMovie)
         val castAdapter = CastAdapter(CastListener { })
         movieViewModel.cast.observe(this, observeCast(castAdapter))
+        val crewAdapter = CrewAdapter()
+        movieViewModel.crew.observe(this, observeCrew(crewAdapter))
         val similarAdapter = ResultAdapter(ResultListener { result -> loadMovie(result.toMovie()) })
         movieViewModel.similarMovies.observe(this, observeSimilarMovies(similarAdapter))
         binding.rvCast.adapter = castAdapter
+        binding.rvCrew.adapter = crewAdapter
         binding.rvSimilar.adapter = similarAdapter
         binding.ivPoster.tag = target
         binding.tvLinks.movementMethod = LinkMovementMethod.getInstance()
@@ -169,6 +171,19 @@ class MovieActivity : DaggerAppCompatActivity() {
                 binding.rvCast.visibility = View.VISIBLE
                 castAdapter.submitList(it)
                 binding.rvCast.smoothScrollToPosition(0)
+            }
+        }
+
+    private fun observeCrew(crewAdapter: CrewAdapter): (list: List<Crew>) -> Unit =
+        {
+            if (it.isEmpty()) {
+                binding.rvCrew.visibility = View.GONE
+            } else {
+                Log.d("jjj", "crew " + it.toString())
+                binding.tvCrew.visibility = View.VISIBLE
+                binding.rvCrew.visibility = View.VISIBLE
+                crewAdapter.submitList(it)
+                binding.rvCrew.smoothScrollToPosition(0)
             }
         }
 
