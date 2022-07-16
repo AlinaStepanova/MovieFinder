@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
 import com.avs.moviefinder.R
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
@@ -52,8 +51,12 @@ class FavoritesFragment : BaseFragment() {
             it?.let {
                 adapter.submitData(lifecycle, it)
             }
-            setIconsVisibility(adapter.snapshot().items)
         }
+
+        adapter.addLoadStateListener {
+            setIconsVisibility(adapter.itemCount)
+        }
+
         favoritesViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
         }
@@ -69,7 +72,6 @@ class FavoritesFragment : BaseFragment() {
                     )
                 ) { favoritesViewModel.undoRemovingMovie() }
             }
-            setIconsVisibility(adapter.snapshot().items)
         }
         binding.rvFindRecyclerView.adapter = adapter
         return root
@@ -80,8 +82,8 @@ class FavoritesFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun setIconsVisibility(movies: List<Movie>) {
-        binding.ivMovieIcon.visibility = getIconVisibility(movies)
-        binding.ivFavoriteIcon.visibility = getIconVisibility(movies)
+    private fun setIconsVisibility(moviesCount: Int) {
+        binding.ivMovieIcon.visibility = getIconVisibility(moviesCount)
+        binding.ivFavoriteIcon.visibility = getIconVisibility(moviesCount)
     }
 }
