@@ -6,28 +6,23 @@
     <data>
 
         <variable
-            name="result"
-            type="com.avs.moviefinder.data.dto.Result" />
+            name="crew"
+            type="com.avs.moviefinder.data.dto.Crew" />
 
-        <variable
-            name="clickListener"
-            type="com.avs.moviefinder.ui.recycler_view.ResultListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_marginEnd="@dimen/margin_12dp"
-        android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(result)}">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/similarPoster"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/poster_height"
+            android:id="@+id/castPhoto"
+            android:layout_width="@dimen/dimen_86dp"
+            android:layout_height="@dimen/photo_person_height"
+            app:profileImage="@{crew.profilePath}"
             android:scaleType="centerCrop"
-            app:similarMoviePoster="@{result}"
-            tools:background="@tools:sample/backgrounds/scenic"
-            app:layout_constraintDimensionRatio="0.75"
+            tools:background="@tools:sample/avatars"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,13 +33,28 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            app:similarTitle="@{result}"
             android:layout_marginTop="@dimen/margin_4dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_16sp"
+            android:textColor="@color/mainGrey"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="italic"
+            app:personName="@{crew.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/similarPoster" />
+            app:layout_constraintTop_toBottomOf="@+id/castPhoto" />
+
+        <TextView
+            android:id="@+id/tvRole"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_15sp"
+            app:crewJob="@{crew}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
