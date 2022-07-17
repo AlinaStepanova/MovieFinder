@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -179,7 +178,6 @@ class MovieActivity : DaggerAppCompatActivity() {
             if (it.isEmpty()) {
                 binding.rvCrew.visibility = View.GONE
             } else {
-                Log.d("jjj", "crew " + it.toString())
                 binding.tvCrew.visibility = View.VISIBLE
                 binding.rvCrew.visibility = View.VISIBLE
                 crewAdapter.submitList(it)

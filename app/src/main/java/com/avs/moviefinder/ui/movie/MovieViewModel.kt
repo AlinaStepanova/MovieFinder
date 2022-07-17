@@ -55,13 +55,23 @@ class MovieViewModel @Inject constructor(
             }
             is Credits -> {
                 _cast.value = event.cast.take(CAST_REQUIRED_COUNT)
-                _crew.value = event.crew.sortedBy { it.popularity }.take(CREW_REQUIRED_COUNT)
+                _crew.value = getSortedCrew(event).take(CREW_REQUIRED_COUNT)
             }
             is Similar -> {
                 _similarMovies.value = event.similar.take(SIMILAR_MOVIES_REQUIRED_COUNT)
             }
             is Locale -> openMovieDetails(_movie.value)
         }
+    }
+
+    private fun getSortedCrew(event: Credits): MutableList<Crew> {
+        val sortedList = event.crew.sortedByDescending { it.popularity }.toMutableList()
+        val director = sortedList.firstOrNull { it.department == DEPARTMENT_DIRECTING }
+        director?.let {
+            sortedList.remove(it)
+            sortedList.add(0, it)
+        }
+        return sortedList
     }
 
     fun openMovieDetails(movie: Movie?) {
