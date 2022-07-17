@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
 import com.avs.moviefinder.R
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
@@ -52,7 +51,9 @@ class WatchLaterFragment : BaseFragment() {
             it?.let {
                 adapter.submitData(lifecycle, it)
             }
-            setIconsVisibility(adapter.snapshot().items)
+        }
+        adapter.addLoadStateListener {
+            setIconsVisibility(adapter.itemCount)
         }
         watchLaterViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
@@ -69,7 +70,6 @@ class WatchLaterFragment : BaseFragment() {
                     )
                 ) { watchLaterViewModel.undoRemovingMovie() }
             }
-            setIconsVisibility(adapter.snapshot().items)
         }
         binding.rvWatchLaterRecyclerView.adapter = adapter
         return root
@@ -80,8 +80,8 @@ class WatchLaterFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun setIconsVisibility(movies: List<Movie>) {
-        binding.ivMovieIcon.visibility = getIconVisibility(movies)
-        binding.ivWatchLaterIcon.visibility = getIconVisibility(movies)
+    private fun setIconsVisibility(moviesCount: Int) {
+        binding.ivMovieIcon.visibility = getIconVisibility(moviesCount)
+        binding.ivWatchLaterIcon.visibility = getIconVisibility(moviesCount)
     }
 }

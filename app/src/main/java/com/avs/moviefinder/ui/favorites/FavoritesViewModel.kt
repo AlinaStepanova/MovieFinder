@@ -76,7 +76,7 @@ class FavoritesViewModel @Inject constructor(
         _removedMovie.value = null
     }
 
-    fun getFavorites() = repository.getFavoritesList(viewModelScope)
+    private fun getFavorites() = repository.getFavoritesList(viewModelScope)
 
     fun undoRemovingMovie() {
         _removedMovie.value?.let {

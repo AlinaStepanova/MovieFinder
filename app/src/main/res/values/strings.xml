@@ -26,5 +26,6 @@
     <string name="minutes">m</string>
     <string name="read_more_text">...Read more</string>
     <string name="cast_text">Cast</string>
+    <string name="crew_text">Crew</string>
     <string name="similar_text">Similar</string>
 </resources>

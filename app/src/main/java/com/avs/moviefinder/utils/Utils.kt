@@ -10,7 +10,6 @@ import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.LocaleReceiver
 import java.math.BigDecimal
 import java.text.DateFormat
@@ -210,8 +209,8 @@ fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
 
 fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 
-fun getIconVisibility(movies: List<Movie>) =
-    if (movies.isEmpty()) View.VISIBLE else View.INVISIBLE
+fun getIconVisibility(moviesCount: Int) =
+    if (moviesCount == 0) View.VISIBLE else View.INVISIBLE
 
 fun buildUndoSnackBarMessage(title: String, text: String): String = "\"$title\" $text"
 

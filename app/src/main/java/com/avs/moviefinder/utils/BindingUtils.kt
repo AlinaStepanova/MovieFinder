@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Cast
+import com.avs.moviefinder.data.dto.Crew
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.dto.Result
 import com.avs.moviefinder.ui.home.MoviesCategory
@@ -20,11 +21,10 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
 private const val RATING_DEFAULT_VALUE = "0"
 
-@BindingAdapter("castName")
-fun TextView.setCastName(cast: Cast?) {
-    cast?.let {
+@BindingAdapter("personName")
+fun TextView.setPersonName(name: String?) {
+    name?.let {
         text = context.getString(R.string.unknown_text)
-        val name = cast.name
         text = if (name.isNullOrEmpty()) context.getString(R.string.unknown_text) else name
     }
 }
@@ -38,15 +38,24 @@ fun TextView.setCastRole(cast: Cast?) {
     }
 }
 
-@BindingAdapter("castImage")
-fun ShapeableImageView.setCastImage(cast: Cast) {
+@BindingAdapter("crewJob")
+fun TextView.setCrewJob(crew: Crew?) {
+    crew?.let {
+        text = context.getString(R.string.unknown_text)
+        val job = crew.job
+        text = if (job.isNullOrEmpty()) context.getString(R.string.unknown_text) else job
+    }
+}
+
+@BindingAdapter("profileImage")
+fun ShapeableImageView.setProfileImage(profilePath: String?) {
     val pixels = dpToPx(8)
     this.shapeAppearanceModel = this.shapeAppearanceModel
         .toBuilder()
         .setAllCorners(CornerFamily.ROUNDED, pixels)
         .build()
     Picasso.get()
-        .load(CAST_PHOTO_URL + cast.profilePath)
+        .load(CAST_PHOTO_URL + profilePath)
         .placeholder(R.drawable.ic_local_movies_grey)
         .error(R.drawable.ic_local_movies_grey)
         .into(this)

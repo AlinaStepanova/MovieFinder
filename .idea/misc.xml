@@ -12,6 +12,8 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_search_result.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/fragment_watch_later.xml" value="0.1609375" />
+        <entry key="app/src/main/res/layout/item_cast.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/item_crew.xml" value="0.15625" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_movie.xml" value="0.19701086956521738" />
         <entry key="app/src/main/res/layout/item_movie_preview.xml" value="0.1609375" />
