@@ -120,18 +120,6 @@ class MovieActivity : DaggerAppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        val isMovieUpdated = movieViewModel.isInitialMovieUpdated()
-        if (isMovieUpdated) {
-            val resultIntent = intent
-            resultIntent.putExtra(IS_MOVIE_UPDATED_EXTRA, isMovieUpdated)
-            resultIntent.putExtra(MOVIE_EXTRA_TAG, movieViewModel.movie.value)
-            setResult(RESULT_OK, resultIntent)
-            finish()
-        }
-        super.onBackPressed()
-    }
-
     override fun onStop() {
         stopShimmerAnimation()
         super.onStop()

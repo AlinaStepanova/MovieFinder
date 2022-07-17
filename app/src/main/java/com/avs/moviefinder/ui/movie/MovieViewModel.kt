@@ -113,9 +113,4 @@ class MovieViewModel @Inject constructor(
         }
         _shareBody.value = null
     }
-
-    fun isInitialMovieUpdated(): Boolean {
-        return _movie.value?.isFavorite != isInitiallyFavorite
-                || _movie.value?.isInWatchLater != isInitiallyInWatchList
-    }
 }
