@@ -76,7 +76,7 @@ class WatchLaterViewModel @Inject constructor(
         _removedMovie.value = null
     }
 
-    fun getWatchLaterMovies() = repository.getWatchList(viewModelScope)
+    private fun getWatchLaterMovies() = repository.getWatchList(viewModelScope)
 
     fun undoRemovingMovie() {
         _removedMovie.value?.let {
