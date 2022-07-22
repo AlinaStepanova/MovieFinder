@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.avs.moviefinder.NavGraphDirections
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.factories.GenericSavedStateViewModelFactory
 import com.avs.moviefinder.di.factories.MainViewModelFactory
@@ -146,6 +147,11 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
+    }
+
+    fun navigateToMovieActivity(movie: Movie) {
+        val action = NavGraphDirections.actionGlobalMovieActivity(movie)
+        navController.navigate(action)
     }
 
     private fun MenuItem.expandSearchViewWithText(text: String?) {

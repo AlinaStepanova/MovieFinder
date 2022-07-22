@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
-import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
@@ -38,14 +37,8 @@ open class BaseFragment : DaggerFragment() {
         super.onPause()
     }
 
-    private fun getMovieActivityIntent(movie: Movie): Intent {
-        return Intent(activity, MovieActivity::class.java).apply {
-            putExtra(MOVIE_EXTRA_TAG, movie)
-        }
-    }
-
     protected fun startMovieActivity(movie: Movie) {
-        startActivity(getMovieActivityIntent(movie))
+        (activity as MainActivity).navigateToMovieActivity(movie)
     }
 
     protected fun shareMovie(movieLink: String) {
