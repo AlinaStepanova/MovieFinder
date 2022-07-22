@@ -51,10 +51,22 @@ class HomeFragment : BaseFragment() {
         }
 
         binding.clickListener = CategoryClickListener(
-            { homeViewModel.onPopularClick() },
-            { homeViewModel.onTopRatedClick() },
-            { homeViewModel.onNowPlayingClick() },
-            { homeViewModel.onUpcomingClick() }
+            {
+                homeViewModel.onPopularClick()
+                binding.rvFindRecyclerView.scrollToPosition(0)
+            },
+            {
+                homeViewModel.onTopRatedClick()
+                binding.rvFindRecyclerView.scrollToPosition(0)
+            },
+            {
+                homeViewModel.onNowPlayingClick()
+                binding.rvFindRecyclerView.scrollToPosition(0)
+            },
+            {
+                homeViewModel.onUpcomingClick()
+                binding.rvFindRecyclerView.scrollToPosition(0)
+            }
         )
         val adapter = MoviePreviewPagingAdapter(
             MovieClickListener { movie -> startMovieActivity(movie) }
