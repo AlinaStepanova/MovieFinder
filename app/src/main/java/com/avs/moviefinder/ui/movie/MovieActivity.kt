@@ -12,12 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navArgs
 import androidx.palette.graphics.Palette
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.*
 import com.avs.moviefinder.databinding.ActivityMovieBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
-import com.avs.moviefinder.ui.MOVIE_EXTRA_TAG
 import com.avs.moviefinder.ui.recycler_view.CastListener
 import com.avs.moviefinder.ui.recycler_view.ResultListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.CastAdapter
@@ -42,6 +42,7 @@ class MovieActivity : DaggerAppCompatActivity() {
     lateinit var binding: ActivityMovieBinding
     var statusBarColor: Int = 0
 
+    private val args: MovieActivityArgs by navArgs()
     private val target = initTarget()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +56,8 @@ class MovieActivity : DaggerAppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        val extrasMovie: Movie? = intent.extras?.getParcelable(MOVIE_EXTRA_TAG)
-        binding.toolbarLayout.title = extrasMovie?.title ?: ""
+        val extrasMovie: Movie = args.movie
+        binding.toolbarLayout.title = extrasMovie.title ?: ""
         loadMovie(extrasMovie)
         val castAdapter = CastAdapter(CastListener { })
         movieViewModel.cast.observe(this, observeCast(castAdapter))

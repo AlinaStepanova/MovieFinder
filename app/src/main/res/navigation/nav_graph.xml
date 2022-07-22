@@ -26,8 +26,23 @@
             android:name="query"
             app:argType="string" />
     </fragment>
+    <activity
+        android:id="@+id/movieActivity"
+        android:name="com.avs.moviefinder.ui.movie.MovieActivity"
+        android:label="MovieActivity"
+        tools:layout="@layout/activity_movie">
+
+        <argument
+            android:name="movie"
+            app:argType="com.avs.moviefinder.data.dto.Movie" />
+    </activity>
     <action
         android:id="@+id/actionGlobalSearchResultFragment"
         app:destination="@id/searchResultFragment"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/actionGlobalMovieActivity"
+        app:destination="@id/movieActivity"
         app:launchSingleTop="true" />
 </navigation>
