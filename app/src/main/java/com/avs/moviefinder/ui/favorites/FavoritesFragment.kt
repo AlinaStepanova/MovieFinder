@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
@@ -55,6 +56,7 @@ class FavoritesFragment : BaseFragment() {
 
         adapter.addLoadStateListener {
             setIconsVisibility(adapter.itemCount)
+            favoritesViewModel.setListItems(adapter.snapshot().items)
         }
 
         favoritesViewModel.shareBody.observe(viewLifecycleOwner) {
@@ -74,6 +76,8 @@ class FavoritesFragment : BaseFragment() {
             }
         }
         binding.rvFindRecyclerView.adapter = adapter
+        ItemTouchHelper(itemTouchCallback(favoritesViewModel::removeFromFavorites))
+            .attachToRecyclerView(binding.rvFindRecyclerView)
         return root
     }
 

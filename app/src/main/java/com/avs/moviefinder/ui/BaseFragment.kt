@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
@@ -91,5 +93,17 @@ open class BaseFragment : DaggerFragment() {
             }
             snackbar.show()
         }
+    }
+
+    protected fun itemTouchCallback(removeItemFromList: (position: Int) -> Unit) = object :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ) = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) =
+            removeItemFromList(viewHolder.absoluteAdapterPosition)
     }
 }

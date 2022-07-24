@@ -28,6 +28,7 @@ class FavoritesViewModel @Inject constructor(
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>>
         get() = _movies
+    private var _localMovies = MutableLiveData<List<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -107,6 +108,17 @@ class FavoritesViewModel @Inject constructor(
             startCountdown()
         }
         repository.updateMovie(updatedMovie)
+    }
+
+    fun removeFromFavorites(itemId: Int) {
+        val movie = _localMovies.value?.get(itemId)
+        if (movie != null) {
+            addFavorites(movie)
+        }
+    }
+
+    fun setListItems(items: List<Movie>) {
+        _localMovies.value = items
     }
 
 }

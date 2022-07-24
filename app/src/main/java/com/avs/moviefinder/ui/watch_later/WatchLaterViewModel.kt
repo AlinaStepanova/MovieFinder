@@ -28,6 +28,7 @@ class WatchLaterViewModel @Inject constructor(
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>>
         get() = _movies
+    private var _localMovies = MutableLiveData<List<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -107,5 +108,16 @@ class WatchLaterViewModel @Inject constructor(
         val updatedMovie = movie.copy()
         updatedMovie.isFavorite = isFavorite
         repository.updateMovie(updatedMovie)
+    }
+
+    fun removeFromWatchList(itemId: Int) {
+        val movie = _localMovies.value?.get(itemId)
+        if (movie != null) {
+            addToWatchLater(movie)
+        }
+    }
+
+    fun setListItems(items: List<Movie>) {
+        _localMovies.value = items
     }
 }

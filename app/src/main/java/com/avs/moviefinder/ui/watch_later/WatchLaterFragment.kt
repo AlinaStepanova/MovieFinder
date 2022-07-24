@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentWatchLaterBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
@@ -54,6 +55,7 @@ class WatchLaterFragment : BaseFragment() {
         }
         adapter.addLoadStateListener {
             setIconsVisibility(adapter.itemCount)
+            watchLaterViewModel.setListItems(adapter.snapshot().items)
         }
         watchLaterViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
@@ -72,6 +74,8 @@ class WatchLaterFragment : BaseFragment() {
             }
         }
         binding.rvWatchLaterRecyclerView.adapter = adapter
+        ItemTouchHelper(itemTouchCallback(watchLaterViewModel::removeFromWatchList))
+            .attachToRecyclerView(binding.rvWatchLaterRecyclerView)
         return root
     }
 
