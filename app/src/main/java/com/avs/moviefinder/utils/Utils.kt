@@ -46,8 +46,8 @@ fun buildNowPlayingUrl(page: Int): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
     val language = LocaleReceiver.language
-    return "3/discover/movie?api_key=$API_KEY" +
-            "&page=$page" +
+    return "3/discover/movie?" +
+            "page=$page" +
             "&primary_release_date.gte=$monthAgoDate" +
             "&primary_release_date.lte=$currentDate" +
             "&sort_by=popularity.desc" +
@@ -56,24 +56,24 @@ fun buildNowPlayingUrl(page: Int): String {
 
 fun buildPopularMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
-    return "3/movie/popular?api_key=$API_KEY" +
-            "&page=$page" +
+    return "3/movie/popular?" +
+            "page=$page" +
             "&include_adult=false" +
             "&language=$language"
 }
 
 fun buildTopRatedMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
-    return "3/movie/top_rated?api_key=$API_KEY" +
-            "&page=$page" +
+    return "3/movie/top_rated?" +
+            "page=$page" +
             "&include_adult=false" +
             "&language=$language"
 }
 
 fun buildUpcomingMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
-    return "3/movie/upcoming?api_key=$API_KEY" +
-            "&page=$page" +
+    return "3/movie/upcoming?" +
+            "page=$page" +
             "&region=US" +
             "&include_adult=false" +
             "&language=$language"
@@ -81,13 +81,13 @@ fun buildUpcomingMoviesUrl(page: Int): String {
 
 fun buildMovieByIdUrl(id: Long): String {
     val language = LocaleReceiver.language
-    return "3/movie/$id?api_key=$API_KEY&language=$language"
+    return "3/movie/$id?language=$language"
 }
 
 fun buildMovieByNameUrl(movieTitle: String, page: Int): String {
     val language = LocaleReceiver.language
-    return "3/search/movie?api_key=$API_KEY" +
-            "&page=$page" +
+    return "3/search/movie?" +
+            "page=$page" +
             "&query=$movieTitle" +
             "&include_adult=false" +
             "&language=$language"

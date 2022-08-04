@@ -11,7 +11,6 @@ const val CAST_PHOTO_WIDTH = 185
 const val CAST_PHOTO_URL = "https://image.tmdb.org/t/p/w$CAST_PHOTO_WIDTH/"
 const val SHARE_INTENT_TYPE = "text/plain"
 const val LONG_DURATION_MS = 2750L
-const val IS_MOVIE_UPDATED_EXTRA = "isMovieUpdated"
 const val HTTP_TIMEOUT_IN_SECONDS = 10L
 const val PAGE_SIZE = 20
 const val LOCAL_PAGE_SIZE = 5
