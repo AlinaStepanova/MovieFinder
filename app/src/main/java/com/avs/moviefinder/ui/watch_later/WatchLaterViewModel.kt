@@ -111,7 +111,7 @@ class WatchLaterViewModel @Inject constructor(
     }
 
     fun removeFromWatchList(itemId: Int) {
-        val movie = _localMovies.value?.get(itemId)
+        val movie = _localMovies.value?.getOrNull(itemId)
         if (movie != null) {
             addToWatchLater(movie)
         }
