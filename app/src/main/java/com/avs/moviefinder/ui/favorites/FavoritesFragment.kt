@@ -1,6 +1,7 @@
 package com.avs.moviefinder.ui.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ class FavoritesFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val favoritesViewModel: FavoritesViewModel by
     navGraphViewModels(R.id.nav_graph) {
@@ -38,9 +39,9 @@ class FavoritesFragment : BaseFragment() {
         _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_favorites, container, false
         )
-        val root: View = binding.root
-        binding.favoritesViewModel = favoritesViewModel
-        binding.lifecycleOwner = this
+        val root: View = binding!!.root
+        binding?.favoritesViewModel = favoritesViewModel
+        binding?.lifecycleOwner = this
         val adapter = MoviesPagingAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
@@ -63,7 +64,20 @@ class FavoritesFragment : BaseFragment() {
             if (!it.isNullOrEmpty()) shareMovie(it)
         }
         favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner) {
-            binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            binding?.pbFetchingProgress?.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
+        favoritesViewModel.removedMovieIndex.observe(viewLifecycleOwner) { position ->
+            Log.d("jjj", "pos " + position.toString())
+            position?.let {
+                if (it.first && it.second != -1) {
+                    binding?.rvFindRecyclerView?.postDelayed({
+                        binding?.rvFindRecyclerView?.smoothScrollToPosition(
+                            it.second
+                        )
+                        favoritesViewModel.disposeUndoDependencies()
+                    }, 100)
+                }
+            }
         }
         favoritesViewModel.removedMovie.observe(viewLifecycleOwner) { movie ->
             movie?.title?.let { title ->
@@ -75,9 +89,9 @@ class FavoritesFragment : BaseFragment() {
                 ) { favoritesViewModel.undoRemovingMovie() }
             }
         }
-        binding.rvFindRecyclerView.adapter = adapter
+        binding?.rvFindRecyclerView?.adapter = adapter
         ItemTouchHelper(itemTouchCallback(favoritesViewModel::removeFromFavorites))
-            .attachToRecyclerView(binding.rvFindRecyclerView)
+            .attachToRecyclerView(binding?.rvFindRecyclerView)
         return root
     }
 
@@ -87,7 +101,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun setIconsVisibility(moviesCount: Int) {
-        binding.ivMovieIcon.visibility = getIconVisibility(moviesCount)
-        binding.ivFavoriteIcon.visibility = getIconVisibility(moviesCount)
+        binding?.ivMovieIcon?.visibility = getIconVisibility(moviesCount)
+        binding?.ivFavoriteIcon?.visibility = getIconVisibility(moviesCount)
     }
 }

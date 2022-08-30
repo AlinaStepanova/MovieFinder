@@ -38,6 +38,9 @@ class FavoritesViewModel @Inject constructor(
     private var _removedMovie = MutableLiveData<Movie?>()
     val removedMovie: LiveData<Movie?>
         get() = _removedMovie
+    private var _removedMovieIndex = MutableLiveData<Pair<Boolean, Int>?>()
+    val removedMovieIndex: LiveData<Pair<Boolean, Int>?>
+        get() = _removedMovieIndex
     private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
@@ -51,6 +54,8 @@ class FavoritesViewModel @Inject constructor(
         compositeDisposable.dispose()
         repository.clear()
         timer?.dispose()
+        disposeUndoDependencies()
+        _removedMovieIndex.value = null
         super.onCleared()
     }
 
@@ -79,10 +84,15 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getFavorites() = repository.getFavoritesList(viewModelScope)
 
+    fun disposeUndoDependencies() {
+        _removedMovieIndex.value = null
+    }
+
     fun undoRemovingMovie() {
         _removedMovie.value?.let {
             disposeDeletingDependencies()
             addFavorites(it)
+            _removedMovieIndex.value = _removedMovieIndex.value?.copy(first = true)
         }
     }
 
@@ -105,6 +115,7 @@ class FavoritesViewModel @Inject constructor(
         if (!updatedMovie.isFavorite) {
             disposeDeletingDependencies()
             _removedMovie.value = updatedMovie
+            _removedMovieIndex.value = Pair(false, _localMovies.value?.indexOfFirst { it.id == updatedMovie.id } ?: -2)
             startCountdown()
         }
         repository.updateMovie(updatedMovie)
