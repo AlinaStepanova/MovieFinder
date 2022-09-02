@@ -115,7 +115,7 @@ class FavoritesViewModel @Inject constructor(
         if (!updatedMovie.isFavorite) {
             disposeDeletingDependencies()
             _removedMovie.value = updatedMovie
-            _removedMovieIndex.value = Pair(false, _localMovies.value?.indexOfFirst { it.id == updatedMovie.id } ?: -2)
+            _removedMovieIndex.value = Pair(false, _localMovies.value?.indexOfFirst { it.id == updatedMovie.id } ?: -1)
             startCountdown()
         }
         repository.updateMovie(updatedMovie)

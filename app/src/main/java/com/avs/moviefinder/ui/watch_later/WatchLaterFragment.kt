@@ -13,6 +13,7 @@ import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesPagingAdapter
+import com.avs.moviefinder.utils.ANIMATION_THRESHOLD_MILLIS
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class WatchLaterFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private var _binding: FragmentWatchLaterBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val watchLaterViewModel: WatchLaterViewModel by
     navGraphViewModels(R.id.nav_graph) {
@@ -38,9 +39,9 @@ class WatchLaterFragment : BaseFragment() {
         _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_watch_later, container, false
         )
-        val root: View = binding.root
-        binding.watchLaterViewModel = watchLaterViewModel
-        binding.lifecycleOwner = this
+        val root: View = binding!!.root
+        binding?.watchLaterViewModel = watchLaterViewModel
+        binding?.lifecycleOwner = this
         val adapter = MoviesPagingAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
@@ -61,8 +62,20 @@ class WatchLaterFragment : BaseFragment() {
             if (!it.isNullOrEmpty()) shareMovie(it)
         }
         watchLaterViewModel.isProgressVisible.observe(viewLifecycleOwner) {
-            binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            binding?.pbFetchingProgress?.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
+        watchLaterViewModel.removedMovieIndex.observe(viewLifecycleOwner) { position ->
+                position?.let {
+                    if (it.first && it.second != -1) {
+                        binding?.rvWatchLaterRecyclerView?.postDelayed({
+                            binding?.rvWatchLaterRecyclerView?.smoothScrollToPosition(
+                                it.second
+                            )
+                            watchLaterViewModel.disposeUndoDependencies()
+                        }, ANIMATION_THRESHOLD_MILLIS)
+                    }
+                }
+            }
         watchLaterViewModel.removedMovie.observe(viewLifecycleOwner) { movie ->
             movie?.title?.let { title ->
                 showSnackBarWithAction(
@@ -73,9 +86,9 @@ class WatchLaterFragment : BaseFragment() {
                 ) { watchLaterViewModel.undoRemovingMovie() }
             }
         }
-        binding.rvWatchLaterRecyclerView.adapter = adapter
+        binding?.rvWatchLaterRecyclerView?.adapter = adapter
         ItemTouchHelper(itemTouchCallback(watchLaterViewModel::removeFromWatchList))
-            .attachToRecyclerView(binding.rvWatchLaterRecyclerView)
+            .attachToRecyclerView(binding?.rvWatchLaterRecyclerView)
         return root
     }
 
@@ -85,7 +98,7 @@ class WatchLaterFragment : BaseFragment() {
     }
 
     private fun setIconsVisibility(moviesCount: Int) {
-        binding.ivMovieIcon.visibility = getIconVisibility(moviesCount)
-        binding.ivWatchLaterIcon.visibility = getIconVisibility(moviesCount)
+        binding?.ivMovieIcon?.visibility = getIconVisibility(moviesCount)
+        binding?.ivWatchLaterIcon?.visibility = getIconVisibility(moviesCount)
     }
 }
