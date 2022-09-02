@@ -1,7 +1,6 @@
 package com.avs.moviefinder.ui.favorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesPagingAdapter
+import com.avs.moviefinder.utils.ANIMATION_THRESHOLD_MILLIS
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -67,7 +67,6 @@ class FavoritesFragment : BaseFragment() {
             binding?.pbFetchingProgress?.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
         favoritesViewModel.removedMovieIndex.observe(viewLifecycleOwner) { position ->
-            Log.d("jjj", "pos " + position.toString())
             position?.let {
                 if (it.first && it.second != -1) {
                     binding?.rvFindRecyclerView?.postDelayed({
@@ -75,7 +74,7 @@ class FavoritesFragment : BaseFragment() {
                             it.second
                         )
                         favoritesViewModel.disposeUndoDependencies()
-                    }, 100)
+                    }, ANIMATION_THRESHOLD_MILLIS)
                 }
             }
         }
