@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.avs.moviefinder.R
 import com.avs.moviefinder.databinding.FragmentFavoritesBinding
 import com.avs.moviefinder.di.factories.ViewModelFactory
 import com.avs.moviefinder.ui.BaseFragment
 import com.avs.moviefinder.ui.recycler_view.MovieListener
 import com.avs.moviefinder.ui.recycler_view.adaptes.MoviesPagingAdapter
+import com.avs.moviefinder.utils.ANIMATION_THRESHOLD_MILLIS
 import com.avs.moviefinder.utils.buildUndoSnackBarMessage
 import com.avs.moviefinder.utils.getIconVisibility
 import javax.inject.Inject
@@ -22,7 +24,7 @@ class FavoritesFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val favoritesViewModel: FavoritesViewModel by
     navGraphViewModels(R.id.nav_graph) {
@@ -37,9 +39,9 @@ class FavoritesFragment : BaseFragment() {
         _binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_favorites, container, false
         )
-        val root: View = binding.root
-        binding.favoritesViewModel = favoritesViewModel
-        binding.lifecycleOwner = this
+        val root: View = binding!!.root
+        binding?.favoritesViewModel = favoritesViewModel
+        binding?.lifecycleOwner = this
         val adapter = MoviesPagingAdapter(
             MovieListener(
                 { movie -> startMovieActivity(movie) },
@@ -55,13 +57,26 @@ class FavoritesFragment : BaseFragment() {
 
         adapter.addLoadStateListener {
             setIconsVisibility(adapter.itemCount)
+            favoritesViewModel.setListItems(adapter.snapshot().items)
         }
 
         favoritesViewModel.shareBody.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) shareMovie(it)
         }
         favoritesViewModel.isProgressVisible.observe(viewLifecycleOwner) {
-            binding.pbFetchingProgress.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            binding?.pbFetchingProgress?.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
+        favoritesViewModel.removedMovieIndex.observe(viewLifecycleOwner) { position ->
+            position?.let {
+                if (it.first && it.second != -1) {
+                    binding?.rvFindRecyclerView?.postDelayed({
+                        binding?.rvFindRecyclerView?.smoothScrollToPosition(
+                            it.second
+                        )
+                        favoritesViewModel.disposeUndoDependencies()
+                    }, ANIMATION_THRESHOLD_MILLIS)
+                }
+            }
         }
         favoritesViewModel.removedMovie.observe(viewLifecycleOwner) { movie ->
             movie?.title?.let { title ->
@@ -73,7 +88,9 @@ class FavoritesFragment : BaseFragment() {
                 ) { favoritesViewModel.undoRemovingMovie() }
             }
         }
-        binding.rvFindRecyclerView.adapter = adapter
+        binding?.rvFindRecyclerView?.adapter = adapter
+        ItemTouchHelper(itemTouchCallback(favoritesViewModel::removeFromFavorites))
+            .attachToRecyclerView(binding?.rvFindRecyclerView)
         return root
     }
 
@@ -83,7 +100,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun setIconsVisibility(moviesCount: Int) {
-        binding.ivMovieIcon.visibility = getIconVisibility(moviesCount)
-        binding.ivFavoriteIcon.visibility = getIconVisibility(moviesCount)
+        binding?.ivMovieIcon?.visibility = getIconVisibility(moviesCount)
+        binding?.ivFavoriteIcon?.visibility = getIconVisibility(moviesCount)
     }
 }

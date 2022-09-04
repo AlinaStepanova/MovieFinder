@@ -28,6 +28,7 @@ class FavoritesViewModel @Inject constructor(
     private var _movies = MutableLiveData<PagingData<Movie>>()
     val movies: LiveData<PagingData<Movie>>
         get() = _movies
+    private var _localMovies = MutableLiveData<List<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
@@ -37,6 +38,9 @@ class FavoritesViewModel @Inject constructor(
     private var _removedMovie = MutableLiveData<Movie?>()
     val removedMovie: LiveData<Movie?>
         get() = _removedMovie
+    private var _removedMovieIndex = MutableLiveData<Pair<Boolean, Int>?>()
+    val removedMovieIndex: LiveData<Pair<Boolean, Int>?>
+        get() = _removedMovieIndex
     private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
@@ -50,6 +54,8 @@ class FavoritesViewModel @Inject constructor(
         compositeDisposable.dispose()
         repository.clear()
         timer?.dispose()
+        disposeUndoDependencies()
+        _removedMovieIndex.value = null
         super.onCleared()
     }
 
@@ -78,10 +84,15 @@ class FavoritesViewModel @Inject constructor(
 
     fun getFavorites() = repository.getFavoritesList(viewModelScope)
 
+    fun disposeUndoDependencies() {
+        _removedMovieIndex.value = null
+    }
+
     fun undoRemovingMovie() {
         _removedMovie.value?.let {
             disposeDeletingDependencies()
             addFavorites(it)
+            _removedMovieIndex.value = _removedMovieIndex.value?.copy(first = true)
         }
     }
 
@@ -104,9 +115,21 @@ class FavoritesViewModel @Inject constructor(
         if (!updatedMovie.isFavorite) {
             disposeDeletingDependencies()
             _removedMovie.value = updatedMovie
+            _removedMovieIndex.value = Pair(false, _localMovies.value?.indexOfFirst { it.id == updatedMovie.id } ?: -1)
             startCountdown()
         }
         repository.updateMovie(updatedMovie)
+    }
+
+    fun removeFromFavorites(itemId: Int) {
+        val movie = _localMovies.value?.getOrNull(itemId)
+        if (movie != null) {
+            addFavorites(movie)
+        }
+    }
+
+    fun setListItems(items: List<Movie>) {
+        _localMovies.value = items
     }
 
 }
