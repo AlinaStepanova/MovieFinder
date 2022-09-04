@@ -49,6 +49,7 @@ internal class FavoritesViewModelTest {
 
     private lateinit var movies: PagingData<Movie>
     private lateinit var movie: Movie
+    private lateinit var mutableMovies: MutableList<Movie>
     private val dispatcher = TestCoroutineDispatcher()
 
     @Before
@@ -57,12 +58,15 @@ internal class FavoritesViewModelTest {
         Dispatchers.setMain(dispatcher)
         viewModel = spy(FavoritesViewModel(rxBus, repository))
         movie = Movie(1, "Harry Potter and the Philosopher's Stone", isFavorite = true)
+        mutableMovies = mutableListOf(
+            Movie(2, "Harry Potter and the Chamber of Secrets", isFavorite = true),
+            Movie(3, "Harry Potter and the Prisoner of Azkaban", isFavorite = true),
+            Movie(4, "Harry Potter and the Goblet of Fire", isFavorite = true)
+        )
         movies = PagingData.from(
             mutableListOf(
                 movie,
-                Movie(2, "Harry Potter and the Chamber of Secrets", isFavorite = true),
-                Movie(3, "Harry Potter and the Prisoner of Azkaban", isFavorite = true),
-                Movie(4, "Harry Potter and the Goblet of Fire", isFavorite = true)
+                *mutableMovies.toTypedArray()
             )
         )
     }
@@ -81,13 +85,16 @@ internal class FavoritesViewModelTest {
 
     @Test
     fun getFavoritesFromDBTest() {
-        val currentMovies: PagingData<Movie>?
-        //assertTrue(currentMovies == PagingData.empty<Movie>())
         verify(repository, times(1)).getFavoritesList(viewModel.viewModelScope)
         viewModel.subscribeToEvents(FavoritesList(movies))
-        currentMovies = viewModel.movies.getOrAwaitValue()
+        runBlocking {
+            viewModel.setListItems(movies.collectData())
+        }
+        val currentMovies: List<Movie> = viewModel.localMovies.getOrAwaitValue()
         assertTrue(currentMovies != PagingData.empty<Movie>())
-        //assertEquals(currentMovies., movies.size)
+        runBlocking {
+            assertEquals(currentMovies.size, movies.collectData().size)
+        }
         val isProgressVisible = viewModel.isProgressVisible.getOrAwaitValue()
         assertFalse(isProgressVisible)
     }
@@ -104,12 +111,13 @@ internal class FavoritesViewModelTest {
         val movieToRemove = movie
         viewModel.addFavorites(movieToRemove)
         verify(repository, atMostOnce()).updateMovie(movieToRemove)
-        //viewModel.subscribeToEvents(movieToRemove)
-        val currentMovies = viewModel.movies.value ?: PagingData.empty()
         runBlocking {
-            val list = currentMovies.collectData()
-            assertFalse(list.contains(movieToRemove))
-            assertEquals(list.size, movies.collectData().size - 1)
+            viewModel.setListItems(mutableMovies)
+        }
+        val currentMovies = viewModel.localMovies.getOrAwaitValue() ?: emptyList()
+        runBlocking {
+            assertFalse(currentMovies.contains(movieToRemove))
+            assertEquals(currentMovies.size, movies.collectData().size - 1)
         }
     }
 //

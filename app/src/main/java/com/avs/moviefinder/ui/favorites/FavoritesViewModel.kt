@@ -29,6 +29,8 @@ class FavoritesViewModel @Inject constructor(
     val movies: LiveData<PagingData<Movie>>
         get() = _movies
     private var _localMovies = MutableLiveData<List<Movie>>()
+    val localMovies: MutableLiveData<List<Movie>>
+        get() = _localMovies
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
