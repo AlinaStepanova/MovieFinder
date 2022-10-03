@@ -1,10 +1,11 @@
-package com.avs.moviefinder.ui.recycler_view
+package com.avs.moviefinder.ui.recycler_view.view_holders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.data.dto.Cast
 import com.avs.moviefinder.databinding.ItemCastBinding
+import com.avs.moviefinder.ui.recycler_view.CastListener
 
 class CastViewHolder private constructor(private val binding: ItemCastBinding) :
     RecyclerView.ViewHolder(binding.root) {

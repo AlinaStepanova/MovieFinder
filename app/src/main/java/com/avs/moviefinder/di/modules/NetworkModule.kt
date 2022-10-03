@@ -2,6 +2,7 @@ package com.avs.moviefinder.di.modules
 
 import com.avs.moviefinder.BuildConfig
 import com.avs.moviefinder.data.network.MoviesApi
+import com.avs.moviefinder.utils.API_KEY
 import com.avs.moviefinder.utils.BASE_API_URL
 import com.avs.moviefinder.utils.HTTP_TIMEOUT_IN_SECONDS
 import com.google.gson.GsonBuilder
@@ -43,6 +44,14 @@ class NetworkModule {
             .connectTimeout(HTTP_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(loggingInterceptor)
+        }
+        builder.addInterceptor { chain ->
+            val url = chain.request().url
+                .newBuilder()
+                .addQueryParameter("api_key", API_KEY)
+                .build()
+            val request = chain.request().newBuilder().url(url)
+            return@addInterceptor chain.proceed(request.build())
         }
         return builder.build()
     }

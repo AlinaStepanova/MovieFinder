@@ -3,12 +3,20 @@ package com.avs.moviefinder.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.avs.moviefinder.NavGraphDirections
 import com.avs.moviefinder.R
+import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.databinding.ActivityMainBinding
 import com.avs.moviefinder.di.factories.GenericSavedStateViewModelFactory
 import com.avs.moviefinder.di.factories.MainViewModelFactory
@@ -20,7 +28,8 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
 
-    private var currentNavController: LiveData<NavController>? = null
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
     lateinit var connectionLiveData: ConnectionLiveData
@@ -39,21 +48,55 @@ class MainActivity : DaggerAppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.mainViewModel = mainViewModel
         binding.lifecycleOwner = this
+
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setLogo(R.drawable.ic_local_movies)
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        if (savedInstanceState == null) {
-            setupBottomNavigationBar()
+
+        val bottomPadding = dpToPx(BOTTOM_PADDING_DP).toInt()
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.findNavController()
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.searchResultFragment -> hideBottomNav()
+                else -> showBottomNav(bottomPadding)
+            }
         }
-        connectionLiveData.observe(this, {
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.homeFragment, R.id.favoritesFragment, R.id.watchLaterFragment)
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.bottomNav.setupWithNavController(navController)
+
+        connectionLiveData.observe(this) {
             mainViewModel.reactOnNetworkChangeState(it)
-        })
-        mainViewModel.isBackOnline.observe(this, { isOnline ->
+        }
+        mainViewModel.isBackOnline.observe(this) { isOnline ->
             isOnline?.let {
                 if (isOnline) showConnectivitySnackBar(getString(R.string.back_online_text))
             }
-        })
+        }
+    }
+
+    private fun hideBottomNav() {
+        binding.bottomNav.visibility = View.GONE
+        binding.navHostFragment.setPadding(0, 0, 0, 0)
+    }
+
+    private fun showBottomNav(bottomPadding: Int) {
+        binding.bottomNav.visibility = View.VISIBLE
+        binding.navHostFragment.setPadding(0, 0, 0, bottomPadding)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,7 +108,7 @@ class MainActivity : DaggerAppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                popFindDetailFragment(supportFragmentManager)
+                navController.navigateUp()
                 return true
             }
 
@@ -83,62 +126,37 @@ class MainActivity : DaggerAppCompatActivity() {
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    openFindDetailFragment(supportFragmentManager, query)
+                    val action = NavGraphDirections.actionGlobalSearchResultFragment(query)
+                    navController.navigate(action)
                     mainViewModel.onQueryTextSubmit(query)
                     this@MainActivity.currentFocus?.clearFocus()
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if(!this@MainActivity.hasWindowFocus()) return false
+                    if (!this@MainActivity.hasWindowFocus()) return false
                     mainViewModel.onQueryTextChanged(newText)
                     return false
                 }
             })
         }.also {
             menuItem.actionView = it
-            if(!mainViewModel.getLatestQueryTest().isNullOrEmpty()){
-                menuItem.expandActionView()
-                menuItem.expandSearchViewWithText(mainViewModel.getLatestQueryTest())
+            if (!mainViewModel.getLatestQuery().isNullOrEmpty()) {
+                menuItem.expandSearchViewWithText(mainViewModel.getLatestQuery())
+                this@MainActivity.currentFocus?.clearFocus()
             }
         }
 
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        setupBottomNavigationBar()
+    fun navigateToMovieActivity(movie: Movie) {
+        val action = NavGraphDirections.actionGlobalMovieActivity(movie)
+        navController.navigate(action)
     }
 
-    /**
-     * Called on first creation and when restoring state.
-     */
-    private fun setupBottomNavigationBar() {
-        val bottomNavigationView = binding.navView
-
-        val navGraphIds = listOf(
-            R.navigation.navigation_home,
-            R.navigation.navigation_favorites,
-            R.navigation.navigation_watch_later
-        )
-
-        // Setup the bottom navigation view with a list of navigation graphs
-        val controller = bottomNavigationView.setupWithNavController(
-            navGraphIds = navGraphIds,
-            fragmentManager = supportFragmentManager,
-            containerId = R.id.nav_host_fragment,
-            intent = intent
-        )
-        currentNavController = controller
-    }
-
-    private fun MenuItem.expandSearchViewWithText(text: String?){
+    private fun MenuItem.expandSearchViewWithText(text: String?) {
         expandActionView()
         (actionView as? SearchView)?.setQuery(text, false)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return currentNavController?.value?.navigateUp() ?: false
     }
 
     private fun showConnectivitySnackBar(message: String) {
@@ -147,8 +165,8 @@ class MainActivity : DaggerAppCompatActivity() {
             binding.container,
             message,
             Snackbar.LENGTH_LONG,
-            binding.navView,
-            color
+            color,
+            if (binding.bottomNav.isVisible) binding.bottomNav else null,
         ).show()
     }
 }

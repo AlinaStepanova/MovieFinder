@@ -67,6 +67,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
@@ -85,11 +86,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvLinks"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    shimmer:duration="500">
+                    shimmer:duration="500"
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -114,7 +115,15 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="@dimen/margin_16dp"
+                            android:layout_marginEnd="@dimen/margin_16dp"
+                            android:layout_marginBottom="@dimen/margin_16dp"
+                            android:background="@color/shimmer" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/photo_person_height"
                             android:layout_marginStart="@dimen/margin_16dp"
                             android:layout_marginEnd="@dimen/margin_16dp"
                             android:background="@color/shimmer" />
@@ -159,7 +168,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/mainGrey"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvMovieYear"
@@ -175,7 +185,8 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/ivCalendar"
                     app:layout_constraintStart_toEndOf="@+id/ivCalendar"
-                    app:layout_constraintTop_toTopOf="@+id/ivCalendar" />
+                    app:layout_constraintTop_toTopOf="@+id/ivCalendar"
+                    tools:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/ivStar"
@@ -188,7 +199,8 @@
                     app:layout_constraintStart_toEndOf="@+id/tvMovieYear"
                     app:layout_constraintTop_toTopOf="@+id/tvMovieYear"
                     app:tint="@color/mainGrey"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvMovieRating"
@@ -204,7 +216,8 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/ivStar"
                     app:layout_constraintStart_toEndOf="@+id/ivStar"
-                    app:layout_constraintTop_toTopOf="@+id/ivStar" />
+                    app:layout_constraintTop_toTopOf="@+id/ivStar"
+                    tools:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/ivHourglass"
@@ -217,7 +230,8 @@
                     app:layout_constraintStart_toEndOf="@+id/tvMovieRating"
                     app:layout_constraintTop_toTopOf="@+id/tvMovieRating"
                     app:tint="@color/mainGrey"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvRuntime"
@@ -233,7 +247,8 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/ivHourglass"
                     app:layout_constraintStart_toEndOf="@+id/ivHourglass"
-                    app:layout_constraintTop_toTopOf="@+id/ivHourglass" />
+                    app:layout_constraintTop_toTopOf="@+id/ivHourglass"
+                    tools:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/ivLocation"
@@ -246,7 +261,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivCalendar"
                     app:tint="@color/mainGrey"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvCountries"
@@ -263,14 +279,15 @@
                     app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivLocation"
-                    app:layout_constraintTop_toTopOf="@+id/ivLocation" />
+                    app:layout_constraintTop_toTopOf="@+id/ivLocation"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvTagline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginEnd="@dimen/text_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_movie_title"
@@ -285,7 +302,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginEnd="@dimen/text_margin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_movie_details"
@@ -311,30 +328,111 @@
                     app:readMoreMaxLine="5"
                     app:readMoreText="@string/read_more_text" />
 
+                <TextView
+                    android:id="@+id/tvCast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/cast_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOverview"
+                    tools:visibility="visible" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCast"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/list_cast_height"
-                    android:layout_marginStart="@dimen/margin_8dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginEnd="@dimen/margin_8dp"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginEnd="6dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvOverview" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvCast"
+                    tools:listitem="@layout/item_cast"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tvCrew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/crew_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvCast"
+                    tools:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCrew"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_cast_height"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginEnd="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCrew"
+                    tools:listitem="@layout/item_crew"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tvSimilar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/similar_text"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_22"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvCrew"
+                    tools:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSimilar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_cast_height"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:layout_marginEnd="6dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSimilar"
+                    tools:listitem="@layout/item_similar"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvLinks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin"
-                    android:layout_marginTop="@dimen/margin_18dp"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:layout_marginBottom="@dimen/margin_8dp"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_size_movie_details"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rvCast" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvSimilar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.ui.main.MainActivity
-import com.avs.moviefinder.ui.movie.MovieActivity
 import com.avs.moviefinder.utils.getShareIntent
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
@@ -37,13 +39,11 @@ open class BaseFragment : DaggerFragment() {
         super.onPause()
     }
 
-    fun startMovieActivity(movie: Movie) {
-        startActivity(Intent(activity, MovieActivity::class.java).apply {
-            putExtra(MOVIE_EXTRA_TAG, movie)
-        })
+    protected fun startMovieActivity(movie: Movie) {
+        (activity as MainActivity).navigateToMovieActivity(movie)
     }
 
-    fun shareMovie(movieLink: String) {
+    protected fun shareMovie(movieLink: String) {
         startActivity(
             Intent.createChooser(
                 getShareIntent(fragmentContext, movieLink),
@@ -52,7 +52,7 @@ open class BaseFragment : DaggerFragment() {
         )
     }
 
-    fun showSnackBar(message: String) {
+    protected fun showSnackBar(message: String) {
         val activity = (activity as MainActivity)
         messageSnackbar?.dismiss()
         messageSnackbar = Snackbar.make(
@@ -62,12 +62,14 @@ open class BaseFragment : DaggerFragment() {
         messageSnackbar?.let { snackbar ->
             snackbar.setBackgroundTint(Color.WHITE)
             snackbar.setTextColor(Color.BLACK)
-            snackbar.anchorView = activity.binding.navView
+            if (activity.binding.bottomNav.isVisible) {
+                snackbar.anchorView = activity.binding.bottomNav
+            }
             snackbar.show()
         }
     }
 
-    fun showSnackBarWithAction(message: String, call: () -> Unit) {
+    protected fun showSnackBarWithAction(message: String, call: () -> Unit) {
         val activity = (activity as MainActivity)
         actionSnackbar?.dismiss()
         actionSnackbar = Snackbar.make(
@@ -86,8 +88,22 @@ open class BaseFragment : DaggerFragment() {
                     )
                 )
             }
-            snackbar.anchorView = activity.binding.navView
+            if (activity.binding.bottomNav.isVisible) {
+                snackbar.anchorView = activity.binding.bottomNav
+            }
             snackbar.show()
         }
+    }
+
+    protected fun itemTouchCallback(removeItemFromList: (position: Int) -> Unit) = object :
+        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ) = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) =
+            removeItemFromList(viewHolder.absoluteAdapterPosition)
     }
 }

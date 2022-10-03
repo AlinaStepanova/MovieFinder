@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.avs.moviefinder.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.avs.moviefinder.ui.favorites.FavoritesFragment"
+        tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/watchLaterFragment"
+        android:name="com.avs.moviefinder.ui.watch_later.WatchLaterFragment"
+        tools:layout="@layout/fragment_watch_later" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.avs.moviefinder.ui.search_result.SearchResultFragment"
+        android:label="SearchResultFragment"
+        tools:layout="@layout/fragment_search_result">
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
+    <activity
+        android:id="@+id/movieActivity"
+        android:name="com.avs.moviefinder.ui.movie.MovieActivity"
+        android:label="MovieActivity"
+        tools:layout="@layout/activity_movie">
+
+        <argument
+            android:name="movie"
+            app:argType="com.avs.moviefinder.data.dto.Movie" />
+    </activity>
+    <action
+        android:id="@+id/actionGlobalSearchResultFragment"
+        app:destination="@id/searchResultFragment"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/actionGlobalMovieActivity"
+        app:destination="@id/movieActivity"
+        app:launchSingleTop="true" />
+</navigation>

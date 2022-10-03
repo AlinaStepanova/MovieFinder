@@ -1,11 +1,16 @@
 package com.avs.moviefinder.data.database
 
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.observable
 import com.avs.moviefinder.BuildConfig
-import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
-import com.avs.moviefinder.data.dto.WatchList
+import com.avs.moviefinder.utils.LOCAL_PAGE_SIZE
+import com.avs.moviefinder.utils.LOCAL_PREFETCH_DISTANCE
 import com.avs.moviefinder.utils.RxBus
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -15,7 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DatabaseManager @Inject constructor(
-    private val rxBus: RxBus,
+    val rxBus: RxBus,
     private val dataSource: MovieDatabaseDao
 ) {
 
@@ -58,21 +63,31 @@ class DatabaseManager @Inject constructor(
         return dataSource.get(id)
     }
 
-    fun getAllFavorites(): Disposable {
-        return dataSource.getFavoritesList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { favorites -> rxBus.send(FavoritesList(favorites)) } }, { handleError(it) })
+    fun getFavoritesMoviesPage(): Observable<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = LOCAL_PAGE_SIZE,
+                enablePlaceholders = true,
+                prefetchDistance = LOCAL_PREFETCH_DISTANCE,
+                initialLoadSize = LOCAL_PAGE_SIZE
+            ),
+            pagingSourceFactory = { dataSource.getFavoritesList() }
+        ).observable
     }
 
-    fun getWatchLaterList(): Disposable {
-        return dataSource.getWatchLaterList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ it?.let { watchList -> rxBus.send(WatchList(watchList)) } }, { handleError(it) })
+    fun getWatchLaterMoviesPage(): Observable<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = LOCAL_PAGE_SIZE,
+                enablePlaceholders = true,
+                prefetchDistance = LOCAL_PREFETCH_DISTANCE,
+                initialLoadSize = LOCAL_PAGE_SIZE
+            ),
+            pagingSourceFactory = { dataSource.getWatchLaterList() }
+        ).observable
     }
 
-    private fun handleError(error: Throwable?) {
+    fun handleError(error: Throwable?) {
         if (BuildConfig.DEBUG) {
             if (error != null) {
                 rxBus.send(error)

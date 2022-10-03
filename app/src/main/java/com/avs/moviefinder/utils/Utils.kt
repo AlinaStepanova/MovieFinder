@@ -10,17 +10,17 @@ import androidx.core.text.HtmlCompat
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Country
 import com.avs.moviefinder.data.dto.Genre
-import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.data.network.LocaleReceiver
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 const val CIRCLE_SEPARATOR_CHARACTER = " \u2022 "
 const val MINUTES_IN_HOUR = 60
+const val BOTTOM_PADDING_DP = 56
 const val USA = "USA"
 const val USA_FULL = "United States of America"
 const val IMDB = "https://www.imdb.com/"
@@ -42,40 +42,52 @@ fun formatDate(dateToFormat: String, pattern: String = "MMM dd, yyyy"): String {
     return formattedDate
 }
 
-fun buildNowPlayingUrl(): String {
+fun buildNowPlayingUrl(page: Int): String {
     val currentDate = getCurrentDate()
     val monthAgoDate = get3WeeksAgoDate()
     val language = LocaleReceiver.language
-    return "3/discover/movie?api_key=$API_KEY" +
+    return "3/discover/movie?" +
+            "page=$page" +
             "&primary_release_date.gte=$monthAgoDate" +
             "&primary_release_date.lte=$currentDate" +
             "&sort_by=popularity.desc" +
             "&language=$language"
 }
 
-fun buildPopularMoviesUrl(): String {
+fun buildPopularMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
-    return "3/movie/popular?api_key=$API_KEY" +
+    return "3/movie/popular?" +
+            "page=$page" +
             "&include_adult=false" +
             "&language=$language"
 }
 
-fun buildTopRatedMoviesUrl(): String {
+fun buildTopRatedMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
-    return "3/movie/top_rated?api_key=$API_KEY" +
+    return "3/movie/top_rated?" +
+            "page=$page" +
+            "&include_adult=false" +
+            "&language=$language"
+}
+
+fun buildUpcomingMoviesUrl(page: Int): String {
+    val language = LocaleReceiver.language
+    return "3/movie/upcoming?" +
+            "page=$page" +
+            "&region=US" +
             "&include_adult=false" +
             "&language=$language"
 }
 
 fun buildMovieByIdUrl(id: Long): String {
-    val append = "&append_to_response=videos,similar,credits"
     val language = LocaleReceiver.language
-    return "3/movie/$id?api_key=$API_KEY&language=$language"
+    return "3/movie/$id?language=$language"
 }
 
-fun buildMovieByNameUrl(movieTitle: String): String {
+fun buildMovieByNameUrl(movieTitle: String, page: Int): String {
     val language = LocaleReceiver.language
-    return "3/search/movie?api_key=$API_KEY&page=1" +
+    return "3/search/movie?" +
+            "page=$page" +
             "&query=$movieTitle" +
             "&include_adult=false" +
             "&language=$language"
@@ -197,8 +209,8 @@ fun buildLinks(id: String?, homepage: String?, homepageText: String): Spanned? {
 
 fun buildShareLink(movieId: Long): String = BASE_URL + "movie/" + movieId + "/"
 
-fun getIconVisibility(movies: List<Movie>) =
-    if (movies.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+fun getIconVisibility(moviesCount: Int) =
+    if (moviesCount == 0) View.VISIBLE else View.INVISIBLE
 
 fun buildUndoSnackBarMessage(title: String, text: String): String = "\"$title\" $text"
 

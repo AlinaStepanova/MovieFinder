@@ -45,14 +45,24 @@
             <TextView
                 android:id="@+id/vNowPlaying"
                 style="@style/ItemHeaderStyle"
-                android:layout_marginEnd="@dimen/margin_12dp"
                 android:onClick="@{() -> clickListener.nowPlayingClick()}"
                 android:text="@string/now_playing"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vTopRated"
                 app:layout_constraintTop_toTopOf="parent"
                 app:nowPlayingCategory="@{selectedCategory}" />
+
+            <TextView
+                android:id="@+id/vUpcoming"
+                style="@style/ItemHeaderStyle"
+                android:layout_marginEnd="@dimen/margin_12dp"
+                android:onClick="@{() -> clickListener.upcomingClick()}"
+                android:text="@string/upcoming"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/vNowPlaying"
+                app:layout_constraintTop_toTopOf="parent"
+                app:upcomingCategory="@{selectedCategory}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

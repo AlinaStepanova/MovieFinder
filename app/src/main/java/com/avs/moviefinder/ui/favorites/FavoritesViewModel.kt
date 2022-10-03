@@ -1,8 +1,11 @@
 package com.avs.moviefinder.ui.favorites
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.avs.moviefinder.data.dto.FavoritesList
 import com.avs.moviefinder.data.dto.Movie
 import com.avs.moviefinder.repository.SavedListsRepository
@@ -22,65 +25,46 @@ class FavoritesViewModel @Inject constructor(
     private val repository: SavedListsRepository
 ) : ViewModel() {
 
-    private var _movies = MutableLiveData<ArrayList<Movie>>()
-    val movies: LiveData<ArrayList<Movie>>
+    private var _movies = MutableLiveData<PagingData<Movie>>()
+    val movies: LiveData<PagingData<Movie>>
         get() = _movies
+    private var _localMovies = MutableLiveData<List<Movie>>()
     private var _isProgressVisible = MutableLiveData<Boolean>()
     val isProgressVisible: LiveData<Boolean>
         get() = _isProgressVisible
     private var _shareBody = MutableLiveData<String?>()
     val shareBody: LiveData<String?>
         get() = _shareBody
-    private var _updateMovieIndex = MutableLiveData<Int?>()
-    val updateMovieIndex: LiveData<Int?>
-        get() = _updateMovieIndex
-    private var _isInserted = MutableLiveData<Pair<Boolean, String>?>()
-    val isInserted: LiveData<Pair<Boolean, String>?>
-        get() = _isInserted
-    private var removedMovie: Movie? = null
+    private var _removedMovie = MutableLiveData<Movie?>()
+    val removedMovie: LiveData<Movie?>
+        get() = _removedMovie
+    private var _removedMovieIndex = MutableLiveData<Pair<Boolean, Int>?>()
+    val removedMovieIndex: LiveData<Pair<Boolean, Int>?>
+        get() = _removedMovieIndex
     private val compositeDisposable = CompositeDisposable()
     private var timer: Disposable? = null
 
     init {
         compositeDisposable.add(rxBus.events.subscribe { event -> subscribeToEvents(event) })
-        _isProgressVisible.value = true
         getFavorites()
+        _isProgressVisible.value = true
     }
 
     override fun onCleared() {
         compositeDisposable.dispose()
         repository.clear()
         timer?.dispose()
+        disposeUndoDependencies()
+        _removedMovieIndex.value = null
         super.onCleared()
     }
 
-    private fun subscribeToEvents(event: Any) {
+    @VisibleForTesting
+    fun subscribeToEvents(event: Any) {
         when (event) {
             is FavoritesList -> {
                 _isProgressVisible.value = false
-                if (event.movies != null && event.movies != _movies.value) {
-                    _movies.value = ArrayList(event.movies)
-                }
-            }
-            is Movie -> {
-                _movies.value?.let { list ->
-                    val fetchedMovie = list.firstOrNull { it.id == event.id }
-                    fetchedMovie?.let { movie ->
-                        disposeDeletingDependencies()
-                        val updatedMovieIndex = list.indexOf(movie)
-                        if (updatedMovieIndex != -1) {
-                            _updateMovieIndex.value = updatedMovieIndex
-                            if (!event.isFavorite) {
-                                _isInserted.value = Pair(false, movie.title ?: "")
-                                removedMovie = list[updatedMovieIndex]
-                                list.removeAt(updatedMovieIndex)
-                                startCountdown()
-                            } else {
-                                list[updatedMovieIndex] = event
-                            }
-                        }
-                    }
-                }
+                _movies.value = event.movies
             }
         }
     }
@@ -95,21 +79,20 @@ class FavoritesViewModel @Inject constructor(
 
     private fun disposeDeletingDependencies() {
         timer?.dispose()
-        _isInserted.value = null
-        _updateMovieIndex.value = null
-        removedMovie = null
+        _removedMovie.value = null
     }
 
-    fun getFavorites() = repository.getFavoritesList()
+    private fun getFavorites() = repository.getFavoritesList(viewModelScope)
+
+    fun disposeUndoDependencies() {
+        _removedMovieIndex.value = null
+    }
 
     fun undoRemovingMovie() {
-        if (removedMovie != null && _updateMovieIndex.value != null) {
-            _movies.value?.let { movies ->
-                movies.add(_updateMovieIndex.value!!, removedMovie!!)
-                addFavorites(removedMovie!!.id)
-                _isInserted.value = Pair(true, "")
-                disposeDeletingDependencies()
-            }
+        _removedMovie.value?.let {
+            disposeDeletingDependencies()
+            addFavorites(it)
+            _removedMovieIndex.value = _removedMovieIndex.value?.copy(first = true)
         }
     }
 
@@ -118,28 +101,35 @@ class FavoritesViewModel @Inject constructor(
         _shareBody.value = null
     }
 
-    fun addToWatchLater(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            val isInWatchLater = !it.isInWatchLater
-            it.isInWatchLater = isInWatchLater
-            if (isInWatchLater) {
-                it.lastTimeUpdated = System.currentTimeMillis()
-            }
-            repository.updateMovie(movie)
+    fun addToWatchLater(movie: Movie) {
+        val isInWatchLater = !movie.isInWatchLater
+        val updatedMovie = movie.copy()
+        updatedMovie.isInWatchLater = isInWatchLater
+        repository.updateMovie(updatedMovie)
+    }
+
+    fun addFavorites(movie: Movie) {
+        val isFavorite = !movie.isFavorite
+        val updatedMovie = movie.copy()
+        updatedMovie.isFavorite = isFavorite
+        if (!updatedMovie.isFavorite) {
+            disposeDeletingDependencies()
+            _removedMovie.value = updatedMovie
+            _removedMovieIndex.value = Pair(false, _localMovies.value?.indexOfFirst { it.id == updatedMovie.id } ?: -1)
+            startCountdown()
+        }
+        repository.updateMovie(updatedMovie)
+    }
+
+    fun removeFromFavorites(itemId: Int) {
+        val movie = _localMovies.value?.getOrNull(itemId)
+        if (movie != null) {
+            addFavorites(movie)
         }
     }
 
-    fun addFavorites(movieId: Long) {
-        val movie = _movies.value?.firstOrNull { it.id == movieId }
-        movie?.let {
-            val isFavorite = !it.isFavorite
-            it.isFavorite = isFavorite
-            if (isFavorite && removedMovie == null) {
-                it.lastTimeUpdated = System.currentTimeMillis()
-            }
-            repository.updateMovie(movie)
-        }
+    fun setListItems(items: List<Movie>) {
+        _localMovies.value = items
     }
 
 }

@@ -8,7 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.avs.moviefinder.R
 import com.avs.moviefinder.data.dto.Cast
+import com.avs.moviefinder.data.dto.Crew
 import com.avs.moviefinder.data.dto.Movie
+import com.avs.moviefinder.data.dto.Result
 import com.avs.moviefinder.ui.home.MoviesCategory
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -19,11 +21,10 @@ import jp.wasabeef.picasso.transformations.CropTransformation.GravityVertical
 
 private const val RATING_DEFAULT_VALUE = "0"
 
-@BindingAdapter("castName")
-fun TextView.setCastName(cast: Cast?) {
-    cast?.let {
+@BindingAdapter("personName")
+fun TextView.setPersonName(name: String?) {
+    name?.let {
         text = context.getString(R.string.unknown_text)
-        val name = cast.name
         text = if (name.isNullOrEmpty()) context.getString(R.string.unknown_text) else name
     }
 }
@@ -37,12 +38,47 @@ fun TextView.setCastRole(cast: Cast?) {
     }
 }
 
-@BindingAdapter("castImage")
-fun ShapeableImageView.setCastImage(cast: Cast) {
-    val widthRatio = 1F
-    val heightRatio = 2F
+@BindingAdapter("crewJob")
+fun TextView.setCrewJob(crew: Crew?) {
+    crew?.let {
+        text = context.getString(R.string.unknown_text)
+        val job = crew.job
+        text = if (job.isNullOrEmpty()) context.getString(R.string.unknown_text) else job
+    }
+}
+
+@BindingAdapter("profileImage")
+fun ShapeableImageView.setProfileImage(profilePath: String?) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setAllCorners(CornerFamily.ROUNDED, pixels)
+        .build()
     Picasso.get()
-        .load(CAST_PHOTO_URL + cast.profilePath)
+        .load(CAST_PHOTO_URL + profilePath)
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
+
+@BindingAdapter("similarTitle")
+fun TextView.setSimilarMovieTitle(result: Result?) {
+    result?.let {
+        text = context.getString(R.string.unknown_text)
+        val title = result.title
+        text = if (title.isNullOrEmpty()) context.getString(R.string.unknown_text) else title
+    }
+}
+
+@BindingAdapter("similarMoviePoster")
+fun ShapeableImageView.setSimilarMoviePoster(result: Result) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setAllCorners(CornerFamily.ROUNDED, pixels)
+        .build()
+    Picasso.get()
+        .load(CAST_PHOTO_URL + result.posterPath)
         .placeholder(R.drawable.ic_local_movies_grey)
         .error(R.drawable.ic_local_movies_grey)
         .into(this)
@@ -100,7 +136,7 @@ fun ImageView.setWatchLaterAppearance(item: Movie?) {
 }
 
 @BindingAdapter("posterImage")
-fun ShapeableImageView.setPosterImage(item: Movie) {
+fun ShapeableImageView.setPosterImage(item: Movie?) {
     val widthRatio = 1F
     val pixels = dpToPx(16)
     var heightRatio = 0.65F
@@ -119,11 +155,34 @@ fun ShapeableImageView.setPosterImage(item: Movie) {
             .build()
     }
     Picasso.get()
-        .load(POSTER_URL + item.posterPath)
+        .load(POSTER_URL + item?.posterPath)
         .transform(
             CropTransformation(
                 widthRatio,
                 heightRatio,
+                GravityHorizontal.CENTER,
+                GravityVertical.TOP
+            )
+        )
+        .placeholder(R.drawable.ic_local_movies_grey)
+        .error(R.drawable.ic_local_movies_grey)
+        .into(this)
+}
+
+@BindingAdapter("smallPosterImage")
+fun ShapeableImageView.setSmallPosterImage(item: Movie?) {
+    val pixels = dpToPx(8)
+    this.shapeAppearanceModel = this.shapeAppearanceModel
+        .toBuilder()
+        .setTopRightCorner(CornerFamily.ROUNDED, pixels)
+        .setTopLeftCorner(CornerFamily.ROUNDED, pixels)
+        .build()
+    Picasso.get()
+        .load(POSTER_PREVIEW_URL + item?.posterPath)
+        .transform(
+            CropTransformation(
+                1F,
+                1F,
                 GravityHorizontal.CENTER,
                 GravityVertical.TOP
             )
@@ -154,6 +213,15 @@ fun TextView.setTopRatedCategoryAppearance(selectedCategory: MoviesCategory) {
 @BindingAdapter("nowPlayingCategory")
 fun TextView.setNowPlayingCategoryAppearance(selectedCategory: MoviesCategory) {
     background = if (selectedCategory == MoviesCategory.NOW_PLAYING) {
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
+    } else {
+        ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)
+    }
+}
+
+@BindingAdapter("upcomingCategory")
+fun TextView.setUpcomingCategoryAppearance(selectedCategory: MoviesCategory) {
+    background = if (selectedCategory == MoviesCategory.UPCOMING) {
         ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_active)
     } else {
         ContextCompat.getDrawable(context, R.drawable.rounded_button_shape_inactive)

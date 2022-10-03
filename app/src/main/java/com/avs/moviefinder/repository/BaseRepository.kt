@@ -6,7 +6,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-open class BaseRepository {
+abstract class BaseRepository {
 
     @Inject
     protected lateinit var databaseManager: DatabaseManager

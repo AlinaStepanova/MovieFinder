@@ -14,7 +14,6 @@ import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UtilsKtTest {
 
@@ -35,29 +34,35 @@ class UtilsKtTest {
 
     @Test
     fun buildNowPlayingUrlTest() {
-        val url = buildNowPlayingUrl()
+        val page = Random().nextInt(100)
+        val url = buildNowPlayingUrl(page)
         val currentDate = getCurrentDate()
         val monthAgoDate = get3WeeksAgoDate()
         assertTrue(url.contains(currentDate))
         assertTrue(url.contains(monthAgoDate))
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.isNotBlank())
+        assertTrue(url.contains(page.toString()))
         assertNotNull(url)
     }
 
     @Test
     fun buildPopularMoviesUrlTest() {
-        val url = buildPopularMoviesUrl()
+        val page = Random().nextInt(100)
+        val url = buildPopularMoviesUrl(page)
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.isNotBlank())
+        assertTrue(url.contains(page.toString()))
         assertNotNull(url)
     }
 
     @Test
     fun buildTopRatedMoviesUrlTest() {
-        val url = buildTopRatedMoviesUrl()
+        val page = Random().nextInt(100)
+        val url = buildTopRatedMoviesUrl(page)
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.isNotBlank())
+        assertTrue(url.contains(page.toString()))
         assertNotNull(url)
     }
 
@@ -74,7 +79,7 @@ class UtilsKtTest {
     @Test
     fun buildMovieByNameUrlTest() {
         val title = "Movie title"
-        val url = buildMovieByNameUrl(title)
+        val url = buildMovieByNameUrl(title, 0)
         assertTrue(URLUtil.isValidUrl(BASE_URL + url))
         assertTrue(url.contains(title))
         assertTrue(url.isNotBlank())
@@ -240,9 +245,9 @@ class UtilsKtTest {
     @Test
     fun getIconVisibilityTest() {
         val list = ArrayList<Movie>()
-        assertEquals(getIconVisibility(list), View.VISIBLE)
+        assertEquals(getIconVisibility(list.size), View.VISIBLE)
         list.add(Movie())
-        assertEquals(getIconVisibility(list), View.INVISIBLE)
+        assertEquals(getIconVisibility(list.size), View.INVISIBLE)
     }
 
     @Test
