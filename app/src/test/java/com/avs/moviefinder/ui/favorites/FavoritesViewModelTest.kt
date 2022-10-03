@@ -27,6 +27,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
+import org.powermock.api.mockito.PowerMockito
 
 
 @RunWith(MockitoJUnitRunner::class)
@@ -121,22 +122,27 @@ internal class FavoritesViewModelTest {
         }
     }
 //
-//    @Test
-//    fun undoRemovingFromFavoritesTest() {
-//        viewModel.subscribeToEvents(FavoritesList(movies))
-//        val movieToRemove = movies[1]
-//        viewModel.addFavorites(movieToRemove.id)
-//        verify(repository, atMostOnce()).updateMovie(movieToRemove)
-//
-//        PowerMockito.doNothing().`when`(viewModel, "startCountdown")
-//        viewModel.subscribeToEvents(movieToRemove)
-//        viewModel.undoRemovingMovie()
-//        viewModel.subscribeToEvents(movieToRemove)
-//
-//        val currentMovies = viewModel.movies.value ?: emptyList()
-//        assertTrue(currentMovies.contains(movieToRemove))
-//        assertEquals(currentMovies.size, movies.size)
-//    }
+    @Test
+    fun undoRemovingFromFavoritesTest() {
+        viewModel.subscribeToEvents(FavoritesList(movies))
+        val movieToRemove = movie
+        viewModel.addFavorites(movieToRemove)
+        verify(repository, atMostOnce()).updateMovie(movieToRemove)
+        assertEquals(viewModel.removedMovie.getOrAwaitValue()?.id, movieToRemove.id)
+        //assertTrue(viewModel.removedMovieIndex.getOrAwaitValue() != null)
+
+        PowerMockito.doNothing().`when`(viewModel, "startCountdown")
+
+        viewModel.subscribeToEvents(mutableMovies)
+        viewModel.undoRemovingMovie()
+        viewModel.subscribeToEvents(FavoritesList(movies))
+
+        runBlocking {
+            val currentMovies = viewModel.movies.value?.collectData() ?: emptyList()
+            assertTrue(currentMovies.contains(movieToRemove))
+            assertEquals(currentMovies.size, movies.collectData().size)
+        }
+    }
 //
 //    @Test
 //    fun addToWatchLaterTest() {
