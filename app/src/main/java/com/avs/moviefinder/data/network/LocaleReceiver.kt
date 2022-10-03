@@ -26,6 +26,11 @@ class LocaleReceiver : DaggerBroadcastReceiver() {
     companion object {
         var locale: Locale = getSupportedLocale()
         var language = locale.language.toString()
+        val country: String
+            get() {
+                val countryName = locale.country.toString()
+                return countryName.ifBlank { "US" }
+            }
 
         fun getSupportedLocale(): Locale {
             val currentLocale = Locale.getDefault()

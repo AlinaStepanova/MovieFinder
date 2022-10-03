@@ -72,9 +72,10 @@ fun buildTopRatedMoviesUrl(page: Int): String {
 
 fun buildUpcomingMoviesUrl(page: Int): String {
     val language = LocaleReceiver.language
+    val country = LocaleReceiver.country
     return "3/movie/upcoming?" +
             "page=$page" +
-            "&region=US" +
+            "&region=$country" +
             "&include_adult=false" +
             "&language=$language"
 }
